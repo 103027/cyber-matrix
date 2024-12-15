@@ -3,13 +3,19 @@ import { Box } from "@mui/material";
 import LeftSidebar from "./LeftSidebar";
 import MainTabs from "./Tabs";
 import { Outlet } from "react-router-dom";
+import RightSideBar from "./RightSiderbar";
+import { useLocation } from "react-router-dom";
 
 function AppLayout() {
     const [tabName, setTabName] = useState();
+    const [open, setOpen] = useState(false);
+    const location = useLocation();
 
     const getName = (name) => {
         setTabName(name);
     };
+
+    const shouldDisplayRightSidebar = !["/dashboard","/Dashboard", "/home", "/Settings","/settings" ,"/History","/history"].includes(location.pathname);
 
     return (
         <Box sx={{ backgroundColor: "#333333", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -31,11 +37,15 @@ function AppLayout() {
                         backgroundColor: "#333333",
                         padding: 5,
                         overflow: "auto",
+                        marginRight: shouldDisplayRightSidebar ? (open ? "230px" : "100px") : "0px", // Adjust the margin based on the sidebar state 
+                        position: "relative", // Add relative position 
+                        zIndex: 1
                     }}
                 >
                     <Outlet />
                 </Box>
             </Box>
+            {shouldDisplayRightSidebar && <RightSideBar open={open} setOpen={setOpen} />}
         </Box>
     );
 }

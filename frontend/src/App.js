@@ -12,6 +12,9 @@ import Dashboard from "./Components/Dashboard.jsx";
 import History from "./Components/History";
 import Settings from "./Components/Settings";
 import LandingPage from "./Pages/LandingPage.jsx";
+import TargetInfo from "./Components/TargetInfo";
+import Subdomain from "./Components/Subdomain";
+import IPandPorts from "./Components/IPandPorts";
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/history" element={<History />} />
+            <Route path="/targetinfo" element={<TargetInfo />} />
+            <Route path="/subdomainenueration" element={<Subdomain />} />
+            <Route path="/ipandports" element={<IPandPorts />} />
           </Route>
           <Route path="*" element={<NoPage />} />
         </Routes>
