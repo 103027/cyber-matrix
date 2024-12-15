@@ -1,0 +1,66 @@
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import Features from "../../Components/Features";
+import ContactUs from "../../Components/Contactus";
+import Footer from "../../Components/footer";
+
+function Home() {
+    return (
+        <Box sx={{ color: "#fff" }}>
+            <Box
+                sx={{
+                    backgroundColor: "#49494C",
+                    width: "100%",
+                    borderRadius: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
+                <Box
+                    sx={{
+                        margin: "50px"
+                    }}
+                >
+                    <Typography
+                        variant="h3"
+                        gutterBottom
+                        sx={{
+                            fontWeight: 'bold',
+                            fontSize: '2.5rem',
+                            fontFamily: 'Arial, sans-serif',
+                        }}
+                    >
+                        Welcome to{' '}
+                        <span
+                            style={{
+                                fontFamily: 'Courier New, monospace',
+                                fontSize: '3rem',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Cyber-Matrix
+                        </span>
+                    </Typography>
+                    <Typography
+                        variant="subtitle1"
+                        gutterBottom
+                        sx={{
+                            fontSize: '1.0rem', // Slightly larger font for better readability
+                            fontWeight: 500, // Semi-bold for emphasis
+                            color: "#EFEFEF",
+                            marginTop: '1rem', // Add spacing above
+                            maxWidth: '800px', // Restrict width for better focus
+                        }}
+                    >
+                        Your go-to platform for powerful cybersecurity tools, including penetration testing, password cracking, asset enumeration, CVE reporting, subdomain discovery, and network scanning. Let’s simplify and enhance your security journey together!
+                    </Typography>
+                </Box>
+            </Box>
+            <Features />
+            <ContactUs />
+            <Footer />
+        </Box>
+    );
+}
+
+export default Home;
