@@ -11,7 +11,7 @@ import Home from "./Pages/Homepage/Home";
 import Dashboard from "./Components/Dashboard";
 import History from "./Components/History";
 import Settings from "./Components/Settings";
-import LandingPage from "./Pages/LandingPage";
+import LandingPage from "./Pages/LandingPage.jsx";
 
 function App() {
   return (
