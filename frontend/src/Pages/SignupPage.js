@@ -24,12 +24,12 @@ function Signup() {
       >
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "auto" }}>
           <img
-            src={require("../logo.png")}
+            src={require("../Images/logo.png")}
             alt="Cyber-Matrix Logo"
             style={{ width: "150px", marginBottom: "10px" }}
           />
           <img
-            src={require("../name.png")}
+            src={require("../Images/name.png")}
             alt="Cyber-Matrix name"
             style={{ width: "300px", marginBottom: "10px" }}
           />
@@ -261,12 +261,12 @@ function Signup() {
       >
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <img
-            src={require("../logo.png")}
+            src={require("../Images/logo.png")}
             alt="Cyber-Matrix Logo"
             style={{ width: "150px", marginBottom: "10px" }}
           />
           <img
-            src={require("../name.png")}
+            src={require("../Images/name.png")}
             alt="Cyber-Matrix name"
             style={{ width: "300px", marginBottom: "10px" }}
           />
