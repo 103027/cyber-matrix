@@ -73,7 +73,7 @@ function Features() {
                 </Box>
                 <Grid
                     container
-                    spacing={4}
+                    spacing={8}
                     sx={{
                         marginTop: '2rem',
                         justifyContent: 'center',
