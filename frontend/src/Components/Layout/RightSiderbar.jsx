@@ -48,7 +48,7 @@ function RightSideBar(props) {
                 <List sx={{ width: "100%" }}>
                     {[
                         { text: "Target Infomation", icon: <AssignmentIcon />, navigateto:"/targetinfo" },
-                        { text: "Subdomain Enumeration", icon: <FormatListBulletedIcon />, navigateto:"/subdomainenueration" },
+                        { text: "Subdomain Enumeration", icon: <FormatListBulletedIcon />, navigateto:"/subdomainenumeration" },
                         { text: "IP & Ports", icon: <AttachFileIcon />, navigateto:"/ipandports" },
                     ].map((item, index) => (
                         <ListItem disablePadding sx={{ display: 'block', mb: 3 }} key={index}>

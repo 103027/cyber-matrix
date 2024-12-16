@@ -31,7 +31,7 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/history" element={<History />} />
             <Route path="/targetinfo" element={<TargetInfo />} />
-            <Route path="/subdomainenueration" element={<Subdomain />} />
+            <Route path="/subdomainenumeration" element={<Subdomain />} />
             <Route path="/ipandports" element={<IPandPorts />} />
           </Route>
           <Route path="*" element={<NoPage />} />
