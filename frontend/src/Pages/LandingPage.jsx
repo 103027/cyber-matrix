@@ -132,11 +132,11 @@ function LandingPage() {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderBottom: "2px solid Black",
-                    borderBottomLeftRadius: "50%",
-                    borderBottomRightRadius: "50%",
+                    borderBottom: "2px solid #333333",
+                    // borderBottomLeftRadius: "50%",
+                    // borderBottomRightRadius: "50%",
                     backgroundColor: "black",
-                    height: "70vh"
+                    height: "70vh",
                 }}
             >
                 <img
@@ -172,6 +172,16 @@ function LandingPage() {
                 >
                     Get started
                 </Button>
+            </Box>
+            <Box
+                sx={{
+                    width: 0,
+                    height: 0,
+                    borderRight: "100vw solid transparent",
+                    borderBottom: "6.9vw solid #333333",
+                    marginTop: "-6.9vw"
+                }}
+            >
             </Box>
             <Box sx={{ pl: 7, pr: 7, pb: 4 }}>
                 <Box

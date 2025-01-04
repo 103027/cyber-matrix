@@ -8,7 +8,6 @@ import { useLocation } from "react-router-dom";
 
 function AppLayout() {
     const [tabName, setTabName] = useState();
-    const [open, setOpen] = useState(false);
     const location = useLocation();
 
     const getName = (name) => {
@@ -37,15 +36,15 @@ function AppLayout() {
                         backgroundColor: "#333333",
                         padding: 5,
                         overflow: "auto",
-                        marginRight: shouldDisplayRightSidebar ? (open ? "230px" : "100px") : "0px", // Adjust the margin based on the sidebar state 
-                        position: "relative", // Add relative position 
+                        marginRight: shouldDisplayRightSidebar ? "100px" : "0px",
+                        position: "relative", // Add relative position
                         zIndex: 1
                     }}
                 >
                     <Outlet />
                 </Box>
             </Box>
-            {shouldDisplayRightSidebar && <RightSideBar open={open} setOpen={setOpen} />}
+            {shouldDisplayRightSidebar && <RightSideBar/>}
         </Box>
     );
 }

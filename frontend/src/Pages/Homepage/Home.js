@@ -8,22 +8,20 @@ function Home() {
     return (
         <Box sx={{ color: "#fff" }}>
             <Box
-                
-            >
-
-            </Box>
-            <Box
                 sx={{
                     backgroundColor: "#49494C",
                     width: "100%",
                     borderRadius: "20px",
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: "row",
+                    justifyContent:"space-between"
                 }}
             >
                 <Box
                     sx={{
-                        margin: "50px"
+                        margin: "50px",
+                        display: "flex",
+                        flexDirection: "column",
                     }}
                 >
                     <Typography
@@ -60,6 +58,18 @@ function Home() {
                         Your go-to platform for powerful cybersecurity tools, including penetration testing, password cracking, asset enumeration, CVE reporting, subdomain discovery, and network scanning. Let’s simplify and enhance your security journey together!
                     </Typography>
                 </Box>
+                {/* <Box
+                    sx={{
+                        pt:2,
+                        mr:5
+                    }}
+                >
+                    <img
+                        src={require("../../Images/Logo69-removebg-preview.png")}
+                        alt="Cyber-Matrix Logo"
+                        style={{ width: "200px", marginBottom: "10px" }}
+                    />
+                </Box> */}
             </Box>
             <Features />
             <ContactUs />
