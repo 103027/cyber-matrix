@@ -107,12 +107,12 @@ function Subdomain() {
                                     },
                                 }}
                             />
-                            <Box sx={{ display: 'flex', flexDirection: 'row', mt: 3 }}>
+                            {/* <Box sx={{ display: 'flex', flexDirection: 'row', mt: 3 }}>
                                 <Typography variant="subtitle1">
                                     Upload your File:
                                 </Typography>
                                 <Button variant="contained" color="default" startIcon={<FileUploadIcon />} sx={{ ml: 3 }} />
-                            </Box>
+                            </Box> */}
                         </Box>
                     </Box>
 
