@@ -1,3 +1,11 @@
 paramiko==3.5.0
 requests==2.32.3
 Flask==3.1.0
+Flask-Mail
+pymongo
+itsdangerous
+bcrypt
+flask-bcrypt
+paramiko
+requests
+werkzeug
