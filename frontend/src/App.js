@@ -15,27 +15,33 @@ import LandingPage from "./Pages/LandingPage.jsx";
 import TargetInfo from "./Components/TargetInfo";
 import Subdomain from "./Components/Subdomain";
 import IPandPorts from "./Components/IPandPorts";
+import { TargetInfoProvider } from "./contexts/TargetInfoContext.jsx";
+import { SubdomainProvider } from "./contexts/SubdomainContext.jsx";
 
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgotpassword" element={<ForgotPasword />} />
-          <Route element={<AppLayout />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/targetinfo" element={<TargetInfo />} />
-            <Route path="/subdomainenumeration" element={<Subdomain />} />
-            <Route path="/ipandports" element={<IPandPorts />} />
-          </Route>
-          <Route path="*" element={<NoPage />} />
-        </Routes>
+        <TargetInfoProvider>
+          <SubdomainProvider>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/forgotpassword" element={<ForgotPasword />} />
+              <Route element={<AppLayout />}>
+                <Route path="/home" element={<Home />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/history" element={<History />} />
+                <Route path="/:domain/targetinfo" element={<TargetInfo />} />
+                <Route path="/:domain/subdomainenumeration" element={<Subdomain />} />
+                <Route path="/:domain/ipandports" element={<IPandPorts />} />
+              </Route>
+              <Route path="*" element={<NoPage />} />
+            </Routes>
+          </SubdomainProvider>
+        </TargetInfoProvider>
       </BrowserRouter>
     </div>
   );
