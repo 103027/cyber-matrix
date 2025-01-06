@@ -5,7 +5,7 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "3.92.229.147"
 KALI_USERNAME = "kali"
-KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 
 def ssh_execute_command(ip, username, key_path, command):
@@ -66,7 +66,81 @@ def extract_cn_values(output):
         "issuer_cn": re.search(patterns["issuer_cn"], output).group(1) if re.search(patterns["issuer_cn"], output) else "Not Found",
         "issuer_org": re.search(patterns["issuer_org"], output).group(1) if re.search(patterns["issuer_org"], output) else "Not Found"
     }
+def extract_robot_url(output):
+    urls = []
+    for line in output.splitlines():
+        line = line.strip()
+    # Match Disallow or Allow lines with `/` URLs that have content after `/`
+        if line.lower().startswith("disallow:") or line.lower().startswith("allow:"):
+            url = line.split(":", 1)[1].strip()
+            if url.startswith("/") and len(url) > 1:  # Ensure it starts with `/` and has more content
+                urls.append(url)
+    return urls
 
+def get_url_(output):
+    data = output.splitlines()
+    current_url = None  # Variable to store the current URL
+    location_url = None  # Variable to store the Location URL
+    status_code = None   # Variable to store the status code
+
+    for i, line in enumerate(data):
+        # Check if the line contains a URL
+        if "http://" in line or "https://" in line:
+            # Extract the URL from the line
+            parts = line.split()
+            for part in parts:
+                if part.startswith("http://") or part.startswith("https://"):
+                    current_url = part  # Save the current URL
+                    break
+
+        # Check if the line contains "Location"
+        if "Location" in line:
+            parts = line.split()
+            for part in parts:
+                if part.startswith("http://") or part.startswith("https://"):
+                    location_url = part  # Save the Location URL
+                    break
+
+        # Check if the line contains "HTTP request sent, awaiting response..." for the status code
+        if "HTTP request sent, awaiting response..." in line:
+            # Extract the status code (e.g., 301, 200, etc.)
+            match = re.search(r"\b\d{3}\b", line)
+            if match:
+                status_code = match.group(0)
+
+        # Break the loop once all required information is found
+        if current_url and location_url and status_code:
+            break
+
+    # Store the information in a dictionary
+    result = {
+        "url": current_url,
+        "location": location_url,
+        "status_code": status_code
+    }
+
+    return result
+
+def get_title_server(output):
+    title = None
+    server = None
+
+    if output:
+        lines = output.splitlines()
+        for line in lines:
+            if line.lower().startswith("server:"):
+                server = line.split(":", 1)[1].strip()
+            elif line.lower().startswith("title:"):
+                title = line.split(":", 1)[1].strip()
+
+    # Return the results
+    result = {
+        "title": title,
+        "server": server,
+        
+    }
+
+    return result
 
 
 @bp.route('/get_subdomains', methods=['GET'])
@@ -99,7 +173,15 @@ def get_target_info():
         "dns": f"nmap --script dns-brute -sn {domain} | head -n 20",
         "ip": f"nslookup {domain}",
         "common_names": f"echo | openssl s_client -connect {domain}:443 2>/dev/null | openssl x509 -noout -subject -issuer",
-        "organization": f"whois {domain} | grep -i 'Registrant Organization' | awk -F': ' '{{print $2}}'"
+        "organization": f"whois {domain} | grep -i 'Registrant Organization' | awk -F': ' '{{print $2}}'",
+        "robots": f"wget -qO- {domain}/robots.txt | head -n 100",
+        "Title": f"""
+        curl -sI {domain} | grep -i "server" && \
+        echo "Title: $(curl -s {domain} | grep -oP '(?<=<title>).*?(?=</title>)')"
+        """,
+        "Content_Length": f"""
+        wget --spider --server-response {domain} 2>&1 | grep -i "Content-Length" | tail -n 1
+        """
     }
 
     results = {}
@@ -120,7 +202,94 @@ def get_target_info():
             results["Issuer Organization"] = cert_info["issuer_org"]
         elif key == "organization":
             results["Organization Name"] = output.strip()
+        elif key == "robots":
+            robot_url = extract_robot_url(output)
+            results["Robot"] = robot_url
+        elif key == "Title":
+            title = get_title_server(output)
+            Title = title["title"]
+            webserver = title["server"]
+            results["Title"] = Title
+            results["Web Server"] = webserver
+        elif key == "Content_Length":
+            results["Content Length"] = output
+
+    try:
+        # Set up the SSH client
+        ssh_client = paramiko.SSHClient()
+        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        
+        # Connect to the remote server
+        ssh_client.connect(hostname=KALI_IP, username=KALI_USERNAME, key_filename=KALI_KEY_PATH)
+        
+        # Run the wget command on the remote server
+        stdin, stdout, stderr = ssh_client.exec_command(f"wget {domain}")  # Using -qO- to suppress output and get HTML
+        
+        # Capture the standard output and error
+        output = stderr.read().decode().strip()
+        error = stderr.read().decode().strip()
+
+        # Close the SSH connection
+        ssh_client.close()
+        url = get_url_(output)
+        location = url["location"]
+        status_code = url["status_code"]
+        url_ = url["url"]
+        # Check if there was any output, otherwise return the error
+        if output:
+            results["Url"] = url_
+            results["Location"] = location
+            results["Status_Code"] = status_code
+            
+        elif error:
+            return jsonify({'error': 'Error running wget', 'message': error}), 500
+        else:
+            return jsonify({'error': 'No output from wget'}), 500
+
+    except Exception as e:
+        return jsonify({'error': 'Failed to fetch URL via SSH', 'message': str(e)}), 500
 
     results["domain"] = domain
 
     return jsonify(results)
+
+
+
+@bp.route('/get_content_length',methods=['GET'])
+def get_content_length():
+    domain = request.args.get('domain')
+    if not domain:
+        return jsonify({"error": "Domain parameter is required"}), 400
+
+    try:
+        # Set up the SSH client
+        ssh_client = paramiko.SSHClient()
+        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        
+        # Connect to the remote server
+        ssh_client.connect(hostname=KALI_IP, username=KALI_USERNAME, key_filename=KALI_KEY_PATH)
+        
+        # Run the curl command on the remote server
+        command = f"""
+        curl -sI {domain} | grep -i "server" && \
+        echo "Title: $(curl -s {domain} | grep -oP '(?<=<title>).*?(?=</title>)')"
+        """
+        stdin, stdout, stderr = ssh_client.exec_command(command)
+        
+        # Capture the standard output and error
+        output = stdout.read().decode().strip()
+        error = stderr.read().decode().strip()
+
+        # Close the SSH connection
+        ssh_client.close()
+
+        # Check if there was any output
+        if output:
+            return jsonify({'output': output.splitlines()})
+        elif error:
+            return jsonify({'error': 'Error running curl', 'message': error}), 500
+        else:
+            return jsonify({'error': 'No output from curl'}), 500
+
+    except Exception as e:
+        return jsonify({'error': 'Failed to fetch URL via SSH', 'message': str(e)}), 500
