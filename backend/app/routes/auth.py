@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.models.user import add_user, find_user, verify_user, check_password
-from app.utils.email import send_verification_email
+from app.utils.email import send_verification_email, send_reset_password_email
 from app.utils.token import confirm_token
 
 bp = Blueprint('auth', __name__)  # Ensure Blueprint is initialized before imports
@@ -79,3 +79,20 @@ def login():
         return jsonify({'message': 'Please verify your email before logging in'}), 400
     
     return jsonify({'message': 'Login successful'}), 200
+@bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.json
+    email = data['email']
+
+    # Check if the user exists in the database
+    user = find_user(email)
+    if not user:
+        return jsonify({'message': 'Email not registered'}), 404
+
+    # Generate a password reset token
+    # token = generate_confirmation_token(email)
+
+    # Send reset password email
+    send_reset_password_email(email)
+
+    return jsonify({'message': 'Password reset email sent. Please check your email.'}), 200
