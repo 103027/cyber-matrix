@@ -21,3 +21,20 @@ def send_verification_email(email):
     )
     mail.send(msg)
 
+def send_reset_password_email(email):
+    token = generate_confirmation_token(email)
+    reset_link = f"/reset-password/{token}"
+    #reset_link = f"http://127.0.0.1:5000/reset-password/{token}"
+
+    msg = Message(
+        "Reset Your Password",
+        recipients=[email],
+        sender=current_app.config["MAIL_DEFAULT_SENDER"],
+    )
+    msg.body = (
+        f"Click the link below to reset your password:\n\n"
+        f"http://127.0.0.1:5000{reset_link}\n\n"
+        f"If you did not request this, please ignore this email."
+    )
+    mail.send(msg)
+

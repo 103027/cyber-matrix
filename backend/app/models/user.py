@@ -24,3 +24,9 @@ def check_password(email, password):
     if user and check_password_hash(user['password'], password):  # Compare hashed password
         return True
     return False
+
+def update_user_password(email, new_password):
+    db = current_app.db
+    hashed_password = generate_password_hash(new_password)
+    result = db.users.update_one({"email": email}, {"$set": {"password": hashed_password}})
+    return result.modified_count > 0
