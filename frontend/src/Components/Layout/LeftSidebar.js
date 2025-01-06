@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Avatar, Typography, ListItemButton } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import HistoryIcon from "@mui/icons-material/History";
@@ -9,7 +9,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 
 function LeftSidebar(props) {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(() => {
+        const storedState = localStorage.getItem("sidebarOpen");
+        return storedState !== null ? JSON.parse(storedState) : true;
+    });
+
+    useEffect(() => {
+        localStorage.setItem("sidebarOpen", JSON.stringify(open));
+    }, [open]);
 
     const handleToggle = () => {
         setOpen(!open);
@@ -18,6 +25,10 @@ function LeftSidebar(props) {
     const openTab = (name) => {
         props.getName(name);
     };
+
+    useEffect(() => {
+        props.getName(props.name);
+    }, [props.name]);
 
     return (
         <Box sx={{ display: "flex", position: "relative" }}>
@@ -42,7 +53,7 @@ function LeftSidebar(props) {
                 <Box display="flex" flexDirection="column" alignItems="center" p={1}>
                     <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" px={1} sx={{ position: "relative" }}>
                         <Box display="flex" alignItems="center" mt={2}>
-                            <img onClick={() => {openTab("home") }} src={require("../../Images/logo2.png")} alt="Cyber-Matrix Logo" style={{ width: "60px", marginBottom: "10px" }} />
+                            <img onClick={() => { openTab("home") }} src={require("../../Images/logo2.png")} alt="Cyber-Matrix Logo" style={{ width: "60px", marginBottom: "10px" }} />
                             {open && (
                                 <Typography variant="h6" noWrap mb={1} sx={{ fontWeight: 'bold' }}>
                                     yber-Matrix
@@ -63,7 +74,7 @@ function LeftSidebar(props) {
                                         justifyContent: open ? "initial" : "center",
                                         px: 1,
                                     }}
-                                    onClick={() => {openTab(item.text) }}
+                                    onClick={() => { openTab(item.text) }}
                                 >
                                     <ListItemIcon
                                         sx={{

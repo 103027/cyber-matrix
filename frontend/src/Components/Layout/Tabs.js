@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { Box, Dialog,TextField,Tabs, Tab, IconButton, Avatar, Typography,Button } from "@mui/material";
+import { Box, Dialog, TextField, Tabs, Tab, IconButton, Avatar, Typography, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import HomeIcon from "@mui/icons-material/Home";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import { useTargetInfo } from "../../contexts/TargetInfoContext.jsx";
 
 function MainTabs(props) {
-    const [tabs, setTabs] = useState([{ label: "home", icon: <HomeIcon /> }]);
-    const [value, setValue] = useState(0);
+    const [tabs, setTabs] = useState(() => {
+        const storedTabs = localStorage.getItem("tabs");
+        return storedTabs ? JSON.parse(storedTabs) : [{ label: "home", icon: <HomeIcon /> }];
+    });
+    const [value, setValue] = useState(() => {
+        const savedActiveTab = localStorage.getItem("activeTab");
+        return savedActiveTab ? parseInt(savedActiveTab, 10) : 0;
+    });
     const [openModal, setOpenModal] = useState(false);
     const [inputValue, setInputValue] = useState("");
+    const { removeTargetInfo } = useTargetInfo();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        localStorage.setItem("tabs", JSON.stringify(tabs));
+        localStorage.setItem("activeTab", value);
+    }, [tabs, value]);
 
     const handleAddTab = () => {
         setOpenModal(true);
@@ -24,40 +37,56 @@ function MainTabs(props) {
 
     const handleAddTabSubmit = () => {
         if (inputValue) {
+            console.log(inputValue)
             setTabs([...tabs, { label: inputValue }]);
             setValue(tabs.length);
             handleModalClose();
+            navigate("/" + inputValue + "/targetinfo");
         }
     };
 
     const handleRemoveTab = (index) => {
         if (index === 0) return;
+        const removedTab = tabs[index];
         const newTabs = tabs.filter((_, i) => i !== index);
         setTabs(newTabs);
-        setValue((prevValue) => (index === prevValue ? 0 : prevValue > index ? prevValue - 1 : prevValue));
-        navigate("/home");
-    };
+        removeTargetInfo(removedTab.label);
+        if (value === index) {
+          setValue(0);
+          navigate("/home");
+        } else if (value > index) {
+          setValue((prev) => prev - 1);
+        }
+      };
 
     const handleChange = (event, newValue) => {
-            setValue(newValue + 1);
-            const selectedTab = tabs[newValue + 1];
+        setValue(newValue + 1);
+        const selectedTab = tabs[newValue + 1];
+        if (selectedTab.label == "home" || selectedTab.label == "dashboard" || selectedTab.label == "settings" || selectedTab.label == "history" || selectedTab.label == "Dashboard" || selectedTab.label == "Settings" || selectedTab.label == "History") {
             navigate("/" + selectedTab.label);
+        } else {
+            navigate("/" + selectedTab.label + "/targetinfo");
+        }
     };
 
-    useEffect(()=>{
-        if(props.Name){
-            navigate("/" + props.Name);
+    useEffect(() => {
+        if (props.Name) {
+            if (props.Name == "home" || props.Name == "dashboard" || props.Name == "settings" || props.Name == "history" || props.Name == "Dashboard" || props.Name == "Settings" || props.Name == "History") {
+                navigate("/" + props.Name);
+            } else {
+                navigate("/" + props.Name + "/targetinfo");
+            }
             const tabExists = tabs.find((tab) => tab.label === props.Name);
-            if( tabExists ){
+            if (tabExists) {
                 const existingTabIndex = tabs.findIndex((tab) => tab.label === props.Name);
                 setValue(existingTabIndex);
             }
-            else{
+            else {
                 setTabs([...tabs, { label: props.Name }]);
                 setValue(tabs.length);
             }
         }
-    },[props.Name]);
+    }, [props.Name]);
 
     return (
         <Box sx={{ display: "flex", flexGrow: 1, flexDirection: "column", width: "100%", }}>
@@ -78,7 +107,7 @@ function MainTabs(props) {
                     }
                     selected={value === 0}
                     onClick={() => {
-                        setValue(0) 
+                        setValue(0)
                         navigate("/home");
                     }}
                     sx={{

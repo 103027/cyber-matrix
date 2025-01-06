@@ -6,9 +6,11 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { useNavigate } from "react-router-dom";
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
+import { useParams } from "react-router-dom";
 
 function RightSideBar() {
     const navigate = useNavigate();
+    const { domain } = useParams();
 
     return (
         <Drawer
@@ -25,7 +27,8 @@ function RightSideBar() {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#ffffff"
+                    color: "#ffffff",
+                    marginTop:"30px"
                 }
             }}
         >
@@ -46,9 +49,9 @@ function RightSideBar() {
             >
                 <List sx={{ width: "100%" }}>
                     {[
-                        { text: "Target Infomation", icon: <AssignmentIcon />, navigateto: "/targetinfo" },
-                        { text: "Subdomain Enumeration", icon: <FormatListBulletedIcon />, navigateto: "/subdomainenumeration" },
-                        { text: "IP & Ports", icon: <AttachFileIcon />, navigateto: "/ipandports" },
+                        { text: "Target Infomation", icon: <AssignmentIcon />, navigateto: `${domain}/targetinfo` },
+                        { text: "Subdomain Enumeration", icon: <FormatListBulletedIcon />, navigateto: `${domain}/subdomainenumeration` },
+                        { text: "IP & Ports", icon: <AttachFileIcon />, navigateto: `${domain}/ipandports` },
                     ].map((item, index) => (
                         <ListItem disablePadding sx={{ display: 'block', mb: 3 }} key={index}>
                             <ListItemButton
