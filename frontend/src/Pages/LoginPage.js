@@ -98,7 +98,7 @@ function Login() {
                     alignItems: "center",
                 }}
             >
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "auto" }}>
+                <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "auto",cursor:"pointer" }}>
                     <img
                         src={require("../Images/logo.png")}
                         alt="Cyber-Matrix Logo"
@@ -292,7 +292,7 @@ function Login() {
                     borderBottomLeftRadius: { md: "30px" },
                 }}
             >
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center",cursor:"pointer" }}>
                     <img
                         src={require("../Images/logo.png")}
                         alt="Cyber-Matrix Logo"

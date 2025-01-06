@@ -9,10 +9,10 @@ DB = ''
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 587
 MAIL_USE_TLS = True
-MAIL_USERNAME = 'mq08460@gmail.com'
-MAIL_PASSWORD = 'hrnu ohlj gcuo avly '
+MAIL_USERNAME = 'cybermatrix607@gmail.com'
+MAIL_PASSWORD = 'khlm ccvn tckx utbi  '
 
-MAIL_DEFAULT_SENDER = "mq08460@gmail.com" 
+MAIL_DEFAULT_SENDER = "cybermatrix607@gmail.com" 
 
 BACKEND_URL = "http://localhost:5000"
 

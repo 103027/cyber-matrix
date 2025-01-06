@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Link, Grid, IconButton, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
@@ -47,7 +47,7 @@ function Signup() {
 
   const registerUser = async (userInput) => {
     try {
-      const response = await api.post(`/register`,userInput);
+      const response = await api.post(`/register`, userInput);
       console.log("Response:", response.data);
       showNotification(response?.data?.message);
       navigate("/login");
@@ -105,7 +105,7 @@ function Signup() {
       name: name.trim(),
       email: email.trim(),
       password: password.trim(),
-  };
+    };
 
     // Add API call or further actions here
     registerUser(userInput);
@@ -144,7 +144,7 @@ function Signup() {
           alignItems: "center",
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "auto" }}>
+        <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "auto",cursor:"pointer" }}>
           <img
             src={require("../Images/logo.png")}
             alt="Cyber-Matrix Logo"
@@ -221,7 +221,7 @@ function Signup() {
                     "&.Mui-focused": {
                       backgroundColor: "black",
                     },
-                    
+
                   },
                 }}
                 sx={{
@@ -300,13 +300,17 @@ function Signup() {
                 !formValues["password"] && isSubmitted
                   ? "Fill out this field"
                   : openPasswordConditions ? (
-                    <>
+                    <span style={{
+                      fontSize: '1.0rem',
+                      fontFamily: 'Poppins, sans-serif',
+                      color:'#F5F5F5'
+                    }}>
                       Follow the format:
                       <br /> - At least 8 characters
                       <br /> - At least 1 special character
                       <br /> - At least 1 number
                       <br /> - At least 1 capital letter
-                    </>
+                    </span>
                   ) : ""
               }
               arrow
@@ -464,7 +468,7 @@ function Signup() {
           borderBottomLeftRadius: { md: "30px" },
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center",cursor:"pointer" }}>
           <img
             src={require("../Images/logo.png")}
             alt="Cyber-Matrix Logo"
