@@ -35,7 +35,24 @@ def confirm_email(token):
 
         # Set is_verified to True
         if verify_user(email):
-            return jsonify({"message": "Email verified successfully!"}), 200
+            return """
+                <!doctype html>
+                <html lang="en">
+                <head>
+                    <title>Email Verified</title>
+                    <script>
+                        window.onload = function() {
+                            setTimeout(function() {
+                                window.close();
+                            }, 2000); // Closes the page after 2 seconds
+                        };
+                    </script>
+                </head>
+                <body>
+                    
+                </body>
+                </html>
+            """
         else:
             return jsonify({"message": "Error verifying email"}), 500
 
