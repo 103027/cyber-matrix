@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Avatar, Typography, ListItemButton } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import HistoryIcon from "@mui/icons-material/History";
@@ -6,18 +6,34 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import LogoutIcon from '@mui/icons-material/Logout';
-
+import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../contexts/NotificationContext.jsx";
+import { useTargetInfo } from "../../contexts/TargetInfoContext.jsx";
+import { useSubdomain } from "../../contexts/SubdomainContext.jsx";
+import { useIPandPorts } from "../../contexts/IPandPortsContext.jsx"
 
 function LeftSidebar(props) {
+    const [username, setUsername] = useState("");
+    const { clearAllTargetInfo } = useTargetInfo();
+    const { clearAllSubdomains } = useSubdomain();
+    const { clearAllIPandPorts } = useIPandPorts();
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
     const [open, setOpen] = useState(() => {
         const storedState = localStorage.getItem("sidebarOpen");
         return storedState !== null ? JSON.parse(storedState) : true;
     });
-
+    const navigate = useNavigate();
     useEffect(() => {
         localStorage.setItem("sidebarOpen", JSON.stringify(open));
     }, [open]);
-
+    const { showNotification } = useNotification();
     const handleToggle = () => {
         setOpen(!open);
     };
@@ -29,6 +45,22 @@ function LeftSidebar(props) {
     useEffect(() => {
         props.getName(props.name);
     }, [props.name]);
+
+    const handleClear = () => {
+        clearAllIPandPorts();
+        clearAllSubdomains();
+        clearAllTargetInfo();
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("tabs");
+        localStorage.removeItem("activetabs");
+        handleClear()
+        navigate("/login");
+        showNotification("Logged out successfully!");
+    };
 
     return (
         <Box sx={{ display: "flex", position: "relative" }}>
@@ -102,7 +134,7 @@ function LeftSidebar(props) {
                         ))}
                     </List>
                 </Box>
-                <Box p={1} width="100%" textAlign="center" mt={"auto"}>
+                <Box p={1} width="100%" textAlign="center" mt={"auto"} onClick={handleLogout} sx={{ cursor: "pointer" }}>
                     <ListItem
                         button
                         sx={{
@@ -123,7 +155,7 @@ function LeftSidebar(props) {
                             open
                             &&
                             <>
-                                <Typography variant="body2" fontWeight="bold">Hassan Muzaffar</Typography>
+                                <Typography variant="body2" fontWeight="bold">{username}</Typography>
                                 <ListItemIcon sx={{ minWidth: 0, ml: open ? 3 : 'auto', justifyContent: "center" }}>
                                     <LogoutIcon color="action" fontSize="small" />
                                 </ListItemIcon>

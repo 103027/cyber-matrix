@@ -27,8 +27,12 @@ export const IPandPortsProvider = ({ children }) => {
         });
     };
 
+    const clearAllIPandPorts = () => {
+        setIPandPorts({});
+    };
+
     return (
-        <IPandPortsContext.Provider value={{ IPandPorts, addIPandPorts, removeIPandPorts }}>
+        <IPandPortsContext.Provider value={{ IPandPorts, addIPandPorts, removeIPandPorts,clearAllIPandPorts }}>
             {children}
         </IPandPortsContext.Provider>
     );

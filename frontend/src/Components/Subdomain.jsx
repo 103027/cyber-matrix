@@ -4,12 +4,13 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import Footer from "./footer";
-import api from "../api/axois.jsx";
+import api from "../api/axios_token.jsx";
 import Logo from "../Images/logo3.png";
 import Loading from "../Components/Loading.jsx";
 import { useParams } from "react-router-dom";
 import { useSubdomain } from "../contexts/SubdomainContext";
 import { useNotification } from "../contexts/NotificationContext.jsx";
+import { CircularProgress } from '@mui/material';
 
 function createData(url, status) {
     return { url, status };
@@ -21,8 +22,9 @@ function Subdomain() {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchQuery, setSearchQuery] = useState('');
     const { domain } = useParams();
-    const { subdomains, addSubdomains } = useSubdomain();
+    const { subdomains, addSubdomains, setSubdomains } = useSubdomain();
     const [loading, setLoading] = useState(true);
+    const [loadingRow, setLoadingRow] = useState(null);
     const { showNotification } = useNotification();
 
     // Handle page change
@@ -44,11 +46,14 @@ function Subdomain() {
 
     // Filter rows based on search query (memoized for optimization)
     const filteredRows = useMemo(() => {
-        return rows.filter((row) =>
-            row.url.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            row.status.toString().includes(searchQuery)
-        );
+        return rows.filter((row) => {
+            const url = row.url?.toLowerCase() || ""; // Ensure row.url is defined
+            const status = row.status?.toString() || "--"; // Ensure row.status is defined
+
+            return url.includes(searchQuery.toLowerCase()) || status.includes(searchQuery);
+        });
     }, [searchQuery, rows]);
+
 
     // Paginate filtered rows (memoized for optimization)
     const paginatedRows = useMemo(() => {
@@ -61,8 +66,8 @@ function Subdomain() {
         const fetchSubdomains = async () => {
             try {
                 console.log("Hello from subdomain")
-                const response = await api.get(`/get_subdomains?domain=${domain}`);
-                const newRows = response.data?.["Sub-domains"]?.map((data) => createData(data.subdomain, data.status));
+                const response = await api.get(`/new_subdomain?domain=${domain}`);
+                const newRows = response.data?.["subdomains"]?.map((data) => createData(data, "--"));
                 setRows(newRows);
 
                 addSubdomains(domain, newRows);
@@ -83,6 +88,38 @@ function Subdomain() {
         }
 
     }, [domain, subdomains, addSubdomains]);
+
+    const handleRowClick = (url) => {
+        console.log(`Link clicked for URL: ${url}`);
+
+        const checkStatus = async () => {
+            try {
+                setLoadingRow(url);
+                const response = await api.get(`/get_status?domain=${url}`);
+                const newStatus = response?.data?.status;
+                setLoadingRow(null); 
+
+                setSubdomains((prevSubdomains) => {
+                    const updatedSubdomains = { ...prevSubdomains };
+                    if (updatedSubdomains[domain]) {
+                        updatedSubdomains[domain] = updatedSubdomains[domain].map((subdomain) =>
+                            subdomain.url === url ? { ...subdomain, status: newStatus } : subdomain
+                        );
+                    }
+                    return updatedSubdomains;
+                });
+
+                showNotification("Status Checked")
+            } catch (err) {
+                setLoadingRow(null); 
+                console.error(err.message || "Something went wrong");
+                showNotification("Error Occured in Subdomain Enumeration,Error is " + err.message)
+            }
+        }
+
+        checkStatus();
+    };
+
 
     return (
         <Box sx={{ color: "#fff" }}>
@@ -147,9 +184,23 @@ function Subdomain() {
                                         {paginatedRows.map((row, index) => (
                                             <TableRow key={`${row.url}-${page}-${index}`}>
                                                 <TableCell sx={{ color: "#ffffff" }} component="th" scope="row">
-                                                    {row.url}
+                                                    <a
+                                                        onClick={(e) => {
+                                                            e.preventDefault(); // Prevent default link behavior
+                                                            handleRowClick(row.url); // Call the function and pass row.url
+                                                        }}
+                                                        style={{ color: "#ffffff", textDecoration: "underline", cursor: "pointer" }}
+                                                    >
+                                                        {row.url}
+                                                    </a>
                                                 </TableCell>
-                                                <TableCell sx={{ color: "#ffffff" }}>{row.status}</TableCell>
+                                                <TableCell sx={{ color: "#ffffff" }}>
+                                                    {loadingRow === row.url ? (
+                                                        <CircularProgress size={16} sx={{ color: "#ffffff" }} />
+                                                    ) : (
+                                                        row.status
+                                                    )}
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Box, Dialog, TextField, Tabs, Tab, IconButton, Avatar, Typography, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import HomeIcon from "@mui/icons-material/Home";
@@ -12,8 +12,11 @@ import { useIPandPorts } from "../../contexts/IPandPortsContext.jsx"
 function MainTabs(props) {
     const [tabs, setTabs] = useState(() => {
         const storedTabs = localStorage.getItem("tabs");
-        return storedTabs ? JSON.parse(storedTabs) : [{ label: "home", icon: <HomeIcon /> }];
+        return storedTabs
+            ? JSON.parse(storedTabs)
+            : [{ label: "home", icon: "home" }];
     });
+
     const [value, setValue] = useState(() => {
         const savedActiveTab = localStorage.getItem("activeTab");
         return savedActiveTab ? parseInt(savedActiveTab, 10) : 0;
@@ -30,14 +33,14 @@ function MainTabs(props) {
         localStorage.setItem("activeTab", value);
     }, [tabs, value]);
 
-    const handleAddTab = () => {
+    const handleAddTab = useCallback(() => {
         setOpenModal(true);
-    };
+    }, []);
 
-    const handleModalClose = () => {
+    const handleModalClose = useCallback(() => {
         setOpenModal(false);
         setInputValue("");
-    };
+    }, []);
 
     const handleAddTabSubmit = () => {
         if (inputValue) {
@@ -227,7 +230,7 @@ function MainTabs(props) {
                 <Box sx={{ display: "flex", alignItems: "center", backgroundColor: "#26272B", padding: "8px 16px", borderRadius: "20px", border: "2px solid #BCB6B6" }}>
                     <SearchIcon sx={{ color: "#BCB6B6", mr: 1 }} />
                     <TextField
-                        placeholder="Enter the target URL / IP Address"
+                        placeholder="Enter the target Domain"
                         variant="standard"
                         fullWidth
                         value={inputValue}

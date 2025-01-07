@@ -34,6 +34,9 @@ function Login() {
             const response = await api.post(`/login`, userInput);
             console.log("Response:", response.data);
             showNotification(response?.data?.message);
+            const token = response?.data?.access_token;
+            localStorage.setItem("token", token);
+            localStorage.setItem("username", response?.data?.username);
             navigate("/home");
         } catch (error) {
             console.error("Error:", error.response ? error.response.data : error.message);

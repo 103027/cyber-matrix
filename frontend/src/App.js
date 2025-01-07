@@ -19,6 +19,7 @@ import { TargetInfoProvider } from "./contexts/TargetInfoContext.jsx";
 import { SubdomainProvider } from "./contexts/SubdomainContext.jsx";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import { IPandPortsProvider } from "./contexts/IPandPortsContext.jsx";
+import PrivateRoute from "../src/Authorization/PrivateRoute.jsx";
 
 function App() {
   return (
@@ -33,14 +34,16 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/forgotpassword" element={<ForgotPasword />} />
-                  <Route element={<AppLayout />}>
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/history" element={<History />} />
-                    <Route path="/:domain/targetinfo" element={<TargetInfo />} />
-                    <Route path="/:domain/subdomainenumeration" element={<Subdomain />} />
-                    <Route path="/:domain/ipandports" element={<IPandPorts />} />
+                  <Route element={<PrivateRoute />}>
+                    <Route element={<AppLayout />}>
+                      <Route path="/home" element={<Home />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="/history" element={<History />} />
+                      <Route path="/:domain/targetinfo" element={<TargetInfo />} />
+                      <Route path="/:domain/subdomainenumeration" element={<Subdomain />} />
+                      <Route path="/:domain/ipandports" element={<IPandPorts />} />
+                    </Route>
                   </Route>
                   <Route path="*" element={<NoPage />} />
                 </Routes>

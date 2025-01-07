@@ -15,8 +15,12 @@ export const TargetInfoProvider = ({ children }) => {
         });
     };
 
+    const clearAllTargetInfo = () => {
+        setTargetInfos({});
+    };
+
     return (
-        <TargetInfoContext.Provider value={{ targetInfos, setTargetInfos, removeTargetInfo }}>
+        <TargetInfoContext.Provider value={{ targetInfos, setTargetInfos, removeTargetInfo,clearAllTargetInfo }}>
             {children}
         </TargetInfoContext.Provider>
     );

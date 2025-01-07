@@ -27,8 +27,12 @@ export const SubdomainProvider = ({ children }) => {
         });
     };
 
+    const clearAllSubdomains = () => {
+        setSubdomains({});
+    };
+
     return (
-        <SubdomainContext.Provider value={{ subdomains, addSubdomains, removeSubdomains }}>
+        <SubdomainContext.Provider value={{ subdomains,setSubdomains, addSubdomains, removeSubdomains,clearAllSubdomains }}>
             {children}
         </SubdomainContext.Provider>
     );

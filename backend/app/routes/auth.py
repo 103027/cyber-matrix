@@ -88,7 +88,7 @@ def login():
     identity={'email': email},  # Include user information in the token
     expires_delta=timedelta(hours=1)  # Token expiration (adjust as needed)
 )
-    return jsonify({'message': 'Login successful','access_token': access_token}), 200
+    return jsonify({'message': 'Login successful','access_token': access_token,'username':user['name']}), 200
 
 
 @bp.route('/forgot-password', methods=['POST'])

@@ -6,8 +6,8 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "3.92.229.147"
 KALI_USERNAME = "kali"
-KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 
 def ssh_execute_command(ip, username, key_path, command):
@@ -364,7 +364,7 @@ def get_status():
         response = requests.get(f"http://{subdomain}", timeout=5)
         status_code = response.status_code
     except requests.exceptions.RequestException:
-        status_code = "N/A"
+        status_code = "500"
     
     # Return status as a dictionary, not as a set
     return jsonify({'status': status_code})

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid, } from "@mui/material";
 import Footer from "./footer";
-import api from "../api/axois.jsx";
+import api from "../api/axios_token.jsx";
 import { useParams } from "react-router-dom";
 import { useTargetInfo } from "../contexts/TargetInfoContext.jsx";
 import Loading from "../Components/Loading.jsx";
@@ -134,7 +134,7 @@ function TargetInfo() {
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                         Content Length
                                                     </Typography>
-                                                    <Typography variant="body2">{targetInfos[domain]?.["Content Length"] || "--"}</Typography>
+                                                    <Typography variant="body2">{targetInfos[domain]?.["Content Length"]?.split(":")[1]?.trim() || "--"}</Typography>
                                                 </Box>
                                                 <Box display="flex" justifyContent="space-between">
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
