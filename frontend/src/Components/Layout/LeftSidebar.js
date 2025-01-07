@@ -11,6 +11,7 @@ import { useNotification } from "../../contexts/NotificationContext.jsx";
 import { useTargetInfo } from "../../contexts/TargetInfoContext.jsx";
 import { useSubdomain } from "../../contexts/SubdomainContext.jsx";
 import { useIPandPorts } from "../../contexts/IPandPortsContext.jsx"
+import Tooltip from '@mui/material/Tooltip';
 
 function LeftSidebar(props) {
     const [username, setUsername] = useState("");
@@ -134,35 +135,37 @@ function LeftSidebar(props) {
                         ))}
                     </List>
                 </Box>
-                <Box p={1} width="100%" textAlign="center" mt={"auto"} onClick={handleLogout} sx={{ cursor: "pointer" }}>
-                    <ListItem
-                        button
-                        sx={{
-                            justifyContent: open ? "initial" : "center",
-                            px: 1,
-                            bgcolor: "#333333",
-                            borderRadius: 2,
-                            ml: 1,
-                            width: open ? "auto" : 50,
-                            mr: open ? 2 : "auto",
-                            mb: 2
-                        }}
-                    >
-                        <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: "center" }}>
-                            <Avatar sx={{ width: 32, height: 32 }} src="/path-to-avatar.png" />
-                        </ListItemIcon>
-                        {
-                            open
-                            &&
-                            <>
-                                <Typography variant="body2" fontWeight="bold">{username}</Typography>
-                                <ListItemIcon sx={{ minWidth: 0, ml: open ? 3 : 'auto', justifyContent: "center" }}>
-                                    <LogoutIcon color="action" fontSize="small" />
-                                </ListItemIcon>
-                            </>
-                        }
-                    </ListItem>
-                </Box>
+                <Tooltip title="Logout">
+                    <Box p={1} width="100%" textAlign="center" mt={"auto"} onClick={handleLogout} sx={{ cursor: "pointer" }}>
+                        <ListItem
+                            button
+                            sx={{
+                                justifyContent: open ? "initial" : "center",
+                                px: 1,
+                                bgcolor: "#333333",
+                                borderRadius: 2,
+                                ml: 1,
+                                width: open ? "auto" : 50,
+                                mr: open ? 2 : "auto",
+                                mb: 2
+                            }}
+                        >
+                            <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: "center" }}>
+                                <Avatar sx={{ width: 32, height: 32 }} src="/path-to-avatar.png" />
+                            </ListItemIcon>
+                            {
+                                open
+                                &&
+                                <>
+                                    <Typography variant="body2" fontWeight="bold">{username}</Typography>
+                                    <ListItemIcon sx={{ minWidth: 0, ml: open ? 3 : 'auto', justifyContent: "center" }}>
+                                        <LogoutIcon color="action" fontSize="small" />
+                                    </ListItemIcon>
+                                </>
+                            }
+                        </ListItem>
+                    </Box>
+                </Tooltip>
             </Drawer>
             <IconButton
                 onClick={handleToggle}
