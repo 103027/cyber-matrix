@@ -3,6 +3,8 @@ from app.models.user import add_user, find_user, verify_user, check_password, up
 from app.utils.email import send_verification_email, send_reset_password_email
 from app.utils.token import confirm_token
 import re
+from flask_jwt_extended import create_access_token
+from datetime import timedelta
 
 # Ensure Blueprint is initialized before imports
 bp = Blueprint('auth', __name__)
@@ -82,8 +84,12 @@ def login():
     # Check if the user's email is verified
     if not user['is_verified']:  # This will check if the value is False
         return jsonify({'message': 'Please verify your email before logging in'}), 400
+    access_token = create_access_token(
+    identity={'email': email},  # Include user information in the token
+    expires_delta=timedelta(hours=1)  # Token expiration (adjust as needed)
+)
 
-    return jsonify({'message': 'Login successful'}), 200
+    return jsonify({'message': 'Login successful','access_token': access_token}), 200
 
 
 @bp.route('/forgot-password', methods=['POST'])
