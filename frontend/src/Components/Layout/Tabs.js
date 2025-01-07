@@ -7,6 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import { useTargetInfo } from "../../contexts/TargetInfoContext.jsx";
 import { useSubdomain } from "../../contexts/SubdomainContext.jsx";
+import { useIPandPorts } from "../../contexts/IPandPortsContext.jsx"
 
 function MainTabs(props) {
     const [tabs, setTabs] = useState(() => {
@@ -21,6 +22,7 @@ function MainTabs(props) {
     const [inputValue, setInputValue] = useState("");
     const { removeTargetInfo } = useTargetInfo();
     const { removeSubdomains } = useSubdomain()
+    const { removeIPandPorts } = useIPandPorts()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -54,6 +56,7 @@ function MainTabs(props) {
         setTabs(newTabs);
         removeTargetInfo(removedTab.label);
         removeSubdomains(removedTab.label);
+        removeIPandPorts(removedTab.label );
         if (value === index) {
             setValue(0);
             navigate("/home");

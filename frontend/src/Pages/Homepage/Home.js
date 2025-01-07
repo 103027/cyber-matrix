@@ -70,7 +70,7 @@ function Home() {
                     <img
                         src={require("../../Images/try3.png")}
                         alt="Cyber-Matrix Logo"
-                        style={{ width: "200px", marginBottom: "10px" }}
+                        style={{ width: "250px", marginBottom: "10px" }}
                     />
                 </Box>
             </Box>

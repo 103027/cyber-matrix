@@ -18,6 +18,7 @@ function TargetInfo() {
 
         const fetchTargetInfo = async () => {
             try {
+                console.log("Hello from target info")
                 const response = await api.get(`/get_target_info?domain=${domain}`);
                 console.log(response.data)
                 setTargetInfos((prevInfos) => ({

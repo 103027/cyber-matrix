@@ -60,6 +60,7 @@ function Subdomain() {
     useEffect(() => {
         const fetchSubdomains = async () => {
             try {
+                console.log("Hello from subdomain")
                 const response = await api.get(`/get_subdomains?domain=${domain}`);
                 const newRows = response.data?.["Sub-domains"]?.map((data) => createData(data.subdomain, data.status));
                 setRows(newRows);
@@ -67,7 +68,7 @@ function Subdomain() {
                 addSubdomains(domain, newRows);
             } catch (err) {
                 console.error(err.message || "Something went wrong");
-                showNotification("Error Occured,Error is " + err.message)
+                showNotification("Error Occured in Subdomain Enumeration,Error is " + err.message)
             } finally {
                 setLoading(false);
             }
