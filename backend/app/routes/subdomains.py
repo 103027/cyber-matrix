@@ -6,8 +6,8 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "3.92.229.147"
 KALI_USERNAME = "kali"
-# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 
 def ssh_execute_command(ip, username, key_path, command):
@@ -314,7 +314,7 @@ def get_ip_ports():
         return jsonify({'error': 'Failed to fetch URL via SSH', 'message': str(e)}), 500
 
 @bp.route('/new_subdomain', methods=['GET'])
-@jwt_required
+@jwt_required()
 def new_subdomain():
     domain = request.args.get('domain')
     if not domain:
@@ -354,9 +354,8 @@ def new_subdomain():
     except Exception as e:
         print(f"Exception occurred: {e}")  # Debug
         return jsonify({'error': 'Failed to fetch subdomains via SSH', 'message': str(e)}), 500
-
 @bp.route('/get_status', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_status():
     subdomain = request.args.get('domain')
     if not subdomain:
