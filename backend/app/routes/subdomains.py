@@ -354,3 +354,18 @@ def new_subdomain():
     except Exception as e:
         print(f"Exception occurred: {e}")  # Debug
         return jsonify({'error': 'Failed to fetch subdomains via SSH', 'message': str(e)}), 500
+
+@bp.route('/get_status', methods=['GET'])
+def get_status():
+    subdomain = request.args.get('domain')
+    if not subdomain:
+        return jsonify({"error": "Domain parameter is required"}), 400
+    try:
+        response = requests.get(f"http://{subdomain}", timeout=5)
+        status_code = response.status_code
+    except requests.exceptions.RequestException:
+        status_code = "N/A"
+    
+    # Return status as a dictionary, not as a set
+    return jsonify({'status': status_code})
+
