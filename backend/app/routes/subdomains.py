@@ -356,6 +356,7 @@ def new_subdomain():
         return jsonify({'error': 'Failed to fetch subdomains via SSH', 'message': str(e)}), 500
 
 @bp.route('/get_status', methods=['GET'])
+@jwt_required
 def get_status():
     subdomain = request.args.get('domain')
     if not subdomain:
