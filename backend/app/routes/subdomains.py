@@ -5,8 +5,8 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "3.92.229.147"
 KALI_USERNAME = "kali"
-# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 
 def ssh_execute_command(ip, username, key_path, command):
@@ -143,6 +143,24 @@ def get_title_server(output):
 
     return result
 
+def get_clean_ip(output):
+    results = []
+    # Regular expression to match Port, State, Service, Reason, and Version
+    # Updated regex to separate Reason and Version accurately
+    regex = r"^(\d+/tcp)\s+(\S+)\s+(\S+)\s+(.+?)(?:\s+ttl\s+\d+\s+(.*))?$"
+    # Split the output into lines and parse each line
+    for line in output.splitlines():
+        match = re.match(regex, line)
+        if match:
+            port, state, service, reason, version = match.groups()
+            results.append({
+                "Port": port.strip(),
+                "State": state.strip(),
+                "Server": service.strip(),
+                "Reason": reason.strip(),
+                "Version Number": version.strip() if version else ""  # Ensure version is captured if present
+            })
+    return results
 
 @bp.route('/get_subdomains', methods=['GET'])
 def get_subdomains():
@@ -254,3 +272,39 @@ def get_target_info():
 
     return jsonify(results)
 
+@bp.route('/get_ip_ports', methods=['GET'])
+def get_ip_ports():
+    domain = request.args.get('domain')
+    if not domain:
+        return jsonify({"error": "Domain parameter is required"}), 400
+    
+    try:
+
+        # Set up SSH client
+        ssh_client = paramiko.SSHClient()
+        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+        # Connect to the remote Kali instance
+        ssh_client.connect(hostname=KALI_IP, username=KALI_USERNAME, key_filename=KALI_KEY_PATH)
+        
+
+        # Run the nmap command
+        command = f"nmap -T5 -p1-1000 -sV -d2 {domain}"
+        print(f"Running command: {command}")  # Debug
+        stdin, stdout, stderr = ssh_client.exec_command(command)
+
+        # Read command output
+        output = stdout.read().decode(errors="replace").strip()
+        error = stderr.read().decode(errors="replace").strip()
+
+        # Close the SSH connection
+        ssh_client.close()
+        results = get_clean_ip(output)        
+        # Handle output and errors
+        if not output and error:
+            return jsonify({"error": "Command failed", "details": error}), 500
+
+        return jsonify({'data': results}), 200
+    except Exception as e:
+        print(f"Exception occurred: {e}")  # Debug
+        return jsonify({'error': 'Failed to fetch URL via SSH', 'message': str(e)}), 500
