@@ -1,5 +1,6 @@
 import paramiko, requests, re
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 bp = Blueprint('subdomains', __name__)
 
@@ -163,6 +164,7 @@ def get_clean_ip(output):
     return results
 
 @bp.route('/get_subdomains', methods=['GET'])
+@jwt_required()
 def get_subdomains():
     domain = request.args.get('domain')
     if not domain:
@@ -181,6 +183,7 @@ def get_subdomains():
     return jsonify({"domain": domain, "Sub-domains": subdomain_status})
 
 @bp.route('/get_target_info', methods=['GET'])
+@jwt_required()
 def get_target_info():
     domain = request.args.get('domain')
     if not domain:
@@ -273,6 +276,7 @@ def get_target_info():
     return jsonify(results)
 
 @bp.route('/get_ip_ports', methods=['GET'])
+@jwt_required()
 def get_ip_ports():
     domain = request.args.get('domain')
     if not domain:

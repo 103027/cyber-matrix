@@ -1,6 +1,7 @@
 # Flask app configuration
 SECRET_KEY = '1234'
 
+JWT_SECRET_KEY = 'abcd1234'
 # MongoDB configuration
 MONGO_URI = 'mongodb://localhost:27017/'
 MONGO_DBNAME = 'CyberMatrix'
