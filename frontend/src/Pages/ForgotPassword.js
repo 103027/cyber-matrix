@@ -1,7 +1,68 @@
-import React from "react";
-import { Box, TextField, Button, Typography, Link, Grid } from "@mui/material";
+import React, { useState } from "react";
+import { Box, TextField, Button, Typography, Link, Grid, IconButton, Tooltip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useNotification } from "../contexts/NotificationContext.jsx";
+import api from "../api/axois.jsx";
 
 function ForgotPasword() {
+    const navigate = useNavigate();
+    const { showNotification } = useNotification();
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isValidEmail, setIsValidEmail] = useState(false);
+
+    const [formValues, setFormValues] = useState({
+        email: "",
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+        setIsSubmitted(false)
+    };
+
+    const resetPassword = async (userInput) => {
+        try {
+            const response = await api.post(`/forgot-password`, userInput);
+            console.log("Response:", response.data);
+            showNotification(response?.data?.message);
+            navigate("/login");
+        } catch (error) {
+            console.error("Error:", error.response ? error.response.data : error.message);
+            const errorMsg = error.response?.data?.message || "Something went wrong";
+            showNotification(errorMsg);
+        }
+    };
+
+    const handleSubmit = () => {
+        setIsSubmitted(true);
+        setIsValidEmail(true);
+        const { email } = formValues;
+
+        // Validation
+        if (!email) {
+            console.log("All fields are required");
+            showNotification("Form is not valid")
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            console.log("Invalid email format");
+            setIsValidEmail(false)
+            showNotification("Form is not valid")
+            return;
+        }
+
+        console.log("Email:", email);
+
+        const userInput = {
+            email: email.trim()
+        };
+
+        // Add API call or further actions here
+        resetPassword(userInput);
+    };
+
     return (
         <Grid
             container
@@ -22,7 +83,7 @@ function ForgotPasword() {
                     alignItems: "center",
                 }}
             >
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "auto" }}>
+                <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "auto",cursor:"pointer" }}>
                     <img
                         src={require("../Images/logo.png")}
                         alt="Cyber-Matrix Logo"
@@ -63,7 +124,7 @@ function ForgotPasword() {
                         </Typography>
                         <Typography variant="body2" gutterBottom style={{ color: "#D9D9D9" }}>
                             Remember your password?{" "}
-                            <Link href="#" underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold" }}>
+                            <Link onClick={() => navigate("/login")} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer" }}>
                                 Sign in
                             </Link>{" "}
                             to your Account
@@ -74,39 +135,55 @@ function ForgotPasword() {
                         <Typography variant="body1" color="white" sx={{ marginBottom: 1 }}>
                             Email Address
                         </Typography>
-                        <TextField
-                            placeholder="Enter your email address"
-                            variant="outlined"
-                            fullWidth
-                            size="small"
-                            InputProps={{
-                                sx: {
-                                    backgroundColor: "#333333",
-                                    color: "#fff",
-                                    borderRadius: "10px",
-                                    "&.Mui-focused": {
-                                        backgroundColor: "black",
+                        <Tooltip
+                            title={
+                                isSubmitted && !formValues["email"]
+                                    ? "Fill out this field"
+                                    : isSubmitted && !isValidEmail
+                                        ? "Enter a valid email"
+                                        : ""
+                            }
+                            arrow
+                            placement="right"
+                            open={isSubmitted && (!formValues["email"] || !isValidEmail)}
+                        >
+                            <TextField
+                                name = "email"
+                                placeholder="Enter your email address"
+                                variant="outlined"
+                                fullWidth
+                                size="small"
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    sx: {
+                                        backgroundColor: "#333333",
+                                        color: "#fff",
+                                        borderRadius: "10px",
+                                        "&.Mui-focused": {
+                                            backgroundColor: "black",
+                                        },
                                     },
-                                },
-                            }}
-                            sx={{
-                                "& .MuiOutlinedInput-root": {
-                                    "& fieldset": {
-                                        borderColor: "white",
+                                }}
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+                                        "& fieldset": {
+                                            borderColor: "white",
+                                        },
+                                        "&:hover fieldset": {
+                                            borderColor: "white",
+                                        },
+                                        "&.Mui-focused fieldset": {
+                                            borderColor: "#49494C",
+                                        },
                                     },
-                                    "&:hover fieldset": {
-                                        borderColor: "white",
-                                    },
-                                    "&.Mui-focused fieldset": {
-                                        borderColor: "#49494C",
-                                    },
-                                },
-                            }}
-                        />
+                                }}
+                            />
+                        </Tooltip>
                     </Box>
 
                     <Button
                         variant="contained"
+                        onClick={handleSubmit}
                         fullWidth
                         sx={{
                             mt: 2,
@@ -141,7 +218,7 @@ function ForgotPasword() {
                     borderBottomLeftRadius: { md: "30px" },
                 }}
             >
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center",cursor:"pointer" }}>
                     <img
                         src={require("../Images/logo.png")}
                         alt="Cyber-Matrix Logo"

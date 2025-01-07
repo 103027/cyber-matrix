@@ -6,11 +6,13 @@ import { useParams } from "react-router-dom";
 import { useTargetInfo } from "../contexts/TargetInfoContext.jsx";
 import Loading from "../Components/Loading.jsx";
 import Logo from "../Images/logo3.png";
+import { useNotification } from "../contexts/NotificationContext.jsx";
 
 function TargetInfo() {
     const { targetInfos, setTargetInfos } = useTargetInfo();
     const { domain } = useParams();
     const [loading, setLoading] = useState(true);
+    const { showNotification } = useNotification();
 
     useEffect(() => {
 
@@ -24,6 +26,7 @@ function TargetInfo() {
                 }));
             } catch (err) {
                 console.log(err.message || "Something went wrong");
+                showNotification("Invalid Domain Name")
             } finally {
                 setLoading(false);
             }
@@ -57,7 +60,7 @@ function TargetInfo() {
                 <Box sx={{ mt: 4 }}>
                     {
                         loading ? (
-                            <Loading logo={Logo} size={80} animation="zoom"/>
+                            <Loading logo={Logo} size={80} animation="zoom" />
                         ) : (
                             <Box sx={{ flexGrow: 1, mt: 2 }}>
                                 <Grid container spacing={3}>
@@ -85,12 +88,12 @@ function TargetInfo() {
                                                     <Typography
                                                         variant="body2"
                                                         component="a"
-                                                        href="https://facebook.com:443"
+                                                        href={targetInfos[domain]?.["Url"]}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         sx={{ textDecoration: 'underline', color: '#fff' }}
                                                     >
-                                                        https://facebook.com:443
+                                                        {targetInfos[domain]?.["Url"] || "--"}
                                                     </Typography>
                                                 </Box>
                                                 <Box display="flex" justifyContent="space-between" mb={1}>
@@ -100,43 +103,43 @@ function TargetInfo() {
                                                     <Typography
                                                         variant="body2"
                                                         component="a"
-                                                        href="https://www.facebook.com/"
+                                                        href={targetInfos[domain]?.["Location"]}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         sx={{ textDecoration: 'underline', color: '#fff' }}
                                                     >
-                                                        https://www.facebook.com/
+                                                        {targetInfos[domain]?.["Location"] || "--"}
                                                     </Typography>
                                                 </Box>
                                                 <Box display="flex" justifyContent="space-between" mb={1}>
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                         Title
                                                     </Typography>
-                                                    <Typography variant="body2">--</Typography>
+                                                    <Typography variant="body2">{targetInfos[domain]?.["Title"] || "--"}</Typography>
                                                 </Box>
                                                 <Box display="flex" justifyContent="space-between" mb={1}>
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                         Web Server
                                                     </Typography>
-                                                    <Typography variant="body2">--</Typography>
+                                                    <Typography variant="body2">{targetInfos[domain]?.["Web Server"] || "--"}</Typography>
                                                 </Box>
                                                 <Box display="flex" justifyContent="space-between" mb={1}>
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                         IP
                                                     </Typography>
-                                                    <Typography variant="body2">31.13.80.36</Typography>
+                                                    <Typography variant="body2">{targetInfos[domain]?.["IP"]?.[0] || "--"}</Typography>
                                                 </Box>
                                                 <Box display="flex" justifyContent="space-between" mb={1}>
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                         Content Length
                                                     </Typography>
-                                                    <Typography variant="body2">--</Typography>
+                                                    <Typography variant="body2">{targetInfos[domain]?.["Content Length"] || "--"}</Typography>
                                                 </Box>
                                                 <Box display="flex" justifyContent="space-between">
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                         Status Code
                                                     </Typography>
-                                                    <Typography variant="body2">301</Typography>
+                                                    <Typography variant="body2">{targetInfos[domain]?.["Status_Code"] || "--"}</Typography>
                                                 </Box>
                                             </Box>
                                         </Grid>
@@ -199,17 +202,25 @@ function TargetInfo() {
                                                     </Typography>
                                                     <Typography variant="body1">URL</Typography>
                                                 </Box>
-                                                <Box display="flex" justifyContent="space-between" mb={1}>
-                                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                                        1
-                                                    </Typography>
-                                                    <Typography variant="body2">/ajax/</Typography>
-                                                </Box>
-                                                <Box display="flex" justifyContent="space-between" mb={1}>
-                                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                                        2
-                                                    </Typography>
-                                                    <Typography variant="body2">/album.php</Typography>
+                                                <Box
+                                                    sx={{
+                                                        maxHeight: "200px",
+                                                        overflowY: "auto",
+                                                    }}
+                                                >
+                                                    {
+                                                        targetInfos[domain]?.["Robot"]?.map((dnsEntry, index) => {
+                                                            return (
+                                                                <Box display="flex" justifyContent="space-between" mb={1}>
+                                                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                                                        {index + 1}
+                                                                    </Typography>
+                                                                    <Typography variant="body2" sx={{ mr: 1 }}>{dnsEntry}</Typography>
+                                                                </Box>
+                                                            )
+                                                        }
+                                                        )
+                                                    }
                                                 </Box>
                                             </Box>
                                         </Grid>
@@ -308,7 +319,7 @@ function TargetInfo() {
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                         1
                                                     </Typography>
-                                                    <Typography variant="body2">{targetInfos[domain]?.["Organization Name"]}</Typography>
+                                                    <Typography variant="body2">{targetInfos[domain]?.["Organization Name"] || "--"}</Typography>
                                                 </Box>
                                             </Box>
                                         </Grid>
@@ -338,7 +349,7 @@ function TargetInfo() {
                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                         1
                                                     </Typography>
-                                                    <Typography variant="body2">{targetInfos[domain]?.["Issuer Organization"]}</Typography>
+                                                    <Typography variant="body2">{targetInfos[domain]?.["Issuer Organization"] || "--"}</Typography>
                                                 </Box>
                                             </Box>
                                         </Grid>
