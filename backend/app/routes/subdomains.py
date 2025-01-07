@@ -312,3 +312,45 @@ def get_ip_ports():
     except Exception as e:
         print(f"Exception occurred: {e}")  # Debug
         return jsonify({'error': 'Failed to fetch URL via SSH', 'message': str(e)}), 500
+
+@bp.route('/new_subdomain', methods=['GET'])
+@jwt_required
+def new_subdomain():
+    domain = request.args.get('domain')
+    if not domain:
+        return jsonify({"error": "Domain parameter is required"}), 400
+    try:
+        # Set up SSH client
+        ssh_client = paramiko.SSHClient()
+        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+        # Connect to the remote Kali instance
+        ssh_client.connect(hostname=KALI_IP, username=KALI_USERNAME, key_filename=KALI_KEY_PATH)
+
+        # Run the assetfinder command
+        command = f"assetfinder --subs-only {domain}"
+        print(f"Running command: {command}")  # Debug
+
+        # Execute the command and capture both stdout and stderr
+        stdin, stdout, stderr = ssh_client.exec_command(command)
+
+        # Read stdout and stderr
+        output = stdout.read().decode().strip()
+        error = stderr.read().decode().strip()
+
+        # Check if there was any error in stderr
+        if error:
+            print(f"Error from stderr: {error}")  # Debug
+            return jsonify({'error': 'Error while fetching subdomains', 'message': error}), 500
+
+        # Check if no subdomains were found
+        if not output:
+            return jsonify({'error': 'No subdomains found'}), 404
+
+        # Return the subdomains
+        subdomains = output.splitlines()
+        return jsonify({'subdomains': subdomains})
+
+    except Exception as e:
+        print(f"Exception occurred: {e}")  # Debug
+        return jsonify({'error': 'Failed to fetch subdomains via SSH', 'message': str(e)}), 500
