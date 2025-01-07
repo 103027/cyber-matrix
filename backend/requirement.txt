@@ -9,3 +9,4 @@ flask-bcrypt
 paramiko
 requests
 werkzeug
+flask-jwt-extended
