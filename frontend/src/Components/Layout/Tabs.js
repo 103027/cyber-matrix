@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import { useTargetInfo } from "../../contexts/TargetInfoContext.jsx";
+import { useSubdomain } from "../../contexts/SubdomainContext.jsx";
 
 function MainTabs(props) {
     const [tabs, setTabs] = useState(() => {
@@ -19,6 +20,7 @@ function MainTabs(props) {
     const [openModal, setOpenModal] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const { removeTargetInfo } = useTargetInfo();
+    const { removeSubdomains } = useSubdomain()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -51,13 +53,14 @@ function MainTabs(props) {
         const newTabs = tabs.filter((_, i) => i !== index);
         setTabs(newTabs);
         removeTargetInfo(removedTab.label);
+        removeSubdomains(removedTab.label);
         if (value === index) {
-          setValue(0);
-          navigate("/home");
+            setValue(0);
+            navigate("/home");
         } else if (value > index) {
-          setValue((prev) => prev - 1);
+            setValue((prev) => prev - 1);
         }
-      };
+    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue + 1);
@@ -159,7 +162,12 @@ function MainTabs(props) {
                                 key={index + 1}
                                 label={
                                     <Box sx={{ display: "flex", alignItems: "center" }}>
-                                        <Typography sx={{ ml: 1, fontWeight: "bold" }}>{tab.label}</Typography>
+                                        <Typography sx={{
+                                            ml: 1, fontWeight: "bold", maxWidth: 200, // Limit the width
+                                            overflow: "hidden",
+                                            whiteSpace: "nowrap",
+                                            textOverflow: "ellipsis",
+                                        }}>{tab.label}</Typography>
                                         {value === index + 1 && ( // Display Close button only for selected tab
                                             <IconButton
                                                 size="small"

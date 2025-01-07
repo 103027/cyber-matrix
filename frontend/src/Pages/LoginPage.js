@@ -71,7 +71,7 @@ function Login() {
         };
 
         // Add API call or further actions here
-        userLogin(userInput);
+        userLogin(JSON.stringify(userInput));
     };
 
     const togglePasswordVisibility = () => {

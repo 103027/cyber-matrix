@@ -108,7 +108,7 @@ function Signup() {
     };
 
     // Add API call or further actions here
-    registerUser(userInput);
+    registerUser(JSON.stringify(userInput));
   };
 
   const handleClick = (event) => {

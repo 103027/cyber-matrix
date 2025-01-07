@@ -9,7 +9,7 @@ function Home() {
         <Box sx={{ color: "#fff" }}>
             <Box
                 sx={{
-                    backgroundColor: "#49494C",
+                    backgroundColor: "#b5b5b5",
                     width: "100%",
                     borderRadius: "20px",
                     display: "flex",
@@ -31,6 +31,7 @@ function Home() {
                             fontWeight: 'bold',
                             fontSize: '2.5rem',
                             fontFamily: 'Arial, sans-serif',
+                            color: "#000000",
                         }}
                     >
                         Welcome to{' '}
@@ -39,6 +40,7 @@ function Home() {
                                 fontFamily: 'Courier New, monospace',
                                 fontSize: '3rem',
                                 fontWeight: 'bold',
+                                color: "#000000",
                             }}
                         >
                             Cyber-Matrix
@@ -50,7 +52,8 @@ function Home() {
                         sx={{
                             fontSize: '1.0rem', // Slightly larger font for better readability
                             fontWeight: 500, // Semi-bold for emphasis
-                            color: "#EFEFEF",
+                            // color: "#EFEFEF",
+                            color: "#000000",
                             marginTop: '1rem', // Add spacing above
                             maxWidth: '800px', // Restrict width for better focus
                         }}
@@ -58,18 +61,18 @@ function Home() {
                         Your go-to platform for powerful cybersecurity tools, including penetration testing, password cracking, asset enumeration, CVE reporting, subdomain discovery, and network scanning. Let’s simplify and enhance your security journey together!
                     </Typography>
                 </Box>
-                {/* <Box
+                <Box
                     sx={{
                         pt:2,
                         mr:5
                     }}
                 >
                     <img
-                        src={require("../../Images/Logo69-removebg-preview.png")}
+                        src={require("../../Images/try3.png")}
                         alt="Cyber-Matrix Logo"
                         style={{ width: "200px", marginBottom: "10px" }}
                     />
-                </Box> */}
+                </Box>
             </Box>
             <Features />
             <ContactUs />

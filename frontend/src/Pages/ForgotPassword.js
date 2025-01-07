@@ -60,7 +60,7 @@ function ForgotPasword() {
         };
 
         // Add API call or further actions here
-        resetPassword(userInput);
+        resetPassword(JSON.stringify(userInput));
     };
 
     return (

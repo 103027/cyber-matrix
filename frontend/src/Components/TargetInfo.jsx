@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid, CircularProgress } from "@mui/material";
+import { Box, Typography, Grid, } from "@mui/material";
 import Footer from "./footer";
 import api from "../api/axois.jsx";
 import { useParams } from "react-router-dom";
@@ -26,7 +26,7 @@ function TargetInfo() {
                 }));
             } catch (err) {
                 console.log(err.message || "Something went wrong");
-                showNotification("Invalid Domain Name")
+                showNotification("Invalid Domain Name :" + err.message)
             } finally {
                 setLoading(false);
             }

@@ -9,6 +9,7 @@ import Logo from "../Images/logo3.png";
 import Loading from "../Components/Loading.jsx";
 import { useParams } from "react-router-dom";
 import { useSubdomain } from "../contexts/SubdomainContext";
+import { useNotification } from "../contexts/NotificationContext.jsx";
 
 function createData(url, status) {
     return { url, status };
@@ -22,6 +23,7 @@ function Subdomain() {
     const { domain } = useParams();
     const { subdomains, addSubdomains } = useSubdomain();
     const [loading, setLoading] = useState(true);
+    const { showNotification } = useNotification();
 
     // Handle page change
     const handleChangePage = (event, newPage) => {
@@ -65,6 +67,7 @@ function Subdomain() {
                 addSubdomains(domain, newRows);
             } catch (err) {
                 console.error(err.message || "Something went wrong");
+                showNotification("Error Occured,Error is " + err.message)
             } finally {
                 setLoading(false);
             }
