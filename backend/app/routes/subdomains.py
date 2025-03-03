@@ -1,4 +1,5 @@
 import paramiko, requests, re
+import ipaddress
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
@@ -6,8 +7,8 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
 KALI_USERNAME = "kali"
-# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 
 def ssh_execute_command(ip, username, key_path, command):
@@ -162,6 +163,42 @@ def get_clean_ip(output):
                 "Version Number": version.strip() if version else ""  # Ensure version is captured if present
             })
     return results
+
+def host_to_decimal(host):
+    return int(ipaddress.IPv4Address(host))
+
+def host_to_hex(host):
+    return hex(int(ipaddress.IPv4Address(host)))
+
+def extractall(host):
+    command = f"ipcalc {host}"
+    output, error = ssh_execute_command(KALI_IP, KALI_USERNAME, KALI_KEY_PATH, command)
+    
+    if error:
+        return jsonify({'error': 'Error while fetching information', 'message': error}), 500
+    
+    # Extract relevant information using regex
+    network = re.search(r'Network:\s+([\d\.\/]+)', output)
+    netmask = re.search(r'Netmask:\s+([\d\.]+) = (\d+)', output)
+    wildcard = re.search(r'Wildcard:\s+([\d\.]+)', output)
+    host_min = re.search(r'HostMin:\s+([\d\.]+)', output)
+    host_max = re.search(r'HostMax:\s+([\d\.]+)', output)
+    broadcast = re.search(r'Broadcast:\s+([\d\.]+)', output)
+    hosts = re.search(r'Hosts/Net:\s+([\d\.]+)', output)
+    
+    # Assign extracted values
+    network_address = network.group(1) if network else None
+    network_mask = netmask.group(1) if netmask else None
+    network_mask_bits = netmask.group(2) if netmask else None
+    cisco_wildcard = wildcard.group(1) if wildcard else None
+    hostmin = host_min.group(1) if host_min else None
+    hostmax = host_max.group(1) if host_max else None
+    broadcast_address = broadcast.group(1) if broadcast else None
+    total_address = hosts.group(1) if hosts else None
+    
+    return network_address, network_mask, network_mask_bits, broadcast_address, cisco_wildcard, hostmin, hostmax,total_address
+        
+
 
 @bp.route('/get_subdomains', methods=['GET'])
 @jwt_required()
@@ -368,4 +405,34 @@ def get_status():
     
     # Return status as a dictionary, not as a set
     return jsonify({'status': status_code})
-
+@bp.route('/get_sipcalc', methods=['GET'])
+@jwt_required()
+def get_sipcalc():
+    domain = request.args.get('domain')
+    if not domain:
+        return jsonify({"error": "Domain parameter is required"}), 400
+    command = f"nslookup {domain}"
+    output, error = ssh_execute_command(KALI_IP, KALI_USERNAME, KALI_KEY_PATH, command)
+    if error:
+        return jsonify({'error': 'Error while fetching information', 'message': error}), 500
+    else:
+        host = parse_nslookup_output(output)
+        host_decimal = host_to_decimal(host[0])
+        host_hexa = host_to_hex(host[0])
+        network_address,network_mask,network_mask_bits,broadcast_address,cisco_wildcard,hostmin,hostmax,total=extractall(host[0])
+        total = int(total)
+        total+=2
+        network_mask_hex=host_to_hex(network_mask)
+        return jsonify({'Host Address':host[0],
+                        'Host Address(decimal)':host_decimal,
+                        'Host Address(Hex)':host_hexa,
+                        'network-address': network_address,
+                        'Network Mask': network_mask,
+                        'Network Mask(bits)':network_mask_bits,
+                        'Network Mask(hex)':network_mask_hex,
+                        'Broadcast Address': broadcast_address,
+                        'Cisco Wildcard': cisco_wildcard,
+                        'Host-min': hostmin,
+                        'Host-max':hostmax,
+                        'Address in Network': total
+                        })
