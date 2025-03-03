@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 bp = Blueprint('subdomains', __name__)
 
-KALI_IP = "3.92.229.147"
+KALI_IP = "18.212.167.132"
 KALI_USERNAME = "kali"
 # KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
 KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
