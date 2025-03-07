@@ -7,8 +7,8 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
 KALI_USERNAME = "kali"
-KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 
 def ssh_execute_command(ip, username, key_path, command):
