@@ -2,9 +2,9 @@
 // import './App.css';
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Signup from "./Pages/SignupPage";
-import Login from "./Pages/LoginPage";
-import ForgotPasword from "./Pages/ForgotPassword";
+import Signup from "./Pages/SignupPage.jsx";
+import Login from "./Pages/LoginPage.jsx";
+import ForgotPasword from "./Pages/ForgotPassword.jsx";
 import AppLayout from "./Components/Layout/AppLayout";
 import NoPage from "./Pages/404Page";
 import Home from "./Pages/Homepage/Home";
