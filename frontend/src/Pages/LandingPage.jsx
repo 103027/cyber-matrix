@@ -44,7 +44,9 @@ function LandingPage() {
             >
                 <ContactUs />
             </Box>
-            <Footer />
+            <Box sx={{paddingX: { xs: "20px", sm: "50px", md: "80px", lg: "100px" } }}>
+                <Footer />
+            </Box>
         </Box>
     );
 }

@@ -1,8 +1,5 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import Features from "../../Components/Features";
-import ContactUs from "../../Components/Contactus";
-import Footer from "../../Components/footer";
 
 function Home() {
     return (
@@ -74,9 +71,6 @@ function Home() {
                     />
                 </Box>
             </Box>
-            <Features />
-            <ContactUs />
-            <Footer />
         </Box>
     );
 }

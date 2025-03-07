@@ -3,7 +3,7 @@ import { Box, Typography, Button, Grid, TextField , Divider } from "@mui/materia
 
 function ContactUs() {
     return (
-        <Box sx={{ color: "#fff", marginTop: "80px", marginBottom: "125px", overflowX: "hidden" }}>
+        <Box sx={{ color: "#fff", marginTop: "80px", marginBottom: "100px", overflowX: "hidden" }}>
             <Box height={"10vh"}></Box>
             <Box
                 sx={{
