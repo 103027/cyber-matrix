@@ -2,6 +2,14 @@ import paramiko, requests, re
 import ipaddress
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import Flask, request, jsonify, send_file
+import paramiko
+import json
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 
 bp = Blueprint('subdomains', __name__)
 
