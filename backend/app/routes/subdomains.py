@@ -1,15 +1,17 @@
 import paramiko, requests, re
 import ipaddress
+import os
+import time
+from datetime import datetime
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import Flask, request, jsonify, send_file
-import paramiko
 import json
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 
 bp = Blueprint('subdomains', __name__)
 
@@ -18,7 +20,7 @@ KALI_USERNAME = "kali"
 KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
 # KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
-
+LOGO_PATH = os.path.join(os.path.dirname(__file__), "logo.png")
 def ssh_execute_command(ip, username, key_path, command):
     """
     Executes a command on a remote SSH server and returns the output or error.
@@ -205,7 +207,101 @@ def extractall(host):
     total_address = hosts.group(1) if hosts else None
     
     return network_address, network_mask, network_mask_bits, broadcast_address, cisco_wildcard, hostmin, hostmax,total_address
+
+def generate_pdf_report(nikto_data):
+    """Generate a well-designed PDF report from Nikto JSON data with text wrapping."""
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    
+    # Custom Style for Wrapping Text
+    wrap_style = ParagraphStyle(name="WrapStyle", fontSize=10, leading=12, wordWrap=True)
+
+    elements = []
+
+    try:
+        logo = Image(LOGO_PATH, width=80, height=80)  # Adjust width & height
+    except Exception:
+        logo = Paragraph("<b>[Logo Missing]</b>", styles['Normal'])
+
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    # Create a table with three columns: Logo (Left), Cyber-Matrix (Center), Date (Right)
+    header_table = Table([[logo, Paragraph("<b>Cyber-Matrix</b>", styles['Title']), Paragraph(f"<b>Date:</b> {current_date}", styles['Normal'])]], 
+                        colWidths=[100, 300, 100])  # Adjust column widths
+
+    header_table.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (0, 0), 'LEFT'),   # Align logo to the left
+        ('ALIGN', (1, 0), (1, 0), 'CENTER'), # Align Cyber-Matrix to the center
+        ('ALIGN', (2, 0), (2, 0), 'RIGHT'),  # Align Date to the right
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'), # Align all items to the top
+    ]))
+
+    elements.append(header_table)
+    elements.append(Spacer(1, 20))  # Add spacing after header
+
+
+    # 🏷️ Report Title
+    title = f"Nikto Security Scan Report for {nikto_data.get('host', 'Unknown Host')}"
+    elements.append(Paragraph(title, styles['Title']))
+    elements.append(Spacer(1, 12))
+
+    # 🏷️ Summary Table (Fix Overlapping Issues)
+    summary_data = [
+        ["Field", "Value"],
+        ["Target Host", nikto_data.get("host", "N/A")],
+        ["Target IP", nikto_data.get("ip", "N/A")],
+        ["Port", str(nikto_data.get("port", "N/A"))],  # Ensure it's a string
+        ["Server Banner", nikto_data.get("banner", "N/A")]
+    ]
+
+    summary_table = Table(summary_data, colWidths=[150, 350])  # Wider columns to prevent overlap
+    summary_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+    
+    elements.append(summary_table)
+    elements.append(Spacer(1, 20))
+
+    # 🏷️ Vulnerabilities Section
+    elements.append(Paragraph("Vulnerabilities Found", styles['Heading2']))
+
+    if "vulnerabilities" in nikto_data and nikto_data["vulnerabilities"]:
+        vuln_table_data = [["ID", "Method", "Message", "Reference"]]  # Table Headers
+
+        for vuln in nikto_data["vulnerabilities"]:
+            vuln_table_data.append([
+                vuln.get("id", "N/A"),
+                vuln.get("method", "N/A"),
+                Paragraph(vuln.get("msg", "N/A"), wrap_style),  # Wrap text inside the column
+                Paragraph(vuln.get("references", "N/A"), wrap_style)  # Wrap reference URLs
+            ])
+
+        vuln_table = Table(vuln_table_data, colWidths=[60, 60, 280, 130])  # Adjusted column widths
+        vuln_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.darkred),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.lavender),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]))
         
+        elements.append(vuln_table)
+    else:
+        elements.append(Paragraph("No vulnerabilities found.", styles['Normal']))
+
+    # 🏷️ Build PDF
+    doc.build(elements)
+    buffer.seek(0)
+    return buffer    
 
 
 @bp.route('/get_subdomains', methods=['GET'])
@@ -444,3 +540,59 @@ def get_sipcalc():
                         'Host-max':hostmax,
                         'Address in Network': total
                         })
+
+
+def run_nikto(domain):
+    """Run Nikto via SSH, wait dynamically for it to finish, and return the JSON output."""
+    
+
+    nikto_command = f"nikto -h {domain} -o output.json -Format json -nointeractive -maxtime 70s"
+
+    try:
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname=KALI_IP, username=KALI_USERNAME, key_filename=KALI_KEY_PATH)
+
+        stdin, stdout, stderr = ssh.exec_command(nikto_command)
+
+        start_time = time.time()
+        while not stdout.channel.exit_status_ready():
+            if time.time() - start_time > 75:
+                break
+            time.sleep(2)
+
+        exit_status = stdout.channel.recv_exit_status()
+
+        sftp = ssh.open_sftp()
+        try:
+            remote_file = sftp.file("output.json", "r")
+            file_content = remote_file.read().decode("utf-8")
+            remote_file.close()
+        except FileNotFoundError:
+            file_content = None
+        sftp.close()
+
+        ssh.close()
+
+        if file_content:
+            return json.loads(file_content), None
+        else:
+            return None, "Nikto scan completed, but no output file found"
+
+    except Exception as e:
+        return None, f"SSH command execution failed: {str(e)}"
+
+@bp.route('/nikto', methods=['GET'])
+def download_report():
+    """Run Nikto and generate a downloadable PDF report."""
+    domain = request.args.get('domain')
+    if not domain:
+        return jsonify({"error": "Domain parameter is required"}), 400
+    nikto_data, error = run_nikto(domain)
+    if error:
+        return jsonify({"error": error}), 500
+
+    pdf_buffer = generate_pdf_report(nikto_data)
+
+    return send_file(pdf_buffer, mimetype='application/pdf',
+                     as_attachment=True, download_name=f"Nikto_Report_{domain}.pdf")
