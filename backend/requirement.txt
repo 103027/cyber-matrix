@@ -10,3 +10,4 @@ paramiko
 requests
 werkzeug
 flask-jwt-extended
+reportlab
