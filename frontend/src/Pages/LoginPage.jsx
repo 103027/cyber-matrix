@@ -37,7 +37,7 @@ function Login() {
             const token = response?.data?.access_token;
             localStorage.setItem("token", token);
             localStorage.setItem("username", response?.data?.username);
-            navigate("/home");
+            navigate("/Dashboard");
         } catch (error) {
             console.error("Error:", error.response ? error.response.data : error.message);
             const errorMsg = error.response?.data?.message || "Something went wrong";

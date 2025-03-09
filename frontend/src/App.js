@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from "./Pages/SignupPage.jsx";
 import Login from "./Pages/LoginPage.jsx";
 import ForgotPasword from "./Pages/ForgotPassword.jsx";
-import AppLayout from "./Components/Layout/AppLayout";
+import AppLayout from "./Components/Layout/AppLayout.jsx";
 import NoPage from "./Pages/404Page";
 import Home from "./Pages/Homepage/Home";
 import Dashboard from "./Components/Dashboard.jsx";

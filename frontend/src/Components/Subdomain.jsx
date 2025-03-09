@@ -221,8 +221,6 @@ function Subdomain() {
                     )
                 }
             </Box>
-
-            <Footer />
         </Box>
     );
 }
