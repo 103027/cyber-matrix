@@ -7,7 +7,7 @@ import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart } from '@mui/x-charts/PieChart';
-import Footer from "./footer";
+import Footer from "../Components/footer";
 
 function Dashboard() {
     return (
@@ -280,7 +280,10 @@ function Dashboard() {
                                             },
                                         ]}
                                         sx={{
-                                            width:"100%"
+                                            width:"100%",
+                                            "& .MuiChartsLegend-root": {
+                                                display: {xs:"none",sm:"flex"},
+                                            },
                                         }}
                                         height={300}
                                     />

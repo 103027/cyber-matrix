@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid, } from "@mui/material";
-import Footer from "./footer";
+import Footer from "../Components/footer";
 import api from "../api/axios_token.jsx";
 import { useParams } from "react-router-dom";
 import { useTargetInfo } from "../contexts/TargetInfoContext.jsx";

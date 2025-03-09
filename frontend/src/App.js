@@ -7,14 +7,13 @@ import Login from "./Pages/LoginPage.jsx";
 import ForgotPasword from "./Pages/ForgotPassword.jsx";
 import AppLayout from "./Components/Layout/AppLayout.jsx";
 import NoPage from "./Pages/404Page";
-import Home from "./Pages/Homepage/Home";
-import Dashboard from "./Components/Dashboard.jsx";
+import Dashboard from "./Pages/Dashboard.jsx";
 import History from "./Components/History";
 import Settings from "./Components/Settings";
 import LandingPage from "./Pages/LandingPage.jsx";
-import TargetInfo from "./Components/TargetInfo";
-import Subdomain from "./Components/Subdomain";
-import IPandPorts from "./Components/IPandPorts";
+import TargetInfo from "./Pages/TargetInfo";
+import Subdomain from "./Pages/Subdomain";
+import IPandPorts from "./Pages/IPandPorts";
 import { TargetInfoProvider } from "./contexts/TargetInfoContext.jsx";
 import { SubdomainProvider } from "./contexts/SubdomainContext.jsx";
 import { NotificationProvider } from "./contexts/NotificationContext";
@@ -36,7 +35,6 @@ function App() {
                   <Route path="/forgotpassword" element={<ForgotPasword />} />
                   <Route element={<PrivateRoute />}>
                     <Route element={<AppLayout />}>
-                      <Route path="/home" element={<Home />} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/history" element={<History />} />
