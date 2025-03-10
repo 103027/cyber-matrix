@@ -78,7 +78,6 @@ function AppLayout() {
         localStorage.removeItem("username");
         localStorage.removeItem("tabs");
         localStorage.removeItem("activetabs");
-        localStorage.removeItem("selectedSidebarItem");
         handleClear()
         navigate("/login");
         showNotification("Logged out successfully!");

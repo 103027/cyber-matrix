@@ -9,15 +9,16 @@ import SearchIcon from "@mui/icons-material/Search";
 import LanguageIcon from "@mui/icons-material/Language";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
+import { useLocation } from "react-router-dom";
 
 function RightSideBar({ isMobile }) {
     const navigate = useNavigate();
     const { domain } = useParams();
+    const location = useLocation();
     const listRef = useRef(null);
     const [scrollProgress, setScrollProgress] = useState(0);
-    const [selectedItem, setSelectedItem] = useState(() => {
-        return localStorage.getItem("selectedSidebarItem") || `${domain}/targetinfo`;
-    });
+    const [selectedItem, setSelectedItem] = useState();
+    let feature = location.pathname.split("/")[2];
 
     const menuItems = [
         { text: "Target Information", icon: <AssignmentIcon />, navigateto: `${domain}/targetinfo` },
@@ -51,9 +52,10 @@ function RightSideBar({ isMobile }) {
         };
     }, [menuItems.length]);
 
-    useEffect(() => {
-        localStorage.setItem("selectedSidebarItem", selectedItem);
-    }, [selectedItem]);
+    useEffect(()=>{
+        setSelectedItem(`${feature}`)
+    },[feature])
+
 
     return (
         <Box
@@ -134,14 +136,13 @@ function RightSideBar({ isMobile }) {
                                 }}
                                 onClick={() => {
                                     navigate(item.navigateto)
-                                    setSelectedItem(item.navigateto)
                                 }}
                             >
                                 <Tooltip title={item.text} arrow placement={isMobile ? "top" : "left"} TransitionComponent={Zoom}>
                                     <ListItemIcon
                                         sx={{
                                             color: "#fff",
-                                            bgcolor: selectedItem === item.navigateto ? "#333333" : "transparent",
+                                            bgcolor: selectedItem === item.navigateto.split("/")[1] ? "#333333" : "transparent",
                                             borderRadius: 2,
                                             padding: 1,
                                             minWidth: 30,
