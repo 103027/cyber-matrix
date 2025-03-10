@@ -17,8 +17,8 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
 KALI_USERNAME = "kali"
-KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 LOGO_PATH = os.path.join(os.path.dirname(__file__), "logo.png")
 def ssh_execute_command(ip, username, key_path, command):
@@ -583,6 +583,7 @@ def run_nikto(domain):
         return None, f"SSH command execution failed: {str(e)}"
 
 @bp.route('/nikto', methods=['GET'])
+@jwt_required()
 def download_report():
     """Run Nikto and generate a downloadable PDF report."""
     domain = request.args.get('domain')
