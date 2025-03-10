@@ -11,6 +11,7 @@ import Footer from "../Components/footer";
 
 function Dashboard() {
     const isSmallScreen = useMediaQuery("(max-width:600px)");
+    
     return (
         <Box sx={{ color: "#fff" }}>
             <Box
