@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TextField, Button, Typography, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
-import Footer from "./footer";
 import api from "../api/axios_token.jsx";
 import Logo from "../Images/logo3.png";
 import Loading from "../Components/Loading.jsx";
@@ -149,7 +148,8 @@ function IPandPorts() {
                                                     color: "#fff",
                                                     borderRadius: "10px",
                                                     "&.Mui-focused": { backgroundColor: "black" },
-                                                    ml: 2
+                                                    ml: 2,
+                                                    mr: 2
                                                 },
                                             }}
                                             sx={{
@@ -265,7 +265,6 @@ function IPandPorts() {
                     )
                 }
             </Box>
-            <Footer />
         </Box>
     );
 }

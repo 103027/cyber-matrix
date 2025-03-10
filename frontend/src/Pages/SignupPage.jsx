@@ -132,58 +132,38 @@ function Signup() {
         height: "100vh",
       }}
     >
-      {/* Only show on small screens */}
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          backgroundColor: "#000",
-          display: { xs: "flex", md: "none" },
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center", height: "auto",cursor:"pointer" }}>
-          <img
-            src={require("../Images/logo.png")}
-            alt="Cyber-Matrix Logo"
-            style={{ width: "150px", marginBottom: "10px" }}
-          />
-          <img
-            src={require("../Images/name.png")}
-            alt="Cyber-Matrix name"
-            style={{ width: "300px", marginBottom: "10px" }}
-          />
-        </Box>
-      </Grid>
-
-      {/* Left side - Form section */}
       <Grid
         item
         xs={12}
         md={6}
         sx={{
           backgroundColor: "#333",
-          padding: "50px",
           width: { xs: "100%", md: "auto" },
+          animation: "fadeSlideIn 0.5s ease-in-out",
         }}
       >
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: { sm: "none", md: "center" },
             height: "100%",
-            px: 6,
+            px: { xs: 2, sm: 8, md: 10 },
             color: "#fff",
           }}
         >
+          <Box onClick={() => navigate("/")} sx={{ display: { xs: "flex", md: "none" }, flexDirection: "column", alignItems: "center", cursor: "pointer" }}>
+            <img
+              src={require("../Images/logo3.png")}
+              alt="Cyber-Matrix Logo"
+              style={{ width: "120px", marginBottom: "50px" }}
+            />
+          </Box>
           <Box sx={{ marginBottom: 6 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography gutterBottom sx={{ fontSize: { xs: "1.5rem", md: "2.0rem" }, fontWeight: "bold" }}>
               Get started with Cyber-Matrix
             </Typography>
-            <Typography variant="body2" gutterBottom style={{ color: "#D9D9D9" }}>
+            <Typography gutterBottom sx={{ color: "#D9D9D9", fontSize: "1rem" }}>
               Already Registered?{" "}
               <Link onClick={handleClick} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer", }}>
                 Sign in
@@ -203,7 +183,7 @@ function Signup() {
                   : ""
               }
               arrow
-              placement="right"
+              placement="top"
               open={isSubmitted && !formValues["name"]}
             >
               <TextField
@@ -254,7 +234,7 @@ function Signup() {
                     : ""
               }
               arrow
-              placement="right"
+              placement="top"
               open={isSubmitted && (!formValues["email"] || !isValidEmail)}
             >
               <TextField
@@ -303,7 +283,7 @@ function Signup() {
                     <span style={{
                       fontSize: '1.0rem',
                       fontFamily: 'Poppins, sans-serif',
-                      color:'#F5F5F5'
+                      color: '#F5F5F5'
                     }}>
                       Follow the format:
                       <br /> - At least 8 characters
@@ -314,7 +294,7 @@ function Signup() {
                   ) : ""
               }
               arrow
-              placement="right"
+              placement="bottom"
               open={
                 (!formValues["password"] && isSubmitted) || openPasswordConditions
               }
@@ -370,7 +350,7 @@ function Signup() {
                   : ""
               }
               arrow
-              placement="right"
+              placement="bottom"
               open={isSubmitted && !formValues["confirmPassword"]}
             >
               <TextField
@@ -452,23 +432,37 @@ function Signup() {
             </Link>.
           </Typography>
         </Box>
+        {/* Injecting CSS Animations */}
+        <style>
+          {`
+              @keyframes fadeSlideIn {
+                  0% {
+                      opacity: 0;
+                      transform: rotateX(70deg);
+                  }
+                  100% {
+                      opacity: 1;
+                      transform: rotateX(0deg);
+                  }
+              }
+          `}
+        </style>
       </Grid>
 
-      {/* Right side - Logo section */}
       <Grid
         item
         xs={12}
         md={6}
         sx={{
           backgroundColor: "#000",
-          display: { xs: "none", md: "flex" }, // Hide on xs, show on md and above
+          display: { xs: "none", md: "flex" },
           justifyContent: "center",
           alignItems: "center",
           borderTopLeftRadius: { md: "30px" },
           borderBottomLeftRadius: { md: "30px" },
         }}
       >
-        <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center",cursor:"pointer" }}>
+        <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer" }}>
           <img
             src={require("../Images/logo.png")}
             alt="Cyber-Matrix Logo"

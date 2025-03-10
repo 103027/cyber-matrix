@@ -1,0 +1,187 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { Box, useMediaQuery } from "@mui/material";
+import LeftSidebar from "./LeftSidebar.jsx";
+import MainTabs from "./Tabs.jsx";
+import { Outlet } from "react-router-dom";
+import RightSideBar from "./RightSiderbar.jsx";
+import { useLocation } from "react-router-dom";
+import { useTargetInfo } from "../../contexts/TargetInfoContext.jsx";
+import { useSubdomain } from "../../contexts/SubdomainContext.jsx";
+import { useIPandPorts } from "../../contexts/IPandPortsContext.jsx"
+import { useNotification } from "../../contexts/NotificationContext.jsx";
+import { useNavigate } from "react-router-dom";
+
+function AppLayout() {
+    const { removeTargetInfo, clearAllTargetInfo } = useTargetInfo();
+    const { removeSubdomains, clearAllSubdomains } = useSubdomain();
+    const { removeIPandPorts, clearAllIPandPorts } = useIPandPorts();
+    const [username, setUsername] = useState("");
+    const location = useLocation();
+    const { showNotification } = useNotification();
+    const navigate = useNavigate();
+    const [open, setOpen] = useState(() => {
+        const storedState = localStorage.getItem("sidebarOpen");
+        return storedState !== null ? JSON.parse(storedState) : true;
+    });
+    const [openWhenTempDrawer, setOpenWhenTempDrawer] = useState(false);
+    const [tabs, setTabs] = useState(() => {
+        const storedTabs = localStorage.getItem("tabs");
+        return storedTabs
+            ? JSON.parse(storedTabs)
+            : [{ label: "Dashboard", icon: "Dashboard" }];
+    });
+    const [value, setValue] = useState(() => {
+        const savedActiveTab = localStorage.getItem("activeTab");
+        return savedActiveTab ? parseInt(savedActiveTab, 10) : 0;
+    });
+    const [openModal, setOpenModal] = useState(false);
+    const [inputValue, setInputValue] = useState("");
+    const isMobile = useMediaQuery("(max-width: 700px)");
+
+    const getName = (tabName) => {
+        if (tabName) {
+            if (tabName === "Dashboard" || tabName === "Settings" || tabName === "History") {
+                navigate("/" + tabName);
+            } else {
+                navigate("/" + tabName + "/targetinfo");
+            }
+            const tabExists = tabs.find((tab) => tab.label === tabName);
+            if (tabExists) {
+                const existingTabIndex = tabs.findIndex((tab) => tab.label === tabName);
+                setValue(existingTabIndex);
+            }
+            else {
+                setTabs(tabs => [...tabs, { label: tabName }]);
+                setValue(tabs.length);
+            }
+        }
+    };
+
+    const shouldDisplayRightSidebar = !["/dashboard", "/Dashboard", "/home", "/Settings", "/settings", "/History", "/history"].includes(location.pathname);
+
+    const handleToggle = () => {
+        setOpen(!open);
+    };
+
+    const handleToggleWhenTempDrawer = () => {
+        setOpenWhenTempDrawer(!openWhenTempDrawer);
+    }
+
+    const handleClear = () => {
+        clearAllIPandPorts();
+        clearAllSubdomains();
+        clearAllTargetInfo();
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("tabs");
+        localStorage.removeItem("activetabs");
+        handleClear()
+        navigate("/login");
+        showNotification("Logged out successfully!");
+    };
+
+    const handleModalClose = useCallback(() => {
+        setOpenModal(false);
+        setInputValue("");
+    }, []);
+
+    const handleAddTabSubmit = () => {
+        console.log("from applayout: " + inputValue)
+        if (inputValue) {
+            console.log(inputValue)
+            setTabs([...tabs, { label: inputValue }]);
+            setValue(tabs.length);
+            handleModalClose();
+            navigate("/" + inputValue + "/targetinfo");
+        }
+    };
+
+    const handleRemoveTab = (index) => {
+        if (index === 0) return;
+        const removedTab = tabs[index];
+        const newTabs = tabs.filter((_, i) => i !== index);
+        setTabs(newTabs);
+        removeTargetInfo(removedTab.label);
+        removeSubdomains(removedTab.label);
+        removeIPandPorts(removedTab.label);
+        if (value === index) {
+            setValue(0);
+            navigate("/Dashboard");
+        } else if (value > index) {
+            setValue((prev) => prev - 1);
+        }
+    };
+
+    const handleAddTab = useCallback(() => {
+        setOpenModal(true);
+    }, []);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue + 1);
+        const selectedTab = tabs[newValue + 1];
+        if (selectedTab.label === "Dashboard" || selectedTab.label === "Settings" || selectedTab.label === "History") {
+            navigate("/" + selectedTab.label);
+        } else {
+            navigate("/" + selectedTab.label + "/targetinfo");
+        }
+    };
+
+    useEffect(() => {
+        localStorage.setItem("tabs", JSON.stringify(tabs));
+        localStorage.setItem("activeTab", value);
+    }, [tabs, value]);
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
+    return (
+        <Box sx={{ backgroundColor: "#333333", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+            <Box sx={{
+                width: "100%", position: "sticky",
+                top: 0,
+                zIndex: 1000,
+            }}>
+                <MainTabs tabs={tabs} value={value} setValue={setValue} navigate={navigate} handleChange={handleChange} handleRemoveTab={handleRemoveTab} handleAddTab={handleAddTab} openModal={openModal} handleModalClose={handleModalClose} inputValue={inputValue} setInputValue={setInputValue} handleAddTabSubmit={handleAddTabSubmit} />
+            </Box>
+
+            <Box sx={{ display: "flex", flexGrow: 1 }}>
+                <Box>
+                    <LeftSidebar getName={getName} username={username} handleLogout={handleLogout} openWhenTempDrawer={openWhenTempDrawer} open={open} handleToggle={handleToggle} handleToggleWhenTempDrawer={handleToggleWhenTempDrawer} setOpenWhenTempDrawer={setOpenWhenTempDrawer} />
+                </Box>
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        backgroundColor: "#333333",
+                        padding: 5,
+                        overflow: "auto",
+                        height: "calc(100vh - 60px)",
+                        position: "relative", // Add relative position
+                        zIndex: 1,
+                        scrollbarWidth: "none",
+                    }}
+                >
+                    <Outlet />
+                    {shouldDisplayRightSidebar && isMobile && (
+                        <Box sx={{ width: "100px", flexShrink: 0, mt: 7 }}>
+                            <RightSideBar isMobile={isMobile} />
+                        </Box>
+                    )}
+                </Box>
+                {shouldDisplayRightSidebar && !isMobile && (
+                    <Box sx={{ width: "100px", flexShrink: 0 }}>
+                        <RightSideBar isMobile={isMobile} />
+                    </Box>
+                )}
+            </Box>
+        </Box>
+    );
+}
+
+export default AppLayout;

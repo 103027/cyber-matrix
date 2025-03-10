@@ -3,7 +3,7 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
-import Footer from "./footer";
+import Footer from "../Components/footer";
 import api from "../api/axios_token.jsx";
 import Logo from "../Images/logo3.png";
 import Loading from "../Components/Loading.jsx";
@@ -221,8 +221,6 @@ function Subdomain() {
                     )
                 }
             </Box>
-
-            <Footer />
         </Box>
     );
 }

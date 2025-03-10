@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid, } from "@mui/material";
-import Footer from "./footer";
+import Footer from "../Components/footer";
 import api from "../api/axios_token.jsx";
 import { useParams } from "react-router-dom";
 import { useTargetInfo } from "../contexts/TargetInfoContext.jsx";
@@ -19,6 +19,7 @@ function TargetInfo() {
         const fetchTargetInfo = async () => {
             try {
                 console.log("Hello from target info")
+                console.log(domain)
                 const response = await api.get(`/get_target_info?domain=${domain}`);
                 console.log(response.data)
                 setTargetInfos((prevInfos) => ({
@@ -361,7 +362,7 @@ function TargetInfo() {
                         )
                     }
                 </Box>
-                <Footer />
+                {/* <Footer /> */}
             </Box>
         </Box >
     );

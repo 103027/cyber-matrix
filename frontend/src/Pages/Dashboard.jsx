@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, useMediaQuery } from "@mui/material";
 import LayersIcon from "@mui/icons-material/Layers";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -7,9 +7,11 @@ import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart } from '@mui/x-charts/PieChart';
-import Footer from "./footer";
+import Footer from "../Components/footer";
 
 function Dashboard() {
+    const isSmallScreen = useMediaQuery("(max-width:600px)");
+    
     return (
         <Box sx={{ color: "#fff" }}>
             <Box
@@ -247,7 +249,7 @@ function Dashboard() {
                                             },
                                         ]}
                                         sx={{
-                                            width:"100%"
+                                            width: "100%"
                                         }}
                                         height={300}
                                     />
@@ -259,12 +261,13 @@ function Dashboard() {
                                         backgroundColor: "#49494C",
                                         color: "#FFF",
                                         borderRadius: "8px",
-                                        padding: "20px",
                                         display: "flex",
                                         flexDirection: "column",
                                         alignItems: "center",
                                         justifyContent: "center",
                                         boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                                        width: "100%",
+                                        height: "340px",
                                     }}
                                 >
                                     <PieChart
@@ -273,23 +276,26 @@ function Dashboard() {
                                                 data: [
                                                     { id: 0, value: 10, label: 'Subdomain', },
                                                     { id: 1, value: 15, label: 'Assets' },
-                                                    { id: 2, value: 20, label: 'Password/Hash',color: "#C49150" },
-                                                    { id: 3, value: 30, label: 'Exposed Ports',color: "#0D2535" },
+                                                    { id: 2, value: 20, label: 'Password/Hash', color: "#C49150" },
+                                                    { id: 3, value: 30, label: 'Exposed Ports', color: "#0D2535" },
                                                 ],
                                                 innerRadius: 80,
                                             },
                                         ]}
                                         sx={{
-                                            width:"100%"
+                                            ml:{xs:10,sm:0},
+                                            "& .MuiChartsLegend-root": {
+                                                display: { xs: "none", sm: "flex" },
+                                            },
                                         }}
-                                        height={300}
+                                        height={isSmallScreen ? 380 : 300}
                                     />
                                 </Box>
                             </Grid>
                         </Grid>
                     </Box>
                 </Box>
-                <Footer/>
+                <Footer />
             </Box>
         </Box >
     );

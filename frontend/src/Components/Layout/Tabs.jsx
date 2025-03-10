@@ -1,101 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Box, Dialog, TextField, Tabs, Tab, IconButton, Avatar, Typography, Button } from "@mui/material";
+import React from "react";
+import { Box, Dialog, TextField, Tabs, Tab, IconButton, Typography, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import HomeIcon from "@mui/icons-material/Home";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
-import { useTargetInfo } from "../../contexts/TargetInfoContext.jsx";
-import { useSubdomain } from "../../contexts/SubdomainContext.jsx";
-import { useIPandPorts } from "../../contexts/IPandPortsContext.jsx"
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
-function MainTabs(props) {
-    const [tabs, setTabs] = useState(() => {
-        const storedTabs = localStorage.getItem("tabs");
-        return storedTabs
-            ? JSON.parse(storedTabs)
-            : [{ label: "home", icon: "home" }];
-    });
-
-    const [value, setValue] = useState(() => {
-        const savedActiveTab = localStorage.getItem("activeTab");
-        return savedActiveTab ? parseInt(savedActiveTab, 10) : 0;
-    });
-    const [openModal, setOpenModal] = useState(false);
-    const [inputValue, setInputValue] = useState("");
-    const { removeTargetInfo } = useTargetInfo();
-    const { removeSubdomains } = useSubdomain()
-    const { removeIPandPorts } = useIPandPorts()
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        localStorage.setItem("tabs", JSON.stringify(tabs));
-        localStorage.setItem("activeTab", value);
-    }, [tabs, value]);
-
-    const handleAddTab = useCallback(() => {
-        setOpenModal(true);
-    }, []);
-
-    const handleModalClose = useCallback(() => {
-        setOpenModal(false);
-        setInputValue("");
-    }, []);
-
-    const handleAddTabSubmit = () => {
-        if (inputValue) {
-            console.log(inputValue)
-            setTabs([...tabs, { label: inputValue }]);
-            setValue(tabs.length);
-            handleModalClose();
-            navigate("/" + inputValue + "/targetinfo");
-        }
-    };
-
-    const handleRemoveTab = (index) => {
-        if (index === 0) return;
-        const removedTab = tabs[index];
-        const newTabs = tabs.filter((_, i) => i !== index);
-        setTabs(newTabs);
-        removeTargetInfo(removedTab.label);
-        removeSubdomains(removedTab.label);
-        removeIPandPorts(removedTab.label );
-        if (value === index) {
-            setValue(0);
-            navigate("/home");
-        } else if (value > index) {
-            setValue((prev) => prev - 1);
-        }
-    };
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue + 1);
-        const selectedTab = tabs[newValue + 1];
-        if (selectedTab.label == "home" || selectedTab.label == "dashboard" || selectedTab.label == "settings" || selectedTab.label == "history" || selectedTab.label == "Dashboard" || selectedTab.label == "Settings" || selectedTab.label == "History") {
-            navigate("/" + selectedTab.label);
-        } else {
-            navigate("/" + selectedTab.label + "/targetinfo");
-        }
-    };
-
-    useEffect(() => {
-        if (props.Name) {
-            if (props.Name == "home" || props.Name == "dashboard" || props.Name == "settings" || props.Name == "history" || props.Name == "Dashboard" || props.Name == "Settings" || props.Name == "History") {
-                navigate("/" + props.Name);
-            } else {
-                navigate("/" + props.Name + "/targetinfo");
-            }
-            const tabExists = tabs.find((tab) => tab.label === props.Name);
-            if (tabExists) {
-                const existingTabIndex = tabs.findIndex((tab) => tab.label === props.Name);
-                setValue(existingTabIndex);
-            }
-            else {
-                setTabs([...tabs, { label: props.Name }]);
-                setValue(tabs.length);
-            }
-        }
-    }, [props.Name]);
+function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveTab, handleAddTab, openModal, handleModalClose, handleAddTabSubmit, inputValue, setInputValue }) {
 
     return (
         <Box sx={{ display: "flex", flexGrow: 1, flexDirection: "column", width: "100%", }}>
@@ -111,13 +22,13 @@ function MainTabs(props) {
                 <Tab
                     label={
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <HomeIcon />
+                            <DashboardIcon />
                         </Box>
                     }
                     selected={value === 0}
                     onClick={() => {
                         setValue(0)
-                        navigate("/home");
+                        navigate("/Dashboard");
                     }}
                     sx={{
                         color: "#ffffff",
@@ -222,7 +133,7 @@ function MainTabs(props) {
                     }}
                 />
             </Box>
-            <Dialog open={openModal} onClose={handleModalClose} maxWidth="md" fullWidth sx={{ mb: 40, ml: 10 }}
+            <Dialog open={openModal} onClose={handleModalClose} maxWidth="md" fullWidth sx={{ mb: 40, ml: { sm: 2, md: 10 } }}
                 PaperProps={{
                     sx: { boxShadow: 'none', backgroundColor: 'transparent' }
                 }}
@@ -245,22 +156,11 @@ function MainTabs(props) {
                             disableUnderline: true,
                             style: { color: "#fff" },
                         }}
-                        sx={{ ml: 2 }}
-                    />
-                    <Button
-                        variant="outlined"
                         sx={{
-                            color: "#BCB6B6",
-                            borderColor: "#BCB6B6",
-                            "&:hover": {
-                                borderColor: "#BCB6B6",
-                                backgroundColor: "rgba(188, 182, 182, 0.1)"
-                            },
+                            ml: 2,
                         }}
-                        onClick={handleAddTabSubmit}
-                    >
-                        Enter
-                    </Button>
+                    />
+                    <KeyboardReturnIcon onClick={handleAddTabSubmit} sx={{color:"whitesmoke"}}/>
                 </Box>
             </Dialog>
         </Box>

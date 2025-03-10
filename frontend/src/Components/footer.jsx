@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 
 function Footer() {
     return (
-        <Box sx={{ color: "#fff", marginTop: "50px" }}>
+        <Box sx={{ color: "#fff", paddingY: "50px" }}>
             <Box
                 sx={{
                     backgroundColor: "#49494C",
