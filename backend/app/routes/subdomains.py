@@ -583,7 +583,7 @@ def run_nikto(domain):
         return None, f"SSH command execution failed: {str(e)}"
 
 @bp.route('/nikto', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def download_report():
     """Run Nikto and generate a downloadable PDF report."""
     domain = request.args.get('domain')
