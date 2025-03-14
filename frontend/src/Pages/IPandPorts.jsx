@@ -2,13 +2,12 @@ import React, { useState, useMemo, useEffect } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TextField, Button, Typography, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
-import api from "../api/axios_token.jsx";
 import Logo from "../Images/logo3.png";
 import Loading from "../Components/Loading.jsx";
 import { useParams } from "react-router-dom";
-import { useIPandPorts } from "../contexts/IPandPortsContext.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchIPandPorts } from "../features/ipandportsSlice.js";
 import { useNotification } from "../contexts/NotificationContext.jsx";
-import { useTargetInfo } from "../contexts/TargetInfoContext.jsx"
 
 function createData(ip, port, combined, status, server, version) {
     return { ip, port, combined, status, server, version };
@@ -22,10 +21,14 @@ function IPandPorts() {
     const [ipFilter, setIpFilter] = useState('');
     const [portFilter, setPortFilter] = useState('');
     const { domain } = useParams();
-    const { IPandPorts, addIPandPorts } = useIPandPorts()
-    const [loading, setLoading] = useState(true);
     const { showNotification } = useNotification();
-    const { targetInfos } = useTargetInfo();
+    const { ipandports_, loading, error } = useSelector(state => state.ipandports)
+    const { data } = useSelector(state => state.targetInfo)
+    const dispatch = useDispatch();
+
+    console.log(data[domain])
+    const isLoading = loading[domain]
+    const isError = error[domain]
 
     // Handle page change
     const handleChangePage = (event, newPage) => {
@@ -79,41 +82,34 @@ function IPandPorts() {
     }, [page, rowsPerPage, filteredRows]);
 
     useEffect(() => {
-        const fetchIPandPorts = async () => {
-            try {
-                console.log("Hello from ip & ports")
-                const response = await api.get(`/get_ip_ports?domain=${domain}`);
-                const newRows = response.data?.["data"]?.map((data) => {
-                    const ip = targetInfos[domain]?.["IP"]?.[0] || "--"; // Fallback if IP is undefined
-                    const port = data.Port?.split('/')?.[0] || "--"; // Fallback if port is undefined
-                    const combined = ip !== "--" && port !== "--" ? `${ip}:${port}` : "--";
-                    const server = data.Server || "--";
-                    const status = data.State || "--";
-                    const version = data?.["Version Number"] || "--";
-
-                    return createData(ip, port, combined, status, server, version);
-                });
-
-                setRows(newRows);
-
-                addIPandPorts(domain, newRows);
-            } catch (err) {
-                console.error(err.message || "Something went wrong");
-                showNotification("Error Occured in IP & Ports,Error is " + err.message)
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (!IPandPorts[domain]) {
-            fetchIPandPorts();
-            setLoading(true);
-        } else {
-            setRows(IPandPorts[domain]);
-            setLoading(false);
+        if (!ipandports_[domain] && !isLoading) {
+            console.log("Hello from Ip&Ports");
+            dispatch(fetchIPandPorts(domain));
         }
-
-    }, [domain, IPandPorts, addIPandPorts]);
+    }, [domain, isLoading]);
+    
+    useEffect(() => {
+        if (ipandports_[domain]) {
+            const newRows = ipandports_[domain]["data"]?.map((data_) => {
+                const ip = data[domain]?.["IP"]?.[0] || "--"; // Fallback if IP is undefined
+                const port = data_.Port?.split('/')?.[0] || "--"; // Fallback if port is undefined
+                const combined = ip !== "--" && port !== "--" ? `${ip}:${port}` : "--";
+                const server = data_.Server || "--";
+                const status = data_.State || "--";
+                const version = data_?.["Version Number"] || "--";
+    
+                return createData(ip, port, combined, status, server, version);
+            });
+    
+            setRows(newRows);
+        }
+    }, [ipandports_, domain]);
+    
+    useEffect(() => {
+        if (isError) {
+            showNotification("Invalid Domain Name: " + isError);
+        }
+    }, [isError, showNotification]);
 
     return (
         <Box sx={{ color: "#fff" }}>
@@ -124,7 +120,7 @@ function IPandPorts() {
                     </Typography>
                 </Box>
                 {
-                    loading ? (
+                    isLoading ? (
                         <Loading logo={Logo} size={80} animation="zoom" />
                     ) : (
                         <Paper sx={{ backgroundColor: "#333333", border: "none", color: "#ffffff", mt: 2 }}>
