@@ -9,16 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchIPandPorts } from "../features/ipandportsSlice.js";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 
-function createData(ip, port, combined, status, server, version) {
-    return { ip, port, combined, status, server, version };
+function createData( port, server ) {
+    return { port, server };
 }
 
-function IPandPorts() {
+function AssetEnumeration() {
     const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchQuery, setSearchQuery] = useState('');
-    const [ipFilter, setIpFilter] = useState('');
+    const [ServerFilter, setServerFilter] = useState('');
     const [portFilter, setPortFilter] = useState('');
     const { domain } = useParams();
     const { showNotification } = useNotification();
@@ -46,8 +46,8 @@ function IPandPorts() {
         setPage(0); // Reset page to 0 when search query changes
     };
 
-    const handleIpFilterChange = (event) => {
-        setIpFilter(event.target.value);
+    const handleServerFilterChange = (event) => {
+        setServerFilter(event.target.value);
         setPage(0); // Reset page to 0 when IP filter changes
     };
 
@@ -60,17 +60,14 @@ function IPandPorts() {
     const filteredRows = useMemo(() => {
         return rows.filter((row) => {
             const matchesSearchQuery = row.port.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                row.ip.toString().includes(searchQuery) ||
-                row.combined.toString().includes(searchQuery) ||
-                row.server.toString().includes(searchQuery) ||
-                row.version.toString().includes(searchQuery);
+                row.server.toString().includes(searchQuery);
 
-            const matchesIpFilter = ipFilter ? row.ip.includes(ipFilter) : true;
+            const matchesServerFilter = ServerFilter ? row.server.includes(ServerFilter) : true;
             const matchesPortFilter = portFilter ? row.port.includes(portFilter) : true;
 
-            return matchesSearchQuery && matchesIpFilter && matchesPortFilter;
+            return matchesSearchQuery && matchesPortFilter && matchesServerFilter;
         });
-    }, [searchQuery, ipFilter, portFilter, rows]);
+    }, [searchQuery, portFilter, ServerFilter, rows]);
 
 
     // Paginate filtered rows (memoized for optimization)
@@ -90,14 +87,10 @@ function IPandPorts() {
     useEffect(() => {
         if (ipandports_[domain]) {
             const newRows = ipandports_[domain]["data"]?.map((data_) => {
-                const ip = data[domain]?.["IP"]?.[0] || "--"; // Fallback if IP is undefined
                 const port = data_.Port?.split('/')?.[0] || "--"; // Fallback if port is undefined
-                const combined = ip !== "--" && port !== "--" ? `${ip}:${port}` : "--";
                 const server = data_.Server || "--";
-                const status = data_.State || "--";
-                const version = data_?.["Version Number"] || "--";
     
-                return createData(ip, port, combined, status, server, version);
+                return createData( port, server );
             });
     
             setRows(newRows);
@@ -115,7 +108,7 @@ function IPandPorts() {
             <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Box>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '2.5rem', fontFamily: 'Poppins, sans-serif' }}>
-                        IP and Ports
+                        Asset Enumeration
                     </Typography>
                 </Box>
                 {
@@ -130,13 +123,13 @@ function IPandPorts() {
                                     </Typography>
                                     <Box sx={{ display: 'flex', flexDirection: "row" }}>
                                         <Typography variant="h6">
-                                            IP:
+                                            Server:
                                         </Typography>
                                         <TextField
                                             variant="outlined"
                                             size="small"
-                                            value={ipFilter}
-                                            onChange={handleIpFilterChange}
+                                            value={ServerFilter}
+                                            onChange={handleServerFilterChange}
                                             InputProps={{
                                                 sx: {
                                                     backgroundColor: "#26272B",
@@ -186,7 +179,7 @@ function IPandPorts() {
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", width: "100%", mt: 2 }}>
                                     <Typography variant="h6">
-                                        Exposed Ports Count - {filteredRows.length}
+                                        Assets Discovered Count - {filteredRows.length}
                                     </Typography>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: "center", alignItems: "center" }}>
                                         <TextField
@@ -221,25 +214,15 @@ function IPandPorts() {
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead>
                                         <TableRow sx={{ backgroundColor: "#444444", fontWeight: "bold" }}>
-                                            <TableCell sx={{ color: "#ffffff" }}>IP</TableCell>
-                                            <TableCell sx={{ color: "#ffffff" }}>Ports</TableCell>
-                                            <TableCell sx={{ color: "#ffffff" }}>Combined</TableCell>
-                                            <TableCell sx={{ color: "#ffffff" }}>Status</TableCell>
-                                            <TableCell sx={{ color: "#ffffff" }}>Server</TableCell>
-                                            <TableCell sx={{ color: "#ffffff" }}>Version Number</TableCell>
+                                            <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>Ports</TableCell>
+                                            <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>Server</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {paginatedRows.map((row, index) => (
                                             <TableRow key={`${row.url}-${page}-${index}`}>
-                                                <TableCell sx={{ color: "#ffffff" }} component="th" scope="row">
-                                                    {row.ip}
-                                                </TableCell>
-                                                <TableCell sx={{ color: "#ffffff" }}>{row.port}</TableCell>
-                                                <TableCell sx={{ color: "#ffffff" }}>{row.combined}</TableCell>
-                                                <TableCell sx={{ color: "#ffffff" }}>{row.status}</TableCell>
-                                                <TableCell sx={{ color: "#ffffff" }}>{row.server}</TableCell>
-                                                <TableCell sx={{ color: "#ffffff" }}>{row.version}</TableCell>
+                                                <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>{row.port}</TableCell>
+                                                <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>{row.server}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -264,4 +247,4 @@ function IPandPorts() {
     );
 }
 
-export default IPandPorts;
+export default AssetEnumeration;

@@ -16,6 +16,7 @@ import Subdomain from "./Pages/Subdomain";
 import IPandPorts from "./Pages/IPandPorts";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import PrivateRoute from "../src/Authorization/PrivateRoute.jsx";
+import AssetEnumeration from "./Pages/AssetEnumeration.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/:domain/targetinfo" element={<TargetInfo />} />
                 <Route path="/:domain/subdomainenumeration" element={<Subdomain />} />
                 <Route path="/:domain/ipandports" element={<IPandPorts />} />
+                <Route path="/:domain/assetenumeration" element={<AssetEnumeration />} />
               </Route>
             </Route>
             <Route path="*" element={<NoPage />} />
