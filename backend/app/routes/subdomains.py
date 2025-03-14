@@ -17,9 +17,10 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
 KALI_USERNAME = "kali"
-# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
+NVD_API_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch={}"
 LOGO_PATH = os.path.join(os.path.dirname(__file__), "logo.png")
 def ssh_execute_command(ip, username, key_path, command):
     """
@@ -302,6 +303,70 @@ def generate_pdf_report(nikto_data):
     doc.build(elements)
     buffer.seek(0)
     return buffer    
+
+def remove_ansi(text):
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    return ansi_escape.sub('', text)
+
+def ssh_execute_command2(command):
+    """
+    Executes a command on the remote Kali Linux machine via SSH.
+    
+    :param command: The command to execute (e.g., 'whatweb example.com')
+    :return: The command output
+    """
+    try:
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname=KALI_IP, username=KALI_USERNAME, key_filename=KALI_KEY_PATH)
+
+        stdin, stdout, stderr = ssh.exec_command(command)
+        output = remove_ansi(stdout.read().decode().strip())
+        error = remove_ansi(stderr.read().decode().strip())
+
+        ssh.close()
+
+        return output if output else None, error if error else None
+    except Exception as e:
+        return None, str(e)
+
+def extract_clean_technologies(summary):
+    technologies = []
+    matches = summary.split(',')
+
+    for match in matches:
+        tech = match.strip()
+        # Extract content inside square brackets
+        extracted = re.search(r'\[(.*?)\]', tech)
+        if extracted:
+            clean_tech = extracted.group(1)
+            # Ignore URLs and non-technology values
+            if not clean_tech.startswith("http"):
+                if clean_tech == "proxygen-bolt":
+                    clean_tech = "proxygen"
+                technologies.append(clean_tech)
+    
+    return technologies
+
+def extract_cve(technologies):
+    cve_results = {}
+    for tech in technologies:
+        try:
+            response = requests.get(NVD_API_URL.format(tech))
+            if response.status_code == 200:
+                cve_data = response.json().get("vulnerabilities", [])
+                cve_list = []
+                for cve in cve_data[:10]:
+                    cve_id = cve.get("cve", {}).get("id", "N/A")
+                    severity = cve.get("cve", {}).get("metrics", {}).get("cvssMetricV2", [{}])[0].get("baseSeverity", "Unknown")
+                    cve_list.append({"CVE ID": cve_id, "Severity": severity})
+                cve_results[tech] = cve_list
+            else:
+                cve_results[tech] = f"Error fetching data: {response.status_code}"
+        except Exception as e:
+            cve_results[tech] = f"API request failed: {str(e)}"
+    
+    return cve_results
 
 
 @bp.route('/get_subdomains', methods=['GET'])
@@ -597,3 +662,34 @@ def download_report():
 
     return send_file(pdf_buffer, mimetype='application/pdf',
                      as_attachment=True, download_name=f"Nikto_Report_{domain}.pdf")
+
+@bp.route('/cve',methods=['GET'])
+@jwt_required()
+def extract_technologies():
+    domain = request.args.get('domain')
+    if not domain:
+        return jsonify({"error": "Domain parameter is required"}), 400
+    command = f"timeout 10 whatweb -v {domain}"
+    output, error = ssh_execute_command2(command)
+
+    if error:
+        return {"error": error}
+
+    if not output:
+        return jsonify({"error": "No output received"}), 500
+
+    # Extract the "Summary" line
+    summary_match = re.search(r'Summary\s*:\s*(.*)', output)
+    if not summary_match:
+        return jsonify({"error": "No Summary found"}), 500
+
+    summary = summary_match.group(1)
+
+    # Extract technologies from the summary (splitting by commas)
+    technologies = extract_clean_technologies(summary)
+    
+    # return jsonify({"technologies": technologies})
+    cve_results = extract_cve(technologies)
+
+    return jsonify({"technologies": technologies, "cve_results": cve_results})
+    
