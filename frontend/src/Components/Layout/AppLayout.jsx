@@ -5,16 +5,14 @@ import MainTabs from "./Tabs.jsx";
 import { Outlet } from "react-router-dom";
 import RightSideBar from "./RightSiderbar.jsx";
 import { useLocation } from "react-router-dom";
-import { useTargetInfo } from "../../contexts/TargetInfoContext.jsx";
-import { useSubdomain } from "../../contexts/SubdomainContext.jsx";
-import { useIPandPorts } from "../../contexts/IPandPortsContext.jsx"
 import { useNotification } from "../../contexts/NotificationContext.jsx";
 import { useNavigate } from "react-router-dom";
+import { removeTargetInfo, clearAllTargetInfo } from '../../features/targetInfoSlice'
+import { removeSubdomains, clearAllSubdomains } from "../../features/subdomainSlice.js";
+import { removeIPandPorts, clearAllIPandPorts } from "../../features/ipandportsSlice.js";
+import { useDispatch } from "react-redux";
 
 function AppLayout() {
-    const { removeTargetInfo, clearAllTargetInfo } = useTargetInfo();
-    const { removeSubdomains, clearAllSubdomains } = useSubdomain();
-    const { removeIPandPorts, clearAllIPandPorts } = useIPandPorts();
     const [username, setUsername] = useState("");
     const location = useLocation();
     const { showNotification } = useNotification();
@@ -37,6 +35,7 @@ function AppLayout() {
     const [openModal, setOpenModal] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const isMobile = useMediaQuery("(max-width: 700px)");
+    const dispatch = useDispatch()
 
     const getName = (tabName) => {
         if (tabName) {
@@ -68,9 +67,9 @@ function AppLayout() {
     }
 
     const handleClear = () => {
-        clearAllIPandPorts();
-        clearAllSubdomains();
-        clearAllTargetInfo();
+        dispatch(clearAllIPandPorts());
+        dispatch(clearAllSubdomains());
+        dispatch(clearAllTargetInfo());
     };
 
     const handleLogout = () => {
@@ -104,9 +103,9 @@ function AppLayout() {
         const removedTab = tabs[index];
         const newTabs = tabs.filter((_, i) => i !== index);
         setTabs(newTabs);
-        removeTargetInfo(removedTab.label);
-        removeSubdomains(removedTab.label);
-        removeIPandPorts(removedTab.label);
+        dispatch(removeTargetInfo(removedTab.label));
+        dispatch(removeSubdomains(removedTab.label));
+        dispatch(removeIPandPorts(removedTab.label));
         if (value === index) {
             setValue(0);
             navigate("/Dashboard");

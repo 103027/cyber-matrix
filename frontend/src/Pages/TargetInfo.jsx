@@ -1,47 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { Box, Typography, Grid, } from "@mui/material";
-import Footer from "../Components/footer";
-import api from "../api/axios_token.jsx";
 import { useParams } from "react-router-dom";
-import { useTargetInfo } from "../contexts/TargetInfoContext.jsx";
 import Loading from "../Components/Loading.jsx";
 import Logo from "../Images/logo3.png";
 import { useNotification } from "../contexts/NotificationContext.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTargetInfo } from "../features/targetInfoSlice";
 
 function TargetInfo() {
-    const { targetInfos, setTargetInfos } = useTargetInfo();
+    const { data, loading, error } = useSelector((state) => state.targetInfo);
     const { domain } = useParams();
-    const [loading, setLoading] = useState(true);
     const { showNotification } = useNotification();
+    const dispatch = useDispatch();
+    
+    const targetInfos = data;
+    const isLoading = loading[domain];
+    const isError = error[domain];
 
     useEffect(() => {
 
-        const fetchTargetInfo = async () => {
-            try {
-                console.log("Hello from target info")
-                console.log(domain)
-                const response = await api.get(`/get_target_info?domain=${domain}`);
-                console.log(response.data)
-                setTargetInfos((prevInfos) => ({
-                    ...prevInfos,
-                    [domain]: response.data,
-                }));
-            } catch (err) {
-                console.log(err.message || "Something went wrong");
-                showNotification("Invalid Domain Name :" + err.message)
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (!targetInfos[domain]) {
-            fetchTargetInfo();
-            setLoading(true);
-        } else {
-            setLoading(false);
+        if (!data[domain] && !isLoading) {
+            console.log("Hello from target Info")
+            dispatch(fetchTargetInfo(domain))
         }
 
     }, [domain]);
+
+    useEffect(() => {
+        if (isError) {
+            showNotification("Invalid Domain Name: " + isError);
+        }
+    }, [isError, showNotification]);
+
 
     return (
         <Box sx={{ color: "#fff" }}>
@@ -61,7 +51,7 @@ function TargetInfo() {
                 </Box>
                 <Box sx={{ mt: 4 }}>
                     {
-                        loading ? (
+                        isLoading ? (
                             <Loading logo={Logo} size={80} animation="zoom" />
                         ) : (
                             <Box sx={{ flexGrow: 1, mt: 2 }}>

@@ -3,29 +3,26 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
-import Footer from "../Components/footer";
-import api from "../api/axios_token.jsx";
 import Logo from "../Images/logo3.png";
 import Loading from "../Components/Loading.jsx";
 import { useParams } from "react-router-dom";
-import { useSubdomain } from "../contexts/SubdomainContext";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import { CircularProgress } from '@mui/material';
-
-function createData(url, status) {
-    return { url, status };
-}
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSubdomains, fetchSubdomainStatus } from "../features/subdomainSlice";
 
 function Subdomain() {
-    const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchQuery, setSearchQuery] = useState('');
     const { domain } = useParams();
-    const { subdomains, addSubdomains, setSubdomains } = useSubdomain();
-    const [loading, setLoading] = useState(true);
-    const [loadingRow, setLoadingRow] = useState(null);
     const { showNotification } = useNotification();
+    const { data,loading,error,loadingRow} = useSelector(state => state.subdomains)
+    const dispatch = useDispatch();
+
+    const subdomains = data[domain]?.data || [];
+    const isLoading = loading[domain]
+    const isError = error[domain]
 
     // Handle page change
     const handleChangePage = (event, newPage) => {
@@ -46,80 +43,42 @@ function Subdomain() {
 
     // Filter rows based on search query (memoized for optimization)
     const filteredRows = useMemo(() => {
-        return rows.filter((row) => {
+        return subdomains.filter((row) => {
             const url = row.url?.toLowerCase() || ""; // Ensure row.url is defined
             const status = row.status?.toString() || "--"; // Ensure row.status is defined
 
             return url.includes(searchQuery.toLowerCase()) || status.includes(searchQuery);
         });
-    }, [searchQuery, rows]);
+    }, [searchQuery, subdomains]);
 
 
     // Paginate filtered rows (memoized for optimization)
     const paginatedRows = useMemo(() => {
+        if (!Array.isArray(filteredRows)) return [];
         const startIndex = page * rowsPerPage;
         const endIndex = startIndex + rowsPerPage;
         return filteredRows.slice(startIndex, endIndex);
     }, [page, rowsPerPage, filteredRows]);
 
     useEffect(() => {
-        const fetchSubdomains = async () => {
-            try {
-                console.log("Hello from subdomain")
-                const response = await api.get(`/new_subdomain?domain=${domain}`);
-                const newRows = response.data?.["subdomains"]?.map((data) => createData(data, "--"));
-                setRows(newRows);
 
-                addSubdomains(domain, newRows);
-            } catch (err) {
-                console.error(err.message || "Something went wrong");
-                showNotification("Error Occured in Subdomain Enumeration,Error is " + err.message)
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (!subdomains[domain]) {
-            fetchSubdomains();
-            setLoading(true);
-        } else {
-            setRows(subdomains[domain]);
-            setLoading(false);
+        if (!data[domain] && !isLoading) {
+            console.log("Hello from subdomians")
+            dispatch(fetchSubdomains(domain));
         }
 
-    }, [domain, subdomains, addSubdomains]);
+    }, [ domain ]);
 
     const handleRowClick = (url) => {
         console.log(`Link clicked for URL: ${url}`);
-
-        const checkStatus = async () => {
-            try {
-                setLoadingRow(url);
-                const response = await api.get(`/get_status?domain=${url}`);
-                const newStatus = response?.data?.status;
-                setLoadingRow(null); 
-
-                setSubdomains((prevSubdomains) => {
-                    const updatedSubdomains = { ...prevSubdomains };
-                    if (updatedSubdomains[domain]) {
-                        updatedSubdomains[domain] = updatedSubdomains[domain].map((subdomain) =>
-                            subdomain.url === url ? { ...subdomain, status: newStatus } : subdomain
-                        );
-                    }
-                    return updatedSubdomains;
-                });
-
-                showNotification("Status Checked")
-            } catch (err) {
-                setLoadingRow(null); 
-                console.error(err.message || "Something went wrong");
-                showNotification("Error Occured in Subdomain Enumeration,Error is " + err.message)
-            }
-        }
-
-        checkStatus();
+        dispatch(fetchSubdomainStatus({ domain, url }));
     };
 
+    useEffect(() => {
+        if (isError) {
+            showNotification("Invalid Domain Name: " + isError);
+        }
+    }, [isError, showNotification]);
 
     return (
         <Box sx={{ color: "#fff" }}>
@@ -130,7 +89,7 @@ function Subdomain() {
                     </Typography>
                 </Box>
                 {
-                    loading ? (
+                    isLoading ? (
                         <Loading logo={Logo} size={80} animation="zoom" />
                     ) : (
                         <Paper sx={{ backgroundColor: "#333333", border: "none", color: "#ffffff", mt: 4 }}>
@@ -195,7 +154,7 @@ function Subdomain() {
                                                     </a>
                                                 </TableCell>
                                                 <TableCell sx={{ color: "#ffffff" }}>
-                                                    {loadingRow === row.url ? (
+                                                    {loadingRow[domain] === row.url ? (
                                                         <CircularProgress size={16} sx={{ color: "#ffffff" }} />
                                                     ) : (
                                                         row.status
