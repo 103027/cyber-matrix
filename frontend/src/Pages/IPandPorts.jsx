@@ -86,7 +86,7 @@ function IPandPorts() {
             dispatch(fetchIPandPorts(domain));
         }
     }, [domain, isLoading]);
-    
+
     useEffect(() => {
         if (ipandports_[domain]) {
             const newRows = ipandports_[domain]["data"]?.map((data_) => {
@@ -96,14 +96,14 @@ function IPandPorts() {
                 const server = data_.Server || "--";
                 const status = data_.State || "--";
                 const version = data_?.["Version Number"] || "--";
-    
+
                 return createData(ip, port, combined, status, server, version);
             });
-    
+
             setRows(newRows);
         }
     }, [ipandports_, domain]);
-    
+
     useEffect(() => {
         if (isError) {
             showNotification("Invalid Domain Name: " + isError);
@@ -124,64 +124,66 @@ function IPandPorts() {
                     ) : (
                         <Paper sx={{ backgroundColor: "#333333", border: "none", color: "#ffffff", mt: 2 }}>
                             <Box sx={{ display: 'flex', flexDirection: "column", alignItems: 'center', padding: '16px', backgroundColor: "#49494C", border: "1px solid #49494C", borderRadius: "20px" }}>
-                                <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                                <Box sx={{ display: 'flex', flexDirection: { xs: "column", md: "row" }, justifyContent: "space-between", width: "100%" }}>
                                     <Typography variant="h6">
                                         Apply Filter:
                                     </Typography>
                                     <Box sx={{ display: 'flex', flexDirection: "row" }}>
-                                        <Typography variant="h6">
-                                            IP:
-                                        </Typography>
-                                        <TextField
-                                            variant="outlined"
-                                            size="small"
-                                            value={ipFilter}
-                                            onChange={handleIpFilterChange}
-                                            InputProps={{
-                                                sx: {
-                                                    backgroundColor: "#26272B",
-                                                    color: "#fff",
-                                                    borderRadius: "10px",
-                                                    "&.Mui-focused": { backgroundColor: "black" },
-                                                    ml: 2,
-                                                    mr: 2
-                                                },
-                                            }}
-                                            sx={{
-                                                "& .MuiOutlinedInput-root": {
-                                                    "& fieldset": { borderColor: "#49494C" },
-                                                    "&:hover fieldset": { borderColor: "#49494C" },
-                                                    "&.Mui-focused fieldset": { borderColor: "#49494C" },
-                                                },
-                                            }}
-                                        />
-                                    </Box>
-                                    <Box sx={{ display: 'flex', flexDirection: "row" }}>
-                                        <Typography variant="h6">
-                                            Port:
-                                        </Typography>
-                                        <TextField
-                                            variant="outlined"
-                                            size="small"
-                                            value={portFilter}
-                                            onChange={handlePortFilterChange}
-                                            InputProps={{
-                                                sx: {
-                                                    backgroundColor: "#26272B",
-                                                    color: "#fff",
-                                                    borderRadius: "10px",
-                                                    "&.Mui-focused": { backgroundColor: "black" },
-                                                    ml: 2
-                                                },
-                                            }}
-                                            sx={{
-                                                "& .MuiOutlinedInput-root": {
-                                                    "& fieldset": { borderColor: "#49494C" },
-                                                    "&:hover fieldset": { borderColor: "#49494C" },
-                                                    "&.Mui-focused fieldset": { borderColor: "#49494C" },
-                                                },
-                                            }}
-                                        />
+                                        <Box sx={{ display: 'flex', flexDirection: "row" }}>
+                                            <Typography variant="h6">
+                                                IP:
+                                            </Typography>
+                                            <TextField
+                                                variant="outlined"
+                                                size="small"
+                                                value={ipFilter}
+                                                onChange={handleIpFilterChange}
+                                                InputProps={{
+                                                    sx: {
+                                                        backgroundColor: "#26272B",
+                                                        color: "#fff",
+                                                        borderRadius: "10px",
+                                                        "&.Mui-focused": { backgroundColor: "black" },
+                                                        ml: 2,
+                                                        mr: 2
+                                                    },
+                                                }}
+                                                sx={{
+                                                    "& .MuiOutlinedInput-root": {
+                                                        "& fieldset": { borderColor: "#49494C" },
+                                                        "&:hover fieldset": { borderColor: "#49494C" },
+                                                        "&.Mui-focused fieldset": { borderColor: "#49494C" },
+                                                    },
+                                                }}
+                                            />
+                                        </Box>
+                                        <Box sx={{ display: 'flex', flexDirection: "row" }}>
+                                            <Typography variant="h6">
+                                                Port:
+                                            </Typography>
+                                            <TextField
+                                                variant="outlined"
+                                                size="small"
+                                                value={portFilter}
+                                                onChange={handlePortFilterChange}
+                                                InputProps={{
+                                                    sx: {
+                                                        backgroundColor: "#26272B",
+                                                        color: "#fff",
+                                                        borderRadius: "10px",
+                                                        "&.Mui-focused": { backgroundColor: "black" },
+                                                        ml: 2
+                                                    },
+                                                }}
+                                                sx={{
+                                                    "& .MuiOutlinedInput-root": {
+                                                        "& fieldset": { borderColor: "#49494C" },
+                                                        "&:hover fieldset": { borderColor: "#49494C" },
+                                                        "&.Mui-focused fieldset": { borderColor: "#49494C" },
+                                                    },
+                                                }}
+                                            />
+                                        </Box>
                                     </Box>
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", width: "100%", mt: 2 }}>
