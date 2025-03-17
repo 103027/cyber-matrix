@@ -17,6 +17,8 @@ import IPandPorts from "./Pages/IPandPorts";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import PrivateRoute from "../src/Authorization/PrivateRoute.jsx";
 import AssetEnumeration from "./Pages/AssetEnumeration.jsx";
+import PentestingTools from "./Pages/PentestingTools.jsx";
+import SipCalc from "./Pages/SipCalc.jsx";
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
                 <Route path="/:domain/subdomainenumeration" element={<Subdomain />} />
                 <Route path="/:domain/ipandports" element={<IPandPorts />} />
                 <Route path="/:domain/assetenumeration" element={<AssetEnumeration />} />
+                <Route path="/:domain/pentestingtools" element={<PentestingTools />} />
+                <Route path="/:domain/pentestingtools/sipcalc" element={<SipCalc />} />
               </Route>
             </Route>
             <Route path="*" element={<NoPage />} />

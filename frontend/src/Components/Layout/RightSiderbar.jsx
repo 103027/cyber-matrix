@@ -25,7 +25,7 @@ function RightSideBar({ isMobile }) {
         { text: "Subdomain Enumeration", icon: <FormatListBulletedIcon />, navigateto: `${domain}/subdomainenumeration` },
         { text: "IP & Ports", icon: <AttachFileIcon />, navigateto: `${domain}/ipandports` },
         { text: "Asset Enumeration", icon: <FingerprintIcon />, navigateto: `${domain}/assetenumeration` },
-        { text: "Pentesting Tools", icon: <LanguageIcon />, navigateto: `${domain}/ipandports` },
+        { text: "Pentesting Tools", icon: <LanguageIcon />, navigateto: `${domain}/pentestingtools` },
         { text: "Network Scanning", icon: <SignalCellularAltIcon />, navigateto: `${domain}/ipandports` },
         { text: "CVE Reporting", icon: <SearchIcon />, navigateto: `${domain}/ipandports` },
         { text: "Password Cracking", icon: <LockOpenIcon />, navigateto: `${domain}/ipandports` },
