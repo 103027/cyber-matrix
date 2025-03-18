@@ -12,6 +12,7 @@ import { removeSubdomains, clearAllSubdomains } from "../../features/subdomainSl
 import { removeIPandPorts, clearAllIPandPorts } from "../../features/ipandportsSlice.js";
 import { useDispatch } from "react-redux";
 import { removeSipCalc, clearAllSipCalc } from '../../features/sipcalcSlice.js';
+import { removeCVE, clearAllCVE } from '../../features/cveSlice.js';
 
 function AppLayout() {
     const [username, setUsername] = useState("");
@@ -72,6 +73,7 @@ function AppLayout() {
         dispatch(clearAllSubdomains());
         dispatch(clearAllTargetInfo());
         dispatch(clearAllSipCalc());
+        dispatch(clearAllCVE());
     };
 
     const handleLogout = () => {
@@ -109,6 +111,7 @@ function AppLayout() {
         dispatch(removeSubdomains(removedTab.label));
         dispatch(removeIPandPorts(removedTab.label));
         dispatch(removeSipCalc(removedTab.label));
+        dispatch(removeCVE(removedTab.label));
         if (value === index) {
             setValue(0);
             navigate("/Dashboard");

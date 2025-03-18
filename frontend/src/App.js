@@ -19,6 +19,9 @@ import PrivateRoute from "../src/Authorization/PrivateRoute.jsx";
 import AssetEnumeration from "./Pages/AssetEnumeration.jsx";
 import PentestingTools from "./Pages/PentestingTools.jsx";
 import SipCalc from "./Pages/SipCalc.jsx";
+import CVE from "./Pages/CVE.jsx";
+import PasswordCracking from "./Pages/PasswordCrack.jsx";
+import NetworkScanning from "./Pages/NetworkScanning.jsx";
 
 function App() {
   return (
@@ -41,6 +44,9 @@ function App() {
                 <Route path="/:domain/assetenumeration" element={<AssetEnumeration />} />
                 <Route path="/:domain/pentestingtools" element={<PentestingTools />} />
                 <Route path="/:domain/pentestingtools/sipcalc" element={<SipCalc />} />
+                <Route path="/:domain/cvereporting" element={<CVE />} />
+                <Route path="/:domain/networkscanning" element={<NetworkScanning />} />
+                <Route path="/:domain/passwordcracking" element={<PasswordCracking />} />
               </Route>
             </Route>
             <Route path="*" element={<NoPage />} />

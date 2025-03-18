@@ -3,6 +3,7 @@ import targetInfoReducer from '../features/targetInfoSlice'
 import subdomainsReducer from '../features/subdomainSlice'
 import ipandportsRuducer from '../features/ipandportsSlice'
 import sipcalcReducer from '../features/sipcalcSlice'
+import cveReducer from '../features/cveSlice'
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         subdomains: subdomainsReducer,
         ipandports: ipandportsRuducer,
         sipcalc: sipcalcReducer,
+        cve: cveReducer
     }
 });
 
