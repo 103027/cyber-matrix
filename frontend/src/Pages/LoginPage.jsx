@@ -251,7 +251,7 @@ function Login() {
                         Sign in ➔
                     </Button>
 
-                    <Typography variant="body2" align="end" mt={2} style={{ color: "#D9D9D9" }}>
+                    <Typography variant="body2" align="right" mt={2} style={{ color: "#D9D9D9" }}>
                         <Link onClick={() => navigate("/forgotpassword")} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer" }}>
                             Forgot Password?
                         </Link>{" "}

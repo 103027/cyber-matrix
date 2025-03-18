@@ -98,7 +98,7 @@ function LeftSidebar(props) {
                     </List>
                 </Box>
                 <Tooltip title="Logout">
-                    <Box p={1} width="100%" textAlign="center" mt={"auto"} onClick={() => props.handleLogout()} sx={{ cursor: "pointer" }}>
+                    <Box p={1} width="100%" textAlign="center" mt={"auto"} sx={{ cursor: "pointer" }}>
                         <ListItem disablePadding>
                             <ListItemButton
                                 sx={{
@@ -107,7 +107,7 @@ function LeftSidebar(props) {
                                     bgcolor: "#333333",
                                     borderRadius: 2,
                                     ml: 1,
-                                    width: props.open ? 0 : 50,
+                                    width: props.open ? "auto" : 50,
                                     mr: props.open ? 2 : 3,
                                     mb: 2
                                 }}
@@ -121,15 +121,14 @@ function LeftSidebar(props) {
                                     props.open && (
                                         <>
                                             <Typography variant="body2" fontWeight="bold">{props.username}</Typography>
-                                            <ListItemIcon sx={{ minWidth: 0, ml: props.open ? 3 : "auto", justifyContent: "center" }}>
+                                            <Box sx={{ minWidth: 0, ml: props.open ? 3 : "auto", justifyContent: "center" }}>
                                                 <LogoutIcon color="action" fontSize="small" />
-                                            </ListItemIcon>
+                                            </Box>
                                         </>
                                     )
                                 }
                             </ListItemButton>
                         </ListItem>
-
                     </Box>
                 </Tooltip>
             </Drawer>

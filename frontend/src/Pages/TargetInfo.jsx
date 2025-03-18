@@ -160,7 +160,7 @@ function TargetInfo() {
                                                 {
                                                     targetInfos[domain]?.["DNS"]?.map((dnsEntry, index) => {
                                                         return (
-                                                            <Box display="flex" justifyContent="space-between" mb={1}>
+                                                            <Box key={`dns-${index}`} display="flex" justifyContent="space-between" mb={1}>
                                                                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                                     {index + 1}
                                                                 </Typography>
@@ -203,7 +203,7 @@ function TargetInfo() {
                                                     {
                                                         targetInfos[domain]?.["Robot"]?.map((dnsEntry, index) => {
                                                             return (
-                                                                <Box display="flex" justifyContent="space-between" mb={1}>
+                                                                <Box key={`robot-${index}`} display="flex" justifyContent="space-between" mb={1}>
                                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                                         {index + 1}
                                                                     </Typography>
@@ -243,7 +243,7 @@ function TargetInfo() {
                                                 {
                                                     targetInfos[domain]?.["IP"]?.map((ipEntry, index) => {
                                                         return (
-                                                            <Box display="flex" justifyContent="space-between" mb={1}>
+                                                            <Box key={`ip-${index}`} display="flex" justifyContent="space-between" mb={1}>
                                                                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                                     {index + 1}
                                                                 </Typography>

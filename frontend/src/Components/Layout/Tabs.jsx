@@ -86,16 +86,28 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                                             textOverflow: "ellipsis",
                                         }}>{tab.label}</Typography>
                                         {value === index + 1 && ( // Display Close button only for selected tab
-                                            <IconButton
-                                                size="small"
+                                            <Box
+                                                component="div"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     handleRemoveTab(index + 1);
                                                 }}
-                                                sx={{ ml: 1, color: "#aaa" }}
+                                                sx={{
+                                                    ml: 1,
+                                                    color: "#aaa",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    padding: "4px",
+                                                    borderRadius: "50%",
+                                                    "&:hover": {
+                                                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                                                        cursor: "pointer"
+                                                    }
+                                                }}
                                             >
                                                 <CloseIcon fontSize="small" />
-                                            </IconButton>
+                                            </Box>
                                         )}
                                     </Box>
                                 }
@@ -160,7 +172,7 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                             ml: 2,
                         }}
                     />
-                    <KeyboardReturnIcon onClick={handleAddTabSubmit} sx={{color:"whitesmoke"}}/>
+                    <KeyboardReturnIcon onClick={handleAddTabSubmit} sx={{ color: "whitesmoke" }} />
                 </Box>
             </Dialog>
         </Box>
