@@ -201,18 +201,19 @@ function CVE() {
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead>
                                         <TableRow sx={{ backgroundColor: "#444444", fontWeight: "bold" }}>
-                                            <TableCell sx={{ color: "#ffffff" }}>CVE ID</TableCell>
-                                            <TableCell sx={{ color: "#ffffff" }}>Severity</TableCell>
+                                            <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>CVE ID</TableCell>
+                                            <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>Severity</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {paginatedRows.map((row, index) => (
                                             <TableRow key={`${row.url}-${page}-${index}`}>
-                                                <TableCell sx={{ color: "#ffffff" }} component="th" scope="row">
+                                                <TableCell sx={{ color: "#ffffff", textAlign: "center" }} component="th" scope="row">
                                                     {row?.["CVE ID"]}
                                                 </TableCell>
                                                 <TableCell
                                                     sx={{
+                                                        textAlign: "center",
                                                         color:
                                                             row.Severity === "HIGH"
                                                                 ? "red"
@@ -225,7 +226,6 @@ function CVE() {
                                                 >
                                                     {row.Severity?.charAt(0).toUpperCase() + row.Severity?.slice(1).toLowerCase()}
                                                 </TableCell>
-
                                             </TableRow>
                                         ))}
                                     </TableBody>
