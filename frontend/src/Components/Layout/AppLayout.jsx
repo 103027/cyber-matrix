@@ -13,6 +13,7 @@ import { removeIPandPorts, clearAllIPandPorts } from "../../features/ipandportsS
 import { useDispatch } from "react-redux";
 import { removeSipCalc, clearAllSipCalc } from '../../features/sipcalcSlice.js';
 import { removeCVE, clearAllCVE } from '../../features/cveSlice.js';
+import { useTheme } from "../../contexts/theme/ThemeContext.jsx";
 
 function AppLayout() {
     const [username, setUsername] = useState("");
@@ -38,6 +39,7 @@ function AppLayout() {
     const [inputValue, setInputValue] = useState("");
     const isMobile = useMediaQuery("(max-width: 700px)");
     const dispatch = useDispatch()
+    const { theme } = useTheme();
 
     const getName = (tabName) => {
         if (tabName) {
@@ -147,23 +149,23 @@ function AppLayout() {
     }, []);
 
     return (
-        <Box sx={{ backgroundColor: "#333333", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ backgroundColor: theme.background, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
             <Box sx={{
                 width: "100%", position: "sticky",
                 top: 0,
                 zIndex: 1000,
             }}>
-                <MainTabs tabs={tabs} value={value} setValue={setValue} navigate={navigate} handleChange={handleChange} handleRemoveTab={handleRemoveTab} handleAddTab={handleAddTab} openModal={openModal} handleModalClose={handleModalClose} inputValue={inputValue} setInputValue={setInputValue} handleAddTabSubmit={handleAddTabSubmit} />
+                <MainTabs tabs={tabs} value={value} setValue={setValue} navigate={navigate} handleChange={handleChange} handleRemoveTab={handleRemoveTab} handleAddTab={handleAddTab} openModal={openModal} handleModalClose={handleModalClose} inputValue={inputValue} setInputValue={setInputValue} handleAddTabSubmit={handleAddTabSubmit} theme={theme}/>
             </Box>
 
             <Box sx={{ display: "flex", flexGrow: 1 }}>
                 <Box>
-                    <LeftSidebar getName={getName} username={username} handleLogout={handleLogout} openWhenTempDrawer={openWhenTempDrawer} open={open} handleToggle={handleToggle} handleToggleWhenTempDrawer={handleToggleWhenTempDrawer} setOpenWhenTempDrawer={setOpenWhenTempDrawer} />
+                    <LeftSidebar getName={getName} username={username} handleLogout={handleLogout} openWhenTempDrawer={openWhenTempDrawer} open={open} handleToggle={handleToggle} handleToggleWhenTempDrawer={handleToggleWhenTempDrawer} setOpenWhenTempDrawer={setOpenWhenTempDrawer} theme={theme}/>
                 </Box>
                 <Box
                     sx={{
                         flexGrow: 1,
-                        backgroundColor: "#333333",
+                        backgroundColor: theme.background,
                         padding: 5,
                         overflow: "auto",
                         height: "calc(100vh - 60px)",
@@ -175,13 +177,13 @@ function AppLayout() {
                     <Outlet />
                     {shouldDisplayRightSidebar && isMobile && (
                         <Box sx={{ width: "100px", flexShrink: 0, mt: 7 }}>
-                            <RightSideBar isMobile={isMobile} />
+                            <RightSideBar isMobile={isMobile} theme={theme}/>
                         </Box>
                     )}
                 </Box>
                 {shouldDisplayRightSidebar && !isMobile && (
                     <Box sx={{ width: "100px", flexShrink: 0 }}>
-                        <RightSideBar isMobile={isMobile} />
+                        <RightSideBar isMobile={isMobile} theme={theme}/>
                     </Box>
                 )}
             </Box>

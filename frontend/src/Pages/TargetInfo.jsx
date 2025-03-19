@@ -6,13 +6,15 @@ import Logo from "../Images/logo3.png";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTargetInfo } from "../features/targetInfoSlice";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function TargetInfo() {
     const { data, loading, error } = useSelector((state) => state.targetInfo);
     const { domain } = useParams();
     const { showNotification } = useNotification();
     const dispatch = useDispatch();
-    
+    const { theme } = useTheme();
+
     const targetInfos = data;
     const isLoading = loading[domain];
     const isError = error[domain];
@@ -34,9 +36,9 @@ function TargetInfo() {
 
 
     return (
-        <Box sx={{ color: "#fff" }}>
+        <Box sx={{ color: theme.text }}>
             <Box
-                sx={{ display: "flex", flexDirection: "column" }}
+                sx={{ display: "flex", flexDirection: "column", p:2, borderRadius:"20px", backgroundColor: theme.bg_behind_boxes }}
             >
                 <Box>
                     <Typography
@@ -60,8 +62,8 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -138,8 +140,8 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -151,7 +153,7 @@ function TargetInfo() {
                                                 >
                                                     DNS Names
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -175,8 +177,8 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -188,7 +190,7 @@ function TargetInfo() {
                                                 >
                                                     Robots
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -221,8 +223,8 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -234,7 +236,7 @@ function TargetInfo() {
                                                 >
                                                     IPs
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -258,8 +260,8 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -288,8 +290,8 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -301,7 +303,7 @@ function TargetInfo() {
                                                 >
                                                     Organisation
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -318,8 +320,8 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -331,7 +333,7 @@ function TargetInfo() {
                                                 >
                                                     Issuer Organisation
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>

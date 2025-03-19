@@ -8,14 +8,16 @@ import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 import Footer from "../Components/footer";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function Dashboard() {
     const isSmallScreen = useMediaQuery("(max-width:600px)");
-    
+    const { theme } = useTheme();
+
     return (
-        <Box sx={{ color: "#fff" }}>
+        <Box sx={{ color: theme.text }}>
             <Box
-                sx={{ display: "flex", flexDirection: "column" }}
+                sx={{ display: "flex", flexDirection: "column", p:2, borderRadius:"20px", backgroundColor: theme.bg_behind_boxes }}
             >
                 <Box>
                     <Typography
@@ -45,8 +47,8 @@ function Dashboard() {
                             <Grid item xs={12} sm={12} md={12} lg={7}>
                                 <Box
                                     sx={{
-                                        backgroundColor: "#49494C",
-                                        color: "#FFF",
+                                        backgroundColor: theme.box_bg,
+                                        color: theme.secondary_text,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -77,8 +79,8 @@ function Dashboard() {
                             <Grid item xs={12} sm={12} md={12} lg={5}>
                                 <Box
                                     sx={{
-                                        backgroundColor: "#49494C",
-                                        color: "#FFF",
+                                        backgroundColor: theme.box_bg,
+                                        color: theme.secondary_text,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -109,8 +111,8 @@ function Dashboard() {
                             <Grid item xs={12} sm={12} md={12} lg={3.5}>
                                 <Box
                                     sx={{
-                                        backgroundColor: "#49494C",
-                                        color: "#FFF",
+                                        backgroundColor: theme.box_bg,
+                                        color: theme.secondary_text,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -141,8 +143,8 @@ function Dashboard() {
                             <Grid item xs={12} sm={12} md={12} lg={3.5}>
                                 <Box
                                     sx={{
-                                        backgroundColor: "#49494C",
-                                        color: "#FFF",
+                                        backgroundColor: theme.box_bg,
+                                        color: theme.secondary_text,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -174,8 +176,8 @@ function Dashboard() {
                             <Grid item xs={12} sm={12} md={12} lg={5}>
                                 <Box
                                     sx={{
-                                        backgroundColor: "#49494C",
-                                        color: "#FFF",
+                                        backgroundColor: theme.box_bg,
+                                        color: theme.secondary_text,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -223,8 +225,8 @@ function Dashboard() {
                             <Grid item xs={12} sm={12} md={12} lg={5.5}>
                                 <Box
                                     sx={{
-                                        backgroundColor: "#49494C",
-                                        color: "#FFF",
+                                        backgroundColor: theme.box_bg,
+                                        color: theme.secondary_text,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -258,8 +260,8 @@ function Dashboard() {
                             <Grid item xs={12} sm={12} md={12} lg={6.5}>
                                 <Box
                                     sx={{
-                                        backgroundColor: "#49494C",
-                                        color: "#FFF",
+                                        backgroundColor: theme.box_bg,
+                                        color: theme.secondary_text,
                                         borderRadius: "8px",
                                         display: "flex",
                                         flexDirection: "column",
@@ -286,7 +288,8 @@ function Dashboard() {
                                             ml:{xs:10,sm:0},
                                             "& .MuiChartsLegend-root": {
                                                 display: { xs: "none", sm: "flex" },
-                                            },
+                                                color: theme.secondary_text,
+                                            }
                                         }}
                                         height={isSmallScreen ? 380 : 300}
                                     />

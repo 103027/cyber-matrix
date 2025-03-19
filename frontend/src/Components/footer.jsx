@@ -1,12 +1,15 @@
 import React from "react";
 import { Box, Typography } from '@mui/material';
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function Footer() {
+    const { theme } = useTheme();
+
     return (
-        <Box sx={{ color: "#fff", paddingY: "50px" }}>
+        <Box sx={{ color: theme.secondary_text, paddingY: "50px" }}>
             <Box
                 sx={{
-                    backgroundColor: "#49494C",
+                    backgroundColor: theme.drawer_background,
                     width: "100%",
                     borderRadius: "20px",
                     display: "flex",

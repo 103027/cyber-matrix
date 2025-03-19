@@ -36,8 +36,8 @@ function LeftSidebar(props) {
                         width: props.open ? 200 : 80,
                         height: "87vh",
                         transition: "width 0.3s ease",
-                        backgroundColor: "#49494C",
-                        color: "#fff",
+                        backgroundColor: props.theme.drawer_background,
+                        color: props.theme.secondary_text,
                         overflowX: "hidden",
                         borderTopRightRadius: "20px",
                         borderBottomRightRadius: "20px",
@@ -74,7 +74,7 @@ function LeftSidebar(props) {
                                     <ListItemIcon
                                         sx={{
                                             color: "#fff",
-                                            bgcolor: "#333333",
+                                            bgcolor: props.theme.bg_list_Item_Icon,
                                             borderRadius: 2,
                                             padding: 1,
                                             minWidth: 30,
@@ -104,7 +104,7 @@ function LeftSidebar(props) {
                                 sx={{
                                     justifyContent: props.open ? "initial" : "center",
                                     px: 1,
-                                    bgcolor: "#333333",
+                                    bgcolor: props.theme.bg_list_Item_Icon,
                                     borderRadius: 2,
                                     ml: 1,
                                     width: props.open ? "auto" : 50,
@@ -141,9 +141,9 @@ function LeftSidebar(props) {
                             position: "fixed",
                             right: props.openWhenTempDrawer ? -12 : -12,
                             top: props.openWhenTempDrawer ? 130 : 130,
-                            backgroundColor: "#26272B",
+                            backgroundColor: props.theme.bg_arrow,
                             "&:hover": {
-                                backgroundColor: "#3A3B40",
+                                backgroundColor: props.theme.bg_arrow_hover,
                             },
                             width: 30,
                             height: 30,
@@ -164,9 +164,9 @@ function LeftSidebar(props) {
                             position: "fixed",
                             right: props.open ? -12 : -12,
                             top: 130,
-                            backgroundColor: "#26272B",
+                            backgroundColor: props.theme.bg_arrow,
                             "&:hover": {
-                                backgroundColor: "#3A3B40",
+                                backgroundColor: props.theme.bg_arrow_hover,
                             },
                             width: 20,
                             height: 20,

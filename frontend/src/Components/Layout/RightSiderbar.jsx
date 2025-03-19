@@ -11,7 +11,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import { useLocation } from "react-router-dom";
 
-function RightSideBar({ isMobile }) {
+function RightSideBar({ isMobile, theme }) {
     const navigate = useNavigate();
     const { domain } = useParams();
     const location = useLocation();
@@ -74,9 +74,9 @@ function RightSideBar({ isMobile }) {
                     bottom: isMobile ? 5 : "auto",
                     transform: isMobile ? "translateX(50%)" : "translateY(-60%)",
                     width: isMobile ? "60vw" : "60px",
-                    backgroundColor: "#49494C",
+                    backgroundColor: theme.drawer_background,
                     padding: "20px",
-                    border: "2px solid #3a3a3a",
+                    border: "2px solid " + theme.right_sidebar_border,
                     borderRadius: "20px",
                     display: "flex",
                     flexDirection: isMobile ? "row" : "column",
@@ -107,7 +107,7 @@ function RightSideBar({ isMobile }) {
                                     width: "8px",
                                     height: "8px",
                                     borderRadius: "50%",
-                                    backgroundColor: scrollProgress >= index ? "#fff" : "#666",
+                                    backgroundColor: scrollProgress >= index ? theme.scroll_1 : theme.scroll_2,
                                 }}
                             />
                         ))}
@@ -142,7 +142,7 @@ function RightSideBar({ isMobile }) {
                                     <ListItemIcon
                                         sx={{
                                             color: "#fff",
-                                            bgcolor: selectedItem === item.navigateto.split("/")[1] ? "#333333" : "transparent",
+                                            bgcolor: selectedItem === item.navigateto.split("/")[1] ? theme.bg_list_Item_Icon : "transparent",
                                             borderRadius: 2,
                                             padding: 1,
                                             minWidth: 30,
