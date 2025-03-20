@@ -136,7 +136,7 @@ function ContactUs() {
                     }}
                 >
                     <img
-                        src={require("../Images/try3.png")}
+                        src={require(theme.background === "#333333" ? "../Images/try3.png" : theme.background === "#000000" ? "../Images/try3_hacker.png" : "../Images/try3_light.png")}
                         alt="Cyber-Matrix Logo"
                         style={{ width: "100%", maxWidth: "380px" }}
                     />

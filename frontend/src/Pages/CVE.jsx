@@ -3,6 +3,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TextField, Button, Typography, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
 import Logo from "../Images/logo3.png";
+import Logo_light from "../Images/logo3_light.png";
+import Logo_hacker from "../Images/logo_hacker.png";
 import Loading from "../Components/Loading.jsx";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,7 +105,7 @@ function CVE() {
                 </Box>
                 {
                     isLoading ? (
-                        <Loading logo={Logo} size={80} animation="zoom" />
+                        <Loading logo={theme.background === "#333333" ? Logo : theme.background === "#000000" ? Logo_hacker : Logo_light} size={80} animation="zoom" />
                     ) : (
                         <Paper sx={{ backgroundColor: theme.bg_behind_boxes, border: "1px solid " + theme.bg_behind_boxes , color: theme.secondary_text, mt: 2 }}>
                             <Box sx={{ display: 'flex', flexDirection: "column", alignItems: 'center', padding: '16px', backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg_border, borderRadius: "20px" }}>

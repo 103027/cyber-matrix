@@ -3,6 +3,8 @@ import { Box, Typography, Grid, } from "@mui/material";
 import { useParams } from "react-router-dom";
 import Loading from "../Components/Loading.jsx";
 import Logo from "../Images/logo3.png";
+import Logo_light from "../Images/logo3_light.png";
+import Logo_hacker from "../Images/logo_hacker.png";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTargetInfo } from "../features/targetInfoSlice";
@@ -54,7 +56,7 @@ function TargetInfo() {
                 <Box sx={{ mt: 4 }}>
                     {
                         isLoading ? (
-                            <Loading logo={Logo} size={80} animation="zoom" />
+                            <Loading logo={theme.background === "#333333" ? Logo : theme.background === "#000000" ? Logo_hacker : Logo_light} size={80} animation="zoom" />
                         ) : (
                             <Box sx={{ flexGrow: 1, mt: 2 }}>
                                 <Grid container spacing={3}>

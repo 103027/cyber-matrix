@@ -49,7 +49,7 @@ function LeftSidebar(props) {
                 <Box display="flex" flexDirection="column" alignItems="center" p={1}>
                     <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" px={1} sx={{ position: "relative" }}>
                         <Box display="flex" alignItems="center" mt={2}>
-                            <img onClick={() => { openTab("Dashboard") }} src={require("../../Images/logo2.png")} alt="Cyber-Matrix Logo" style={{ width: "60px", marginBottom: "10px" }} />
+                            <img onClick={() => { openTab("Dashboard") }} src={require(props.theme.background === "#333333" ? "../../Images/logo2.png" : props.theme.background === "#000000" ? "../../Images/logo_hacker.png" : "../../Images/logo2_light.png")} alt="Cyber-Matrix Logo" style={{ width: "60px", marginBottom: "10px" }} />
                             {props.open && (
                                 <Typography variant="h6" noWrap mb={1} sx={{ fontWeight: 'bold' }}>
                                     yber-Matrix

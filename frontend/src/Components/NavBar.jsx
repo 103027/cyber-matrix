@@ -80,7 +80,7 @@ function NavBar({ navigate, scrollToSection, toggleDrawer, drawerOpen }) {
                 <Container maxWidth="xl">
                     <Toolbar disableGutters sx={{ padding: { xs: "40px 20px", md: "40px 100px" } }}>
                         <img
-                            src={require("../Images/logo.png")}
+                            src={require(theme.background === "#333333" ? "../Images/logo.png" : theme.background === "#000000" ? "../Images/logo_hacker.png" : "../Images/logo2_light.png")}
                             alt="Cyber-Matrix Logo"
                             style={{ width: "50px", marginBottom: "10px" }}
                         />

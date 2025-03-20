@@ -69,7 +69,7 @@ function HeroSection() {
                 >
                     {/* Logo */}
                     <img
-                        src={require("../Images/name.png")}
+                        src={require(theme.background === "#333333" ? "../Images/name.png" : theme.background === "#000000" ? "../Images/name_hacker.png" : "../Images/name_light.png")}
                         alt="Cyber-Matrix name"
                         style={{
                             width: "300px",

@@ -93,7 +93,7 @@ function ForgotPasword() {
                 >
                     <Box onClick={() => navigate("/")} sx={{ display: { xs: "flex", md: "none" }, flexDirection: "column", alignItems: "center", cursor: "pointer" }}>
                         <img
-                            src={require("../Images/logo3.png")}
+                            src={require(theme.background === "#333333" ? "../Images/logo3.png" : theme.background === "#000000" ? "../Images/logo_hacker.png" : "../Images/logo_light_.png")}
                             alt="Cyber-Matrix Logo"
                             style={{ width: "120px", marginBottom: "50px" }}
                         />
@@ -128,7 +128,7 @@ function ForgotPasword() {
                             open={isSubmitted && (!formValues["email"] || !isValidEmail)}
                         >
                             <TextField
-                                name = "email"
+                                name="email"
                                 placeholder="Enter your email address"
                                 variant="outlined"
                                 fullWidth
@@ -147,7 +147,7 @@ function ForgotPasword() {
                                 sx={{
                                     "& .MuiOutlinedInput-root": {
                                         "& fieldset": {
-                                            border: "1px solid " + theme.text, 
+                                            border: "1px solid " + theme.text,
                                             borderColor: theme.text,
                                         },
                                         "&:hover fieldset": {
@@ -217,14 +217,14 @@ function ForgotPasword() {
                     borderBottomLeftRadius: { md: "30px" },
                 }}
             >
-                <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center",cursor:"pointer" }}>
+                <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer" }}>
                     <img
-                        src={require("../Images/logo.png")}
+                        src={require(theme.background === "#333333" ? "../Images/logo.png" : theme.background === "#000000" ? "../Images/logo_hacker.png" : "../Images/logo2_light.png")}
                         alt="Cyber-Matrix Logo"
                         style={{ width: "150px", marginBottom: "10px" }}
                     />
                     <img
-                        src={require("../Images/name.png")}
+                        src={require(theme.background === "#333333" ? "../Images/name.png" : theme.background === "#000000" ? "../Images/name_hacker.png" : "../Images/name_light.png")}
                         alt="Cyber-Matrix name"
                         style={{ width: "300px", marginBottom: "10px" }}
                     />
