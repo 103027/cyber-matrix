@@ -8,7 +8,7 @@ import ForgotPasword from "./Pages/ForgotPassword.jsx";
 import AppLayout from "./Components/Layout/AppLayout.jsx";
 import NoPage from "./Pages/404Page";
 import Dashboard from "./Pages/Dashboard.jsx";
-import History from "./Components/History";
+import History from "./Components/History.jsx";
 import Settings from "./Components/Settings";
 import LandingPage from "./Pages/LandingPage.jsx";
 import TargetInfo from "./Pages/TargetInfo";

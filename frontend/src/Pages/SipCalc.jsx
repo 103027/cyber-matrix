@@ -9,6 +9,7 @@ import Logo from "../Images/logo3.png";
 import { useParams, useNavigate } from "react-router-dom";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 const adjustIP = (ip, offset) => {
     if (!ip) return "";
@@ -33,6 +34,7 @@ function SipCalc() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = React.useState("");
+    const { theme } = useTheme();
 
     const sipCalc_Data = [
         { "Host Address": data[domain]?.["Host Address"] },
@@ -81,10 +83,10 @@ function SipCalc() {
     }, [isError, showNotification]);
 
     return (
-        <Box sx={{ color: "#fff" }}>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={{ color: theme.text }}>
+            <Box sx={{ display: "flex", flexDirection: "column", p:2, borderRadius:"20px", backgroundColor: theme.bg_behind_boxes }} >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <IconButton onClick={() => navigate(-1)} sx={{ color: "white" }}>
+                    <IconButton onClick={() => navigate(-1)} sx={{ color: theme.text }}>
                         <ArrowBackIcon sx={{ fontSize: "2rem" }} />
                     </IconButton>
                     <Typography sx={{ fontWeight: "bold", fontSize: "2.5rem", fontFamily: "Poppins, sans-serif" }}>
@@ -95,8 +97,8 @@ function SipCalc() {
                     isLoading ? (
                         <Loading logo={Logo} size={80} animation="zoom" />
                     ) : (
-                        <Paper sx={{ backgroundColor: "#333333", border: "none", color: "#ffffff", mt: 4 }}>
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '16px', backgroundColor: "#49494C", border: "1px solid #49494C", borderRadius: "20px" }}>
+                        <Paper sx={{ backgroundColor: theme.bg_behind_boxes, border: "1px solid " + theme.bg_behind_boxes , color: theme.secondary_text, mt: 4 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '16px',backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg, borderRadius: "20px" }}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: "center", alignItems: "center" }}>
                                     <TextField
                                         placeholder={"Search"}
@@ -107,25 +109,25 @@ function SipCalc() {
                                         onChange={handleSearchChange}
                                         InputProps={{
                                             sx: {
-                                                backgroundColor: "#26272B",
-                                                color: "#fff",
+                                                backgroundColor: theme.filter_input_bg,
+                                                color: theme.text,
                                                 borderRadius: "10px",
-                                                "&.Mui-focused": { backgroundColor: "black" },
+                                                "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                             },
-                                            startAdornment: (<InputAdornment position="start"> <SearchIcon sx={{ color: "white" }} /> </InputAdornment>),
+                                            startAdornment: (<InputAdornment position="start"> <SearchIcon sx={{ color: theme.text }} /> </InputAdornment>),
                                         }}
                                         sx={{
                                             "& .MuiOutlinedInput-root": {
-                                                "& fieldset": { borderColor: "#49494C" },
-                                                "&:hover fieldset": { borderColor: "#49494C" },
-                                                "&.Mui-focused fieldset": { borderColor: "#49494C" },
+                                                "& fieldset": { borderColor: theme.box_bg },
+                                                "&:hover fieldset": { borderColor: theme.box_bg },
+                                                "&.Mui-focused fieldset": { borderColor: theme.box_bg },
                                             },
                                         }}
                                     />
                                 </Box>
                             </Box>
 
-                            <TableContainer sx={{ mt: 5, border: "1px solid #ffffff", borderRadius: "10px" }}>
+                            <TableContainer sx={{ mt: 5, border: "1px solid " + theme.secondary_text, borderRadius: "10px" }}>
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableBody>
                                         {filteredData.map((row, index) => {
@@ -134,10 +136,10 @@ function SipCalc() {
 
                                             return (
                                                 <TableRow key={index}>
-                                                    <TableCell sx={{ color: "#ffffff", backgroundColor: "#444444", textAlign: "center" }}>
+                                                    <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.table_head_bg, fontWeight: "bold", textAlign: "center" }}>
                                                         {key}
                                                     </TableCell>
-                                                    <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>
+                                                    <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_list_Item_Icon, textAlign: "center" }}>
                                                         {value}
                                                     </TableCell>
                                                 </TableRow>
