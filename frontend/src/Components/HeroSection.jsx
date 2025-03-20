@@ -2,9 +2,49 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function HeroSection() {
     const navigate = useNavigate();
+    const { theme } = useTheme();
+
+    const animatedButtonStyle = {
+        my: 2,
+        color: theme.text,
+        textTransform: "none",
+        border: "2px solid " + theme.get_started_button_hover,
+        borderRadius: "30px",
+        ml: 4,
+        pr: 4,
+        pl: 4,
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: theme.get_started_button_hover,
+        transition: "color 500ms ease-in-out",
+        zIndex: 1,
+    
+        "&::before": {
+            content: '""',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "200%",
+            height: "200%",
+            backgroundColor: theme.input_bg,
+            borderRadius: "50%",
+            transition: "transform 500ms ease-in-out",
+            transform: "translate(-50%, -50%) scale(1.5)",
+            zIndex: -1,
+        },
+    
+        "&:hover::before, &:focus::before": {
+            transform: "translate(-50%, -50%) scale(0)",
+        },
+    
+        "&:hover, &:focus": {
+            color: theme.input_bg,
+        },
+    };
 
     return (
         <Box>
@@ -14,10 +54,10 @@ function HeroSection() {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderBottom: "2px solid #333333",
+                    borderBottom: "2px solid " + theme.background,
                     // borderBottomLeftRadius: "50%",
                     // borderBottomRightRadius: "50%",
-                    backgroundColor: "black",
+                    backgroundColor: theme.right_grid_bg,
                     height: "70vh",
                 }}
             >
@@ -45,7 +85,7 @@ function HeroSection() {
                         sx={{
                             fontSize: "1.0rem",
                             fontWeight: 500,
-                            color: "#EFEFEF",
+                            color: theme.secondary_text,
                             marginTop: "1rem",
                             maxWidth: "800px",
                             animation: "fadeSlideIn 1.5s ease-in-out",
@@ -96,7 +136,7 @@ function HeroSection() {
                     width: 0,
                     height: 0,
                     borderRight: "100vw solid transparent",
-                    borderBottom: "6.9vw solid #333333",
+                    borderBottom: "6.9vw solid " + theme.background,
                     marginTop: "-6.9vw"
                 }}
             >
@@ -104,43 +144,5 @@ function HeroSection() {
         </Box>
     );
 }
-
-const animatedButtonStyle = {
-    my: 2,
-    color: "white",
-    textTransform: "none",
-    border: "2px solid #49494C",
-    borderRadius: "30px",
-    ml: 4,
-    pr: 4,
-    pl: 4,
-    position: "relative",
-    overflow: "hidden",
-    backgroundColor: "#b5b5b5",
-    transition: "color 500ms ease-in-out",
-    zIndex: 1,
-
-    "&::before": {
-        content: '""',
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        width: "200%",
-        height: "200%",
-        backgroundColor: "black",
-        borderRadius: "50%",
-        transition: "transform 500ms ease-in-out",
-        transform: "translate(-50%, -50%) scale(1.5)",
-        zIndex: -1,
-    },
-
-    "&:hover::before, &:focus::before": {
-        transform: "translate(-50%, -50%) scale(0)",
-    },
-
-    "&:hover, &:focus": {
-        color: "black",
-    },
-};
 
 export default HeroSection;

@@ -5,6 +5,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import api from "../api/axois.jsx";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function Login() {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isValidEmail, setIsValidEmail] = useState(false);
+    const { theme } = useTheme();
 
     const [formValues, setFormValues] = useState({
         email: "",
@@ -83,7 +85,7 @@ function Login() {
         <Grid
             container
             sx={{
-                backgroundColor: "#333",
+                backgroundColor: theme.background,
                 height: "100vh",
             }}
         >
@@ -92,7 +94,7 @@ function Login() {
                 xs={12}
                 md={6}
                 sx={{
-                    backgroundColor: "#333",
+                    backgroundColor: theme.background,
                     width: { xs: "100%", md: "auto" },
                     animation: "fadeSlideIn 0.5s ease-in-out",
                 }}
@@ -104,7 +106,7 @@ function Login() {
                         justifyContent: { sm: "none", md: "center" },
                         height: "100%",
                         px: { xs: 2, sm: 8, md: 10 },
-                        color: "#fff",
+                        color: theme.text,
                     }}
                 >
                     <Box onClick={() => navigate("/")} sx={{ display: { xs: "flex", md: "none" }, flexDirection: "column", alignItems: "center", cursor: "pointer" }}>
@@ -118,16 +120,16 @@ function Login() {
                         <Typography gutterBottom sx={{ fontSize: { xs: "1.5rem", md: "2.0rem" }, fontWeight: "bold" }}>
                             Sign in to your Account
                         </Typography>
-                        <Typography gutterBottom sx={{ color: "#D9D9D9", fontSize: "1rem" }}>
+                        <Typography gutterBottom sx={{ color: theme.text_2, fontSize: "1rem" }}>
                             Don't have an account?{" "}
-                            <Link onClick={handleClick} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer" }}>
+                            <Link onClick={handleClick} underline="hover" style={{ color: theme.text_2, fontWeight: "bold", cursor: "pointer" }}>
                                 Create a new account
                             </Link>{" "}
                         </Typography>
                     </Box>
 
                     <Box sx={{ marginBottom: 3 }}>
-                        <Typography variant="body1" color="white" sx={{ marginBottom: 1 }}>
+                        <Typography variant="body1" color= {theme.text} sx={{ marginBottom: 1 }}>
                             Email Address
                         </Typography>
                         <Tooltip
@@ -151,24 +153,27 @@ function Login() {
                                 onChange={handleInputChange}
                                 InputProps={{
                                     sx: {
-                                        backgroundColor: "#333333",
-                                        color: "#fff",
+                                        backgroundColor: theme.background,
+                                        color: theme.text,
                                         borderRadius: "10px",
                                         "&.Mui-focused": {
-                                            backgroundColor: "black",
+                                            backgroundColor: theme.input_bg,
                                         },
                                     },
                                 }}
                                 sx={{
                                     "& .MuiOutlinedInput-root": {
                                         "& fieldset": {
-                                            borderColor: "white",
+                                            border: "1px solid " + theme.text, 
+                                            borderColor: theme.text,
                                         },
                                         "&:hover fieldset": {
-                                            borderColor: "white",
+                                            border: "1px solid " + theme.text,
+                                            borderColor: theme.text,
                                         },
                                         "&.Mui-focused fieldset": {
-                                            borderColor: "#49494C",
+                                            border: "1px solid " + theme.text,
+                                            borderColor: theme.box_bg_border,
                                         },
                                     },
                                 }}
@@ -177,7 +182,7 @@ function Login() {
                     </Box>
 
                     <Box sx={{ marginBottom: 3 }}>
-                        <Typography variant="body1" color="white" sx={{ marginBottom: 1 }}>
+                        <Typography variant="body1" color={theme.text} sx={{ marginBottom: 1 }}>
                             Password
                         </Typography>
                         <Tooltip
@@ -201,28 +206,31 @@ function Login() {
                                 InputProps={{
                                     endAdornment: (
                                         <IconButton onClick={togglePasswordVisibility} edge="end">
-                                            {showPassword ? <VisibilityOff sx={{ color: "white" }} /> : <Visibility sx={{ color: "white" }} />}
+                                            {showPassword ? <VisibilityOff sx={{ color: theme.text }} /> : <Visibility sx={{ color: theme.text }} />}
                                         </IconButton>
                                     ),
                                     sx: {
-                                        backgroundColor: "#333333",
-                                        color: "#fff",
+                                        backgroundColor: theme.background,
+                                        color: theme.text,
                                         borderRadius: "10px",
                                         "&.Mui-focused": {
-                                            backgroundColor: "black",
+                                            backgroundColor: theme.input_bg,
                                         },
                                     },
                                 }}
                                 sx={{
                                     "& .MuiOutlinedInput-root": {
                                         "& fieldset": {
-                                            borderColor: "white",
+                                            border: "1px solid " + theme.text, 
+                                            borderColor: theme.text,
                                         },
                                         "&:hover fieldset": {
-                                            borderColor: "white",
+                                            border: "1px solid " + theme.text,
+                                            borderColor: theme.text,
                                         },
                                         "&.Mui-focused fieldset": {
-                                            borderColor: "#49494C",
+                                            border: "1px solid " + theme.text,
+                                            borderColor: theme.box_bg_border,
                                         },
                                     },
                                 }}
@@ -237,22 +245,23 @@ function Login() {
                         sx={{
                             mt: 2,
                             mb: 2,
-                            bgcolor: "#49494C",
+                            bgcolor: theme.box_bg,
+                            color: theme.secondary_text,
                             py: 1,
                             fontSize: "1rem",
                             borderRadius: "30px",
-                            border: "1px solid white",
+                            border: "1px solid " + theme.login_button_bg_border,
                             "&:hover": {
-                                bgcolor: "#2E2E30",
-                                border: "1px solid white",
+                                bgcolor: theme.login_button_bg_hover,
+                                border: "1px solid " + theme.text,
                             },
                         }}
                     >
                         Sign in ➔
                     </Button>
 
-                    <Typography variant="body2" align="right" mt={2} style={{ color: "#D9D9D9" }}>
-                        <Link onClick={() => navigate("/forgotpassword")} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer" }}>
+                    <Typography variant="body2" align="right" mt={2} style={{ color: theme.text_2 }}>
+                        <Link onClick={() => navigate("/forgotpassword")} underline="hover" style={{ color: theme.text_2, fontWeight: "bold", cursor: "pointer" }}>
                             Forgot Password?
                         </Link>{" "}
                     </Typography>
@@ -279,7 +288,8 @@ function Login() {
                 xs={12}
                 md={6}
                 sx={{
-                    backgroundColor: "#000",
+                    backgroundColor: theme.right_grid_bg,
+                    border: "1px solid" + theme.right_grid_bg_border,
                     display: { xs: "none", md: "flex" },
                     justifyContent: "center",
                     alignItems: "center",

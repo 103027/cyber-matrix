@@ -6,8 +6,10 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import LanguageIcon from "@mui/icons-material/Language";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function Features({featureRefs,titleRef,subtitleRef}) {
+    const { theme } = useTheme();
     const icons = [
         FormatListBulletedIcon,
         AttachFileIcon,
@@ -64,7 +66,7 @@ function Features({featureRefs,titleRef,subtitleRef}) {
     }, []);
 
     return (
-        <Box sx={{ color: "#fff", marginTop: "80px", marginX: { xs: "20px", md: "100px" } }}>
+        <Box sx={{ color: theme.text, marginTop: "80px", marginX: { xs: "20px", md: "100px" } }}>
             <style>
                 {`
                     /* Default state before animation */
@@ -113,7 +115,7 @@ function Features({featureRefs,titleRef,subtitleRef}) {
                 sx={{
                     fontSize: "1.0rem",
                     fontWeight: 500,
-                    color: "#EFEFEF",
+                    color: theme.desc_text,
                     marginTop: "1rem",
                     maxWidth: "600px",
                     margin: "0 auto",
@@ -139,8 +141,9 @@ function Features({featureRefs,titleRef,subtitleRef}) {
                             ref={(el) => (featureRefs.current[index] = el)}
                             className="feature-box fade-in-element"
                             sx={{
-                                backgroundColor: "#26272B",
-                                color: "#b5b5b5",
+                                backgroundColor: theme.box_bg_2,
+                                color: theme.drawer_lists_text_color,
+                                border: "1px solid " + theme.box_bg_2_border,
                                 borderRadius: "12px",
                                 padding: "1.5rem",
                                 textAlign: "center",
@@ -151,14 +154,14 @@ function Features({featureRefs,titleRef,subtitleRef}) {
                         >
                             <Avatar
                                 sx={{
-                                    backgroundColor: "#b5b5b5",
+                                    backgroundColor: theme.drawer_lists_text_color,
                                     margin: "0 auto",
                                     width: 56,
                                     height: 56,
                                     marginBottom: "1rem",
                                 }}
                             >
-                                <Icon fontSize="large" sx={{color:"black"}}/>
+                                <Icon fontSize="large" sx={{color:theme.input_bg}}/>
                             </Avatar>
                             <Typography
                                 variant="h6"

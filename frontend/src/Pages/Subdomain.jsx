@@ -95,7 +95,7 @@ function Subdomain() {
                         <Loading logo={Logo} size={80} animation="zoom" />
                     ) : (
                         <Paper sx={{ backgroundColor: theme.bg_behind_boxes, border: "1px solid " + theme.bg_behind_boxes , color: theme.secondary_text, mt: 4 }}>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg, borderRadius: "20px" }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg_border, borderRadius: "20px" }}>
                                 <Typography variant="h6">
                                     Subdomain Count - {filteredRows.length}
                                 </Typography>
@@ -111,6 +111,7 @@ function Subdomain() {
                                             sx: {
                                                 backgroundColor: theme.filter_input_bg,
                                                 color: theme.text,
+                                                border: "1px solid " + theme.filter_input_bg_border,
                                                 borderRadius: "10px",
                                                 "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                             },
@@ -137,27 +138,27 @@ function Subdomain() {
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead>
                                         <TableRow sx={{ backgroundColor: theme.table_head_bg, fontWeight: "bold" }}>
-                                            <TableCell sx={{ color: theme.secondary_text }}>URL</TableCell>
-                                            <TableCell sx={{ color: theme.secondary_text }}>Status</TableCell>
+                                            <TableCell sx={{ color: theme.text_3 , borderBottom: "1px solid " + theme.secondary_text}}>URL</TableCell>
+                                            <TableCell sx={{ color: theme.text_3 , borderBottom: "1px solid " + theme.secondary_text}}>Status</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {paginatedRows.map((row, index) => (
                                             <TableRow key={`${row.url}-${page}-${index}`}>
-                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_list_Item_Icon }} component="th" scope="row">
+                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_table_cell, borderBottom: "1px solid " + theme.secondary_text }} component="th" scope="row">
                                                     <a
                                                         onClick={(e) => {
                                                             e.preventDefault(); // Prevent default link behavior
                                                             handleRowClick(row.url); // Call the function and pass row.url
                                                         }}
-                                                        style={{ color: "#ffffff", textDecoration: "underline", cursor: "pointer" }}
+                                                        style={{ color: theme.secondary_text, textDecoration: "underline", cursor: "pointer" }}
                                                     >
                                                         {row.url}
                                                     </a>
                                                 </TableCell>
-                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_list_Item_Icon }}>
+                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_table_cell, borderBottom: "1px solid " + theme.secondary_text }}>
                                                     {loadingRow[domain] === row.url ? (
-                                                        <CircularProgress size={16} sx={{ color: "#ffffff" }} />
+                                                        <CircularProgress size={16} sx={{ color: theme.secondary_text }} />
                                                     ) : (
                                                         row.status
                                                     )}

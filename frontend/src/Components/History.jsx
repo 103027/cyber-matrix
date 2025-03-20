@@ -16,7 +16,7 @@ function History() {
                     </Typography>
                 </Box>
                 <Typography sx={{ fontSize: '1rem', fontFamily: 'Poppins, sans-serif' }}>
-                    The History will come here in the future.
+                    The History content will come here in the future.
                 </Typography>
             </Box>
         </Box>

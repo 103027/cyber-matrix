@@ -41,6 +41,7 @@ function LeftSidebar(props) {
                         overflowX: "hidden",
                         borderTopRightRadius: "20px",
                         borderBottomRightRadius: "20px",
+                        border: "1px solid " + props.theme.drawer_background_border,
                         marginTop: "80px",
                     },
                 }}
@@ -58,9 +59,9 @@ function LeftSidebar(props) {
                     </Box>
                     <List sx={{ width: "100%" }}>
                         {[
-                            { text: "Dashboard", icon: <DashboardIcon /> },
-                            { text: "History", icon: <HistoryIcon /> },
-                            { text: "Settings", icon: <SettingsIcon /> },
+                            { text: "Dashboard", icon: <DashboardIcon sx={{color: props.theme.text_3}}/> },
+                            { text: "History", icon: <HistoryIcon sx={{color: props.theme.text_3}}/> },
+                            { text: "Settings", icon: <SettingsIcon sx={{color: props.theme.text_3}}/> },
                         ].map((item, index) => (
                             <ListItem disablePadding sx={{ display: 'block', mb: 3 }} key={index}>
                                 <ListItemButton
@@ -75,6 +76,7 @@ function LeftSidebar(props) {
                                         sx={{
                                             color: "#fff",
                                             bgcolor: props.theme.bg_list_Item_Icon,
+                                            border: "1px solid " + props.theme.drawer_background_border,
                                             borderRadius: 2,
                                             padding: 1,
                                             minWidth: 30,
@@ -105,6 +107,7 @@ function LeftSidebar(props) {
                                     justifyContent: props.open ? "initial" : "center",
                                     px: 1,
                                     bgcolor: props.theme.bg_list_Item_Icon,
+                                    border: "1px solid " + props.theme.drawer_background_border,
                                     borderRadius: 2,
                                     ml: 1,
                                     width: props.open ? "auto" : 50,
@@ -120,9 +123,9 @@ function LeftSidebar(props) {
                                 {
                                     props.open && (
                                         <>
-                                            <Typography variant="body2" fontWeight="bold">{props.username}</Typography>
+                                            <Typography variant="body2" fontWeight="bold" sx={{ color: props.theme.text_3 }}>{props.username}</Typography>
                                             <Box sx={{ minWidth: 0, ml: props.open ? 3 : "auto", justifyContent: "center" }}>
-                                                <LogoutIcon color="action" fontSize="small" />
+                                                <LogoutIcon sx={{ color: props.theme.text_3 }} fontSize="small" />
                                             </Box>
                                         </>
                                     )
@@ -137,7 +140,7 @@ function LeftSidebar(props) {
                     <IconButton
                         onClick={props.handleToggleWhenTempDrawer}
                         sx={{
-                            color: "#fff",
+                            color: props.theme.text_3,
                             position: "fixed",
                             right: props.openWhenTempDrawer ? -12 : -12,
                             top: props.openWhenTempDrawer ? 130 : 130,
@@ -154,7 +157,7 @@ function LeftSidebar(props) {
                             transition: "left 0.3s ease" // Smooth transition
                         }}
                     >
-                        {props.openWhenTempDrawer ? <ChevronLeftIcon fontSize="medium" /> : <ChevronRightIcon fontSize="medium" />}
+                        {props.openWhenTempDrawer ? <ChevronLeftIcon sx={{ color: props.theme.text_3 }} fontSize="medium" /> : <ChevronRightIcon sx={{color: props.theme.text_3}} fontSize="medium" />}
                     </IconButton>
                     :
                     <IconButton
@@ -177,7 +180,7 @@ function LeftSidebar(props) {
                             transition: "left 0.3s ease" // Smooth transition
                         }}
                     >
-                        {props.open ? <ChevronLeftIcon fontSize="small" /> : <ChevronRightIcon fontSize="small" />}
+                        {props.open ? <ChevronLeftIcon sx={{ color: props.theme.text_3 }} fontSize="small" /> : <ChevronRightIcon sx={{ color: props.theme.text_3 }} fontSize="small" />}
                     </IconButton>
             }
         </Box>

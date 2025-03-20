@@ -7,6 +7,7 @@ import HeroSection from "../Components/HeroSection";
 import NavBar from "../Components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { scroller } from "react-scroll";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function LandingPage() {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ function LandingPage() {
     const featureRefs = useRef([]);
     const titleRef = useRef(null);
     const subtitleRef = useRef(null);
+    const { theme } = useTheme();
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -31,7 +33,7 @@ function LandingPage() {
     };
 
     return (
-        <Box sx={{ color: "#fff", backgroundColor: "#333333" }}>
+        <Box sx={{ color: theme.text, backgroundColor: theme.background }}>
             <NavBar navigate={navigate} scrollToSection={scrollToSection} toggleDrawer={toggleDrawer} drawerOpen={drawerOpen} />
             <HeroSection />
             <Box

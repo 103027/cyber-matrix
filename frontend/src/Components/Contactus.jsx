@@ -1,13 +1,16 @@
 import React from "react";
 import { Box, Typography, Button, Grid, TextField , Divider } from "@mui/material";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function ContactUs() {
+    const { theme } = useTheme();
+
     return (
-        <Box sx={{ color: "#fff", marginTop: "80px", marginBottom: "100px", overflowX: "hidden" }}>
+        <Box sx={{ color: theme.text, marginTop: "80px", marginBottom: "100px", overflowX: "hidden" }}>
             <Box height={"10vh"}></Box>
             <Box
                 sx={{
-                    backgroundColor: "#b5b5b5",
+                    backgroundColor: theme.bg_contactus,
                     borderRadius: "20px",
                     display: "flex",
                     flexDirection: { xs: "column", md: "column", lg: "row" }, // Image only appears on lg screens
@@ -23,7 +26,7 @@ function ContactUs() {
                     sx={{
                         display: "flex",
                         flexDirection: "column",
-                        color: "black",
+                        color: theme.right_grid_bg,
                         flex: 1,
                         maxWidth: "600px",
                     }}
@@ -35,7 +38,7 @@ function ContactUs() {
                             fontWeight: "bold",
                             fontSize: "2.5rem",
                             fontFamily: "Poppins, sans-serif",
-                            ml: "20px"
+                            ml: "20px",
                         }}
                     >
                         Contact Us
@@ -81,19 +84,19 @@ function ContactUs() {
                                         rows={field.rows || 1}
                                         InputProps={{
                                             sx: {
-                                                backgroundColor: "#49494C",
-                                                color: "#fff",
+                                                backgroundColor: theme.box_bg,
+                                                color: theme.secondary_text,
                                                 borderRadius: "10px",
                                                 "&.Mui-focused": {
-                                                    backgroundColor: "#26272B",
+                                                    backgroundColor: theme.tabs_bg,
                                                 },
                                             },
                                         }}
                                         sx={{
                                             "& .MuiOutlinedInput-root": {
-                                                "& fieldset": { borderColor: "#26272B" },
-                                                "&:hover fieldset": { borderColor: "#26272B" },
-                                                "&.Mui-focused fieldset": { borderColor: "#26272B" },
+                                                "& fieldset": { borderColor: theme.tabs_bg },
+                                                "&:hover fieldset": { borderColor: theme.tabs_bg },
+                                                "&.Mui-focused fieldset": { borderColor: theme.tabs_bg },
                                             },
                                         }}
                                     />
@@ -106,13 +109,14 @@ function ContactUs() {
                             sx={{
                                 width: 200,
                                 mt: 10,
-                                bgcolor: "black",
+                                bgcolor: theme.right_grid_bg,
+                                color: theme.secondary_text,
                                 py: 1,
                                 fontSize: "1rem",
                                 borderRadius: "10px",
                                 border: "1px solid #49494C",
                                 "&:hover": {
-                                    bgcolor: "#2E2E30",
+                                    bgcolor: theme.login_button_bg_hover,
                                     border: "1px solid #49494C",
                                 },
                             }}

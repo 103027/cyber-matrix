@@ -3,12 +3,14 @@ import { Box, TextField, Button, Typography, Link, Grid, IconButton, Tooltip } f
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import api from "../api/axois.jsx";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function ForgotPasword() {
     const navigate = useNavigate();
     const { showNotification } = useNotification();
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isValidEmail, setIsValidEmail] = useState(false);
+    const { theme } = useTheme();
 
     const [formValues, setFormValues] = useState({
         email: "",
@@ -65,7 +67,7 @@ function ForgotPasword() {
         <Grid
             container
             sx={{
-                backgroundColor: "#333",
+                backgroundColor: theme.background,
                 height: "100vh",
             }}
         >
@@ -74,7 +76,7 @@ function ForgotPasword() {
                 xs={12}
                 md={6}
                 sx={{
-                    backgroundColor: "#333",
+                    backgroundColor: theme.background,
                     width: { xs: "100%", md: "auto" },
                     animation: "fadeSlideIn 0.5s ease-in-out",
                 }}
@@ -86,7 +88,7 @@ function ForgotPasword() {
                         justifyContent: { sm: "none", md: "center" },
                         height: "100%",
                         px: { xs: 2, sm: 8, md: 10 },
-                        color: "#fff",
+                        color: theme.text,
                     }}
                 >
                     <Box onClick={() => navigate("/")} sx={{ display: { xs: "flex", md: "none" }, flexDirection: "column", alignItems: "center", cursor: "pointer" }}>
@@ -100,9 +102,9 @@ function ForgotPasword() {
                         <Typography gutterBottom sx={{ fontSize: { xs: "1.5rem", md: "2.0rem" }, fontWeight: "bold" }}>
                             Recover your Account
                         </Typography>
-                        <Typography gutterBottom sx={{ color: "#D9D9D9", fontSize: "1rem" }}>
+                        <Typography gutterBottom sx={{ color: theme.text_2, fontSize: "1rem" }}>
                             Remember your password?{" "}
-                            <Link onClick={() => navigate("/login")} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer" }}>
+                            <Link onClick={() => navigate("/login")} underline="hover" style={{ color: theme.text_2, fontWeight: "bold", cursor: "pointer" }}>
                                 Sign in
                             </Link>{" "}
                             to your Account
@@ -110,7 +112,7 @@ function ForgotPasword() {
                     </Box>
 
                     <Box sx={{ marginBottom: 3 }}>
-                        <Typography variant="body1" color="white" sx={{ marginBottom: 1 }}>
+                        <Typography variant="body1" color={theme.text} sx={{ marginBottom: 1 }}>
                             Email Address
                         </Typography>
                         <Tooltip
@@ -134,24 +136,27 @@ function ForgotPasword() {
                                 onChange={handleInputChange}
                                 InputProps={{
                                     sx: {
-                                        backgroundColor: "#333333",
-                                        color: "#fff",
+                                        backgroundColor: theme.background,
+                                        color: theme.text,
                                         borderRadius: "10px",
                                         "&.Mui-focused": {
-                                            backgroundColor: "black",
+                                            backgroundColor: theme.input_bg,
                                         },
                                     },
                                 }}
                                 sx={{
                                     "& .MuiOutlinedInput-root": {
                                         "& fieldset": {
-                                            borderColor: "white",
+                                            border: "1px solid " + theme.text, 
+                                            borderColor: theme.text,
                                         },
                                         "&:hover fieldset": {
-                                            borderColor: "white",
+                                            border: "1px solid " + theme.text,
+                                            borderColor: theme.text,
                                         },
                                         "&.Mui-focused fieldset": {
-                                            borderColor: "#49494C",
+                                            border: "1px solid " + theme.text,
+                                            borderColor: theme.box_bg_border,
                                         },
                                     },
                                 }}
@@ -166,14 +171,15 @@ function ForgotPasword() {
                         sx={{
                             mt: 2,
                             mb: 2,
-                            bgcolor: "#49494C",
+                            bgcolor: theme.box_bg,
+                            color: theme.secondary_text,
                             py: 1,
                             fontSize: "1rem",
                             borderRadius: "30px",
-                            border: "1px solid white",
+                            border: "1px solid " + theme.login_button_bg_border,
                             "&:hover": {
-                                bgcolor: "#2E2E30",
-                                border: "1px solid white",
+                                bgcolor: theme.login_button_bg_hover,
+                                border: "1px solid " + theme.text,
                             },
                         }}
                     >
@@ -202,7 +208,8 @@ function ForgotPasword() {
                 xs={12}
                 md={6}
                 sx={{
-                    backgroundColor: "#000",
+                    backgroundColor: theme.right_grid_bg,
+                    border: "1px solid" + theme.right_grid_bg_border,
                     display: { xs: "none", md: "flex" },
                     justifyContent: "center",
                     alignItems: "center",

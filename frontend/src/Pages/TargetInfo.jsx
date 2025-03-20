@@ -64,6 +64,7 @@ function TargetInfo() {
                                                 sx={{
                                                     backgroundColor: theme.box_bg,
                                                     color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -71,7 +72,7 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     SITE INFO
                                                 </Typography>
@@ -85,7 +86,7 @@ function TargetInfo() {
                                                         href={targetInfos[domain]?.["Url"]}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        sx={{ textDecoration: 'underline', color: '#fff' }}
+                                                        sx={{ textDecoration: 'underline', color: theme.secondary_text }}
                                                     >
                                                         {targetInfos[domain]?.["Url"] || "--"}
                                                     </Typography>
@@ -100,7 +101,7 @@ function TargetInfo() {
                                                         href={targetInfos[domain]?.["Location"]}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        sx={{ textDecoration: 'underline', color: '#fff' }}
+                                                        sx={{ textDecoration: 'underline', color: theme.secondary_text }}
                                                     >
                                                         {targetInfos[domain]?.["Location"] || "--"}
                                                     </Typography>
@@ -142,6 +143,7 @@ function TargetInfo() {
                                                 sx={{
                                                     backgroundColor: theme.box_bg,
                                                     color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -149,11 +151,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     DNS Names
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -179,6 +181,7 @@ function TargetInfo() {
                                                 sx={{
                                                     backgroundColor: theme.box_bg,
                                                     color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -186,11 +189,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     Robots
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -225,6 +228,7 @@ function TargetInfo() {
                                                 sx={{
                                                     backgroundColor: theme.box_bg,
                                                     color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -232,11 +236,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     IPs
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -262,6 +266,7 @@ function TargetInfo() {
                                                 sx={{
                                                     backgroundColor: theme.box_bg,
                                                     color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -269,7 +274,7 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     Common Names
                                                 </Typography>
@@ -292,6 +297,7 @@ function TargetInfo() {
                                                 sx={{
                                                     backgroundColor: theme.box_bg,
                                                     color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -299,11 +305,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     Organisation
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -322,6 +328,7 @@ function TargetInfo() {
                                                 sx={{
                                                     backgroundColor: theme.box_bg,
                                                     color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -329,11 +336,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     Issuer Organisation
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>

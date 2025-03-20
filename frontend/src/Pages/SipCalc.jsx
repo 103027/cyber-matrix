@@ -98,7 +98,7 @@ function SipCalc() {
                         <Loading logo={Logo} size={80} animation="zoom" />
                     ) : (
                         <Paper sx={{ backgroundColor: theme.bg_behind_boxes, border: "1px solid " + theme.bg_behind_boxes , color: theme.secondary_text, mt: 4 }}>
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '16px',backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg, borderRadius: "20px" }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '16px',backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg_border, borderRadius: "20px" }}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: "center", alignItems: "center" }}>
                                     <TextField
                                         placeholder={"Search"}
@@ -111,6 +111,7 @@ function SipCalc() {
                                             sx: {
                                                 backgroundColor: theme.filter_input_bg,
                                                 color: theme.text,
+                                                border: "1px solid " + theme.filter_input_bg_border,
                                                 borderRadius: "10px",
                                                 "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                             },
@@ -136,10 +137,10 @@ function SipCalc() {
 
                                             return (
                                                 <TableRow key={index}>
-                                                    <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.table_head_bg, fontWeight: "bold", textAlign: "center" }}>
+                                                    <TableCell sx={{ color: theme.text_3, backgroundColor: theme.table_head_bg, borderBottom: "1px solid " + theme.text_3, fontWeight: "bold", textAlign: "center" }}>
                                                         {key}
                                                     </TableCell>
-                                                    <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_list_Item_Icon, textAlign: "center" }}>
+                                                    <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_table_cell, borderBottom: "1px solid " + theme.secondary_text, textAlign: "center" }}>
                                                         {value}
                                                     </TableCell>
                                                 </TableRow>

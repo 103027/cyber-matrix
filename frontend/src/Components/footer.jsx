@@ -10,6 +10,7 @@ function Footer() {
             <Box
                 sx={{
                     backgroundColor: theme.drawer_background,
+                    border: "1px solid " + theme.drawer_background_border,
                     width: "100%",
                     borderRadius: "20px",
                     display: "flex",

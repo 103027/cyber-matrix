@@ -152,7 +152,7 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                     sx: { boxShadow: 'none', backgroundColor: 'transparent' }
                 }}
             >
-                <Box sx={{ display: "flex", alignItems: "center", backgroundColor: theme.tabs_bg, padding: "8px 16px", borderRadius: "20px", border: "2px solid #BCB6B6" }}>
+                <Box sx={{ display: "flex", alignItems: "center", backgroundColor: theme.tabs_bg, padding: "8px 16px", borderRadius: "20px", border: "2px solid " + theme.dialog_border }}>
                     <SearchIcon sx={{ color: theme.dialog_search_icon, mr: 1 }} />
                     <TextField
                         autoFocus
@@ -169,13 +169,13 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                         }}
                         InputProps={{
                             disableUnderline: true,
-                            style: { color: "#fff" },
+                            style: { color: theme.secondary_text },
                         }}
                         sx={{
                             ml: 2,
                         }}
                     />
-                    <KeyboardReturnIcon onClick={handleAddTabSubmit} sx={{ color: "whitesmoke" }} />
+                    <KeyboardReturnIcon onClick={handleAddTabSubmit} sx={{ color: theme.secondary_text }} />
                 </Box>
             </Dialog>
         </Box>

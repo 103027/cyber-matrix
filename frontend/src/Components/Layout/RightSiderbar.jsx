@@ -141,7 +141,7 @@ function RightSideBar({ isMobile, theme }) {
                                 <Tooltip title={item.text} arrow placement={isMobile ? "top" : "left"} TransitionComponent={Zoom}>
                                     <ListItemIcon
                                         sx={{
-                                            color: "#fff",
+                                            color: selectedItem === item.navigateto.split("/")[1] ? theme.text_3 : theme.secondary_text,
                                             bgcolor: selectedItem === item.navigateto.split("/")[1] ? theme.bg_list_Item_Icon : "transparent",
                                             borderRadius: 2,
                                             padding: 1,

@@ -49,6 +49,7 @@ function Dashboard() {
                                     sx={{
                                         backgroundColor: theme.box_bg,
                                         color: theme.secondary_text,
+                                        border: "1px solid " + theme.box_bg_border,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -81,6 +82,7 @@ function Dashboard() {
                                     sx={{
                                         backgroundColor: theme.box_bg,
                                         color: theme.secondary_text,
+                                        border: "1px solid " + theme.box_bg_border,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -113,6 +115,7 @@ function Dashboard() {
                                     sx={{
                                         backgroundColor: theme.box_bg,
                                         color: theme.secondary_text,
+                                        border: "1px solid " + theme.box_bg_border,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -145,6 +148,7 @@ function Dashboard() {
                                     sx={{
                                         backgroundColor: theme.box_bg,
                                         color: theme.secondary_text,
+                                        border: "1px solid " + theme.box_bg_border,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -178,6 +182,7 @@ function Dashboard() {
                                     sx={{
                                         backgroundColor: theme.box_bg,
                                         color: theme.secondary_text,
+                                        border: "1px solid " + theme.box_bg_border,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -227,6 +232,7 @@ function Dashboard() {
                                     sx={{
                                         backgroundColor: theme.box_bg,
                                         color: theme.secondary_text,
+                                        border: "1px solid " + theme.box_bg_border,
                                         borderRadius: "8px",
                                         padding: "20px",
                                         display: "flex",
@@ -251,7 +257,32 @@ function Dashboard() {
                                             },
                                         ]}
                                         sx={{
-                                            width: "100%"
+                                            width: "100%",
+                                            "& .MuiChartsAxis-tickLabel": {
+                                                fill: theme.secondary_text + "!important",
+                                                fontSize: 12,
+                                                fontFamily: "'Poppins', sans-serif",
+                                            },
+                                            // Style the y-axis labels
+                                            "& .MuiChartsAxis-tick": {
+                                                fill: theme.secondary_text + "!important",
+                                            },
+                                            // Style the legend text
+                                            "& .MuiChartsLegend-label": {
+                                                fill: theme.secondary_text + "!important",
+                                                fontSize: 14,
+                                                fontFamily: "'Poppins', sans-serif",
+                                            },
+                                            // Style grid lines (optional)
+                                            "& .MuiChartsAxis-line, & .MuiChartsAxis-tickLine": {
+                                                stroke: theme.secondary_text + "!important",
+                                            },
+                                            "& .MuiChartsGrid-line": {
+                                                stroke: theme.secondary_text + "!important",
+                                            },
+                                            "& text": {
+                                                fill: theme.secondary_text + "!important",
+                                            },
                                         }}
                                         height={300}
                                     />
@@ -262,6 +293,7 @@ function Dashboard() {
                                     sx={{
                                         backgroundColor: theme.box_bg,
                                         color: theme.secondary_text,
+                                        border: "1px solid " + theme.box_bg_border,
                                         borderRadius: "8px",
                                         display: "flex",
                                         flexDirection: "column",
@@ -288,7 +320,22 @@ function Dashboard() {
                                             ml:{xs:10,sm:0},
                                             "& .MuiChartsLegend-root": {
                                                 display: { xs: "none", sm: "flex" },
-                                                color: theme.secondary_text,
+                                                color: theme.secondary_text + "!important",
+                                            },
+                                            "& .MuiChartsLegend-label": {
+                                                fill: theme.secondary_text + "!important",
+                                                color: theme.secondary_text + "!important",
+                                                fontSize: 14,
+                                                fontFamily: "'Poppins', sans-serif",
+                                            },
+                                            // Target potential parent elements
+                                            "& .MuiChartsLegend-series text": {
+                                                fill: theme.secondary_text + "!important",
+                                                color: theme.secondary_text + "!important",
+                                            },
+                                            // Target SVG text elements directly
+                                            "& text": {
+                                                fill: theme.secondary_text + "!important",
                                             }
                                         }}
                                         height={isSmallScreen ? 380 : 300}

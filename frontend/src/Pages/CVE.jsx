@@ -106,7 +106,7 @@ function CVE() {
                         <Loading logo={Logo} size={80} animation="zoom" />
                     ) : (
                         <Paper sx={{ backgroundColor: theme.bg_behind_boxes, border: "1px solid " + theme.bg_behind_boxes , color: theme.secondary_text, mt: 2 }}>
-                            <Box sx={{ display: 'flex', flexDirection: "column", alignItems: 'center', padding: '16px', backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg, borderRadius: "20px" }}>
+                            <Box sx={{ display: 'flex', flexDirection: "column", alignItems: 'center', padding: '16px', backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg_border, borderRadius: "20px" }}>
                                 <Box sx={{ display: 'flex', flexDirection: { xs: "column", md: "row" }, justifyContent: "space-between", width: "100%" }}>
                                     <Typography variant="h6">
                                         Apply Filter:
@@ -125,6 +125,7 @@ function CVE() {
                                                     sx: {
                                                         backgroundColor: theme.filter_input_bg,
                                                         color: theme.text,
+                                                        border: "1px solid " + theme.filter_input_bg_border,
                                                         borderRadius: "10px",
                                                         "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                                         ml: 2,
@@ -153,6 +154,7 @@ function CVE() {
                                                     sx: {
                                                         backgroundColor: theme.filter_input_bg,
                                                         color: theme.text,
+                                                        border: "1px solid " + theme.filter_input_bg_border,
                                                         borderRadius: "10px",
                                                         "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                                         ml: 2
@@ -182,6 +184,7 @@ function CVE() {
                                                 sx: {
                                                     backgroundColor: theme.filter_input_bg,
                                                     color: theme.text,
+                                                    border: "1px solid " + theme.filter_input_bg_border,
                                                     borderRadius: "10px",
                                                     "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                                 },
@@ -203,19 +206,20 @@ function CVE() {
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead>
                                         <TableRow sx={{ backgroundColor: theme.table_head_bg, fontWeight: "bold" }}>
-                                            <TableCell sx={{ color: theme.secondary_text, textAlign: "center" }}>CVE ID</TableCell>
-                                            <TableCell sx={{ color: theme.secondary_text, textAlign: "center" }}>Severity</TableCell>
+                                            <TableCell sx={{ color: theme.text_3 , borderBottom: "1px solid " + theme.secondary_text, textAlign: "center" }}>CVE ID</TableCell>
+                                            <TableCell sx={{ color: theme.text_3 , borderBottom: "1px solid " + theme.secondary_text, textAlign: "center" }}>Severity</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {paginatedRows.map((row, index) => (
                                             <TableRow key={`${row.url}-${page}-${index}`}>
-                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_list_Item_Icon, textAlign: "center" }} component="th" scope="row">
+                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_table_cell, borderBottom: "1px solid " + theme.secondary_text, textAlign: "center" }} component="th" scope="row">
                                                     {row?.["CVE ID"]}
                                                 </TableCell>
                                                 <TableCell
                                                     sx={{
-                                                        backgroundColor: theme.bg_list_Item_Icon,
+                                                        backgroundColor: theme.bg_table_cell,
+                                                        borderBottom: "1px solid " + theme.secondary_text,
                                                         textAlign: "center",
                                                         color:
                                                             row.Severity === "HIGH"

@@ -4,7 +4,7 @@ import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function PasswordCracking(){
     const { theme } = useTheme();
-    
+
     return(
         <Box sx={{ color: theme.text }}>
             <Box sx={{
@@ -16,7 +16,7 @@ function PasswordCracking(){
                     </Typography>
                 </Box>
                 <Typography sx={{ fontSize: '1rem', fontFamily: 'Poppins, sans-serif' }}>
-                    The Password Cracking will come here in the future.
+                    The Password Cracking content will come here in the future.
                 </Typography>
             </Box>
         </Box>

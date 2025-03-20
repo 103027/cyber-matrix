@@ -2,10 +2,12 @@ import React, { useState, forwardRef, useImperativeHandle } from "react";
 import { Snackbar, IconButton, Box, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 const NotificationSnackbar = forwardRef((_, ref) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const { theme } = useTheme();
 
   // Allow parent components to call `showSnackbar`
   useImperativeHandle(ref, () => ({
@@ -30,8 +32,8 @@ const NotificationSnackbar = forwardRef((_, ref) => {
       anchorOrigin={{ vertical: "top", horizontal: "right" }} // Top-right position
       sx={{
         "& .MuiSnackbarContent-root": {
-          backgroundColor: "#333333",
-          color: "#fff",
+          backgroundColor: theme.bg_list_Item_Icon,
+          color: theme.text_3,
           borderRadius: "10px",
           display: "flex",
           alignItems: "center",
@@ -45,7 +47,7 @@ const NotificationSnackbar = forwardRef((_, ref) => {
           />
           <Typography
             variant="body2"
-            sx={{ flexGrow: 1, fontSize: "1rem", color: "#fff" }}
+            sx={{ flexGrow: 1, fontSize: "1rem", color: theme.text_3 }}
           >
             {message}
           </Typography>

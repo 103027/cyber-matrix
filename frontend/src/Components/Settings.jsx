@@ -15,7 +15,7 @@ import CodeIcon from "@mui/icons-material/Code";
 
 function Settings() {
     const { theme, toggleTheme } = useTheme();
-    const [selectedTheme, setSelectedTheme] = useState(theme.background === "#333333" ? "greyscale" : "light");
+    const [selectedTheme, setSelectedTheme] = useState(theme.background === "#333333" ? "dark" : theme.background === "#000000" ? "hacker" : "light");
     const isMobile = useMediaQuery('(max-width:600px)');
 
     const handleThemeChange = (event) => {
@@ -30,6 +30,7 @@ function Settings() {
             p: 3,
             borderRadius: "16px", 
             backgroundColor: theme.bg_behind_boxes_2,
+            border: "1px solid " + theme.bg_behind_boxes_2_border
         }}>
             {/* Header section */}
             <Box sx={{ mb: 3 }}>
@@ -48,7 +49,7 @@ function Settings() {
             <Divider sx={{ 
                 width: "50%", 
                 borderBottomWidth: "2px", 
-                borderColor: "rgba(128, 128, 128, 0.4)",
+                borderColor: theme.text,
                 mb: 4
             }} />
 
@@ -109,7 +110,7 @@ function Settings() {
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
                                 {selected === "light" && 
                                     <LightModeIcon sx={{ color: "#FFB800" }} />}
-                                {selected === "greyscale" && 
+                                {selected === "dark" && 
                                     <NightsStayIcon sx={{ color: "#9E9E9E" }} />}
                                 {selected === "hacker" && 
                                     <CodeIcon sx={{ color: "#00C853" }} />}
@@ -118,7 +119,7 @@ function Settings() {
                                     fontWeight: "600" 
                                 }}>
                                     {selected === "light" ? "Light Mode" :
-                                     selected === "greyscale" ? "Greyscale Mode" : 
+                                     selected === "dark" ? "Dark Mode" : 
                                      "Hacker Mode"}
                                 </Typography>
                             </Box>
@@ -136,7 +137,7 @@ function Settings() {
                             </Typography>
                         </MenuItem>
                         
-                        <MenuItem value="greyscale" sx={{ 
+                        <MenuItem value="dark" sx={{ 
                             display: "flex", 
                             alignItems: "center", 
                             gap: 1.5,
@@ -144,7 +145,7 @@ function Settings() {
                         }}>
                             <NightsStayIcon sx={{ color: "#9E9E9E" }} /> 
                             <Typography sx={{ fontFamily: "'Poppins', sans-serif" }}>
-                                Greyscale Mode
+                                Dark Mode
                             </Typography>
                         </MenuItem>
                         

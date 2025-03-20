@@ -16,7 +16,7 @@ function NetworkScanning() {
                     </Typography>
                 </Box>
                 <Typography sx={{ fontSize: '1rem', fontFamily: 'Poppins, sans-serif' }}>
-                    The Network Scanning will come here in the future.
+                    The Network Scanning content will come here in the future.
                 </Typography>
             </Box>
         </Box>
