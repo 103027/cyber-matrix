@@ -137,14 +137,14 @@ function Subdomain() {
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead>
                                         <TableRow sx={{ backgroundColor: theme.table_head_bg, fontWeight: "bold" }}>
-                                            <TableCell sx={{ color: "#ffffff" }}>URL</TableCell>
-                                            <TableCell sx={{ color: "#ffffff" }}>Status</TableCell>
+                                            <TableCell sx={{ color: theme.secondary_text }}>URL</TableCell>
+                                            <TableCell sx={{ color: theme.secondary_text }}>Status</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {paginatedRows.map((row, index) => (
                                             <TableRow key={`${row.url}-${page}-${index}`}>
-                                                <TableCell sx={{ color: "#ffffff", backgroundColor: theme.bg_list_Item_Icon }} component="th" scope="row">
+                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_list_Item_Icon }} component="th" scope="row">
                                                     <a
                                                         onClick={(e) => {
                                                             e.preventDefault(); // Prevent default link behavior
@@ -155,7 +155,7 @@ function Subdomain() {
                                                         {row.url}
                                                     </a>
                                                 </TableCell>
-                                                <TableCell sx={{ color: "#ffffff", backgroundColor: theme.bg_list_Item_Icon }}>
+                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_list_Item_Icon }}>
                                                     {loadingRow[domain] === row.url ? (
                                                         <CircularProgress size={16} sx={{ color: "#ffffff" }} />
                                                     ) : (

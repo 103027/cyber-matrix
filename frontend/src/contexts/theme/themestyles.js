@@ -20,7 +20,10 @@ export const themes = {
         scroll_2 : "#666",
         filter_input_bg: "#26272B",
         filter_input_bg_focused: "black",
-        table_head_bg: "#444444"
+        table_head_bg: "#444444",
+        box_info_color: "#b5b5b5",
+        button: "#333333",
+        button_hover: "#000000"
     },
     light: {
         background: "#ECF9FF",
@@ -43,7 +46,10 @@ export const themes = {
         scroll_2 : "#0B4259",
         filter_input_bg: "#ffffff",
         filter_input_bg_focused: "#ffffff",
-        table_head_bg: "#0B4259"
+        table_head_bg: "#0B4259",
+        box_info_color: "#ECF9FF",
+        button: "#0B4259",
+        button_hover: "#3E88AD"
     },
     // hacker: {
     //     background: "#0f0f0f",
