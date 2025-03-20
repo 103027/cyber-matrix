@@ -6,13 +6,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
-function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveTab, handleAddTab, openModal, handleModalClose, handleAddTabSubmit, inputValue, setInputValue }) {
+function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveTab, handleAddTab, openModal, handleModalClose, handleAddTabSubmit, inputValue, setInputValue, theme }) {
 
     return (
         <Box sx={{ display: "flex", flexGrow: 1, flexDirection: "column", width: "100%", }}>
             <Box
                 sx={{
-                    backgroundColor: "#26272B",
+                    backgroundColor: theme.tabs_bg,
                     display: "flex",
                     alignItems: "center",
                     position: "relative",
@@ -22,7 +22,7 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                 <Tab
                     label={
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <DashboardIcon />
+                            <DashboardIcon/>
                         </Box>
                     }
                     selected={value === 0}
@@ -31,14 +31,15 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                         navigate("/Dashboard");
                     }}
                     sx={{
-                        color: "#ffffff",
-                        backgroundColor: value === 0 ? "#333333" : "transparent",
+                        color: theme.secondary_text,
+                        backgroundColor: value === 0 ? theme.background : "transparent",
                         minHeight: "48px",
                         padding: "0 12px",
-                        borderRight: "0.5px solid #aaa",
-                        borderBottom: "1px solid #aaa",
+                        borderRight: "0.5px solid " + theme.tabs_notselected_color,
+                        borderBottom: "1px solid " + theme.tabs_notselected_color,
                         "&.Mui-selected": {
                             borderBottom: "none",
+                            color: theme.text,
                         },
                         "& .MuiTab-wrapper": {
                             display: "flex",
@@ -58,15 +59,15 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                             minHeight: "48px",
                             "& .MuiTabs-indicator": { display: "none" },
                             "& .MuiTab-root": {
-                                color: "#aaa",
+                                color: theme.tabs_notselected_color,
                                 minHeight: "48px",
                                 padding: "0 12px",
-                                borderBottom: "1px solid #aaa",
+                                borderBottom: "1px solid " + theme.tabs_notselected_color,
                             },
                             "& .Mui-selected": {
-                                backgroundColor: "#333333",
+                                backgroundColor: theme.background,
                                 borderBottom: "none",
-                                color: "#ffffff",
+                                color: theme.text,
                             },
                             "& .Mui-focusVisible": {
                                 outline: "none", // Remove blue outline on focus
@@ -84,25 +85,38 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                                             overflow: "hidden",
                                             whiteSpace: "nowrap",
                                             textOverflow: "ellipsis",
+                                            textTransform: "none"
                                         }}>{tab.label}</Typography>
                                         {value === index + 1 && ( // Display Close button only for selected tab
-                                            <IconButton
-                                                size="small"
+                                            <Box
+                                                component="div"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     handleRemoveTab(index + 1);
                                                 }}
-                                                sx={{ ml: 1, color: "#aaa" }}
+                                                sx={{
+                                                    ml: 1,
+                                                    color: theme.cross_color,
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    padding: "4px",
+                                                    borderRadius: "50%",
+                                                    "&:hover": {
+                                                        backgroundColor: theme.cross_color_hover,
+                                                        cursor: "pointer"
+                                                    }
+                                                }}
                                             >
                                                 <CloseIcon fontSize="small" />
-                                            </IconButton>
+                                            </Box>
                                         )}
                                     </Box>
                                 }
                                 sx={{
-                                    borderRight: "0.5px solid #aaa",
+                                    borderRight: "0.5px solid " + theme.tabs_notselected_color,
                                     "&.Mui-selected": {
-                                        color: "#ffffff", // Set selected tab text color
+                                        color: theme.text, // Set selected tab text color
                                     },
                                 }}
 
@@ -116,19 +130,19 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                         alignItems: "center",
                         justifyContent: "center",
                         minHeight: "47px",
-                        borderBottom: " 1px solid #aaa",
-                        borderLeft: " 0.5px solid #aaa",
+                        borderBottom: " 1px solid " + theme.tabs_notselected_color,
+                        borderLeft: " 0.5px solid " + theme.tabs_notselected_color,
                         "&:hover": { color: "#ffffff" },
                     }}
                 >
-                    <IconButton onClick={handleAddTab} sx={{ color: "#aaa" }}>
+                    <IconButton onClick={handleAddTab} sx={{ color: theme.tabs_notselected_color }}>
                         <AddIcon />
                     </IconButton>
                 </Box>
                 <Box
                     sx={{
                         flexGrow: 1,
-                        borderBottom: "1px solid #aaa",
+                        borderBottom: "1px solid " + theme.tabs_notselected_color,
                         mt: 5.9
                     }}
                 />
@@ -138,9 +152,10 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                     sx: { boxShadow: 'none', backgroundColor: 'transparent' }
                 }}
             >
-                <Box sx={{ display: "flex", alignItems: "center", backgroundColor: "#26272B", padding: "8px 16px", borderRadius: "20px", border: "2px solid #BCB6B6" }}>
-                    <SearchIcon sx={{ color: "#BCB6B6", mr: 1 }} />
+                <Box sx={{ display: "flex", alignItems: "center", backgroundColor: theme.tabs_bg, padding: "8px 16px", borderRadius: "20px", border: "2px solid " + theme.dialog_border }}>
+                    <SearchIcon sx={{ color: theme.dialog_search_icon, mr: 1 }} />
                     <TextField
+                        autoFocus
                         placeholder="Enter the target Domain"
                         variant="standard"
                         fullWidth
@@ -154,13 +169,13 @@ function MainTabs({ tabs, value, setValue, navigate, handleChange, handleRemoveT
                         }}
                         InputProps={{
                             disableUnderline: true,
-                            style: { color: "#fff" },
+                            style: { color: theme.secondary_text },
                         }}
                         sx={{
                             ml: 2,
                         }}
                     />
-                    <KeyboardReturnIcon onClick={handleAddTabSubmit} sx={{color:"whitesmoke"}}/>
+                    <KeyboardReturnIcon onClick={handleAddTabSubmit} sx={{ color: theme.secondary_text }} />
                 </Box>
             </Dialog>
         </Box>

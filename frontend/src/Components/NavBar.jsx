@@ -2,16 +2,85 @@ import React from "react";
 import { Box, AppBar, Toolbar, Container, Button, Drawer, IconButton, List, ListItem, ListItemText } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-scroll";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function NavBar({ navigate, scrollToSection, toggleDrawer, drawerOpen }) {
+    const { theme } = useTheme();
+
+    const listItemStyle = {
+        justifyContent: "center",
+        width: "100%",
+        "&:hover": {
+            color: "black",
+            backgroundColor: theme.text_3,
+        },
+        cursor: "pointer"
+    };
+
+    const textStyle = {
+        color: theme.drawer_lists_text_color,
+        textAlign: "center",
+        fontWeight: "bold",
+    };
+
+    const navButtonStyle = {
+        my: 2,
+        ml: 4,
+        color: theme.secondary_text,
+        display: "block",
+        textTransform: "none",
+        border: "2px solid " + theme.right_grid_bg,
+        borderRadius: "30px",
+        "&:hover": {
+            border: "2px solid " + theme.border_navbar_buttons,
+        },
+    };
+
+    const animatedButtonStyle = {
+        my: 2,
+        color: theme.text,
+        textTransform: "none",
+        border: "2px solid " + theme.bg_behind_boxes_2_border,
+        borderRadius: "30px",
+        ml: 4,
+        pr: 4,
+        pl: 4,
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: theme.get_started_button_hover,
+        transition: "color 500ms ease-in-out",
+        zIndex: 1,
+    
+        "&::before": {
+            content: '""',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "200%",
+            height: "200%",
+            backgroundColor: theme.input_bg,
+            borderRadius: "50%",
+            transition: "transform 500ms ease-in-out",
+            transform: "translate(-50%, -50%) scale(1.5)",
+            zIndex: -1,
+        },
+    
+        "&:hover::before, &:focus::before": {
+            transform: "translate(-50%, -50%) scale(0)",
+        },
+    
+        "&:hover, &:focus": {
+            color: theme.input_bg,
+        },
+    };
 
     return (
         <Box>
-            <AppBar position="static" sx={{ backgroundColor: "black" }}>
+            <AppBar position="static" sx={{ backgroundColor: theme.right_grid_bg }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters sx={{ padding: { xs: "40px 20px", md: "40px 100px" } }}>
                         <img
-                            src={require("../Images/logo.png")}
+                            src={require(theme.background === "#333333" ? "../Images/logo.png" : theme.background === "#000000" ? "../Images/logo_hacker.png" : "../Images/logo2_light.png")}
                             alt="Cyber-Matrix Logo"
                             style={{ width: "50px", marginBottom: "10px" }}
                         />
@@ -27,7 +96,7 @@ function NavBar({ navigate, scrollToSection, toggleDrawer, drawerOpen }) {
                         </Box>
 
                         <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: "auto" }}>
-                            <IconButton onClick={toggleDrawer(true)} sx={{ color: "white" }}>
+                            <IconButton onClick={toggleDrawer(true)} sx={{ color: theme.secondary_text }}>
                                 <MenuIcon />
                             </IconButton>
                         </Box>
@@ -49,7 +118,7 @@ function NavBar({ navigate, scrollToSection, toggleDrawer, drawerOpen }) {
                 onClose={toggleDrawer(false)}
             >
                 <Box
-                    sx={{ width: 250, backgroundColor: "black", height: "100vh", paddingTop: "20px" }}
+                    sx={{ width: 250, backgroundColor: theme.landingPage_drawer_bg, height: "100vh", paddingTop: "20px" }}
                     role="presentation"
                     onClick={toggleDrawer(false)}
                     onKeyDown={toggleDrawer(false)}
@@ -100,71 +169,5 @@ function NavBar({ navigate, scrollToSection, toggleDrawer, drawerOpen }) {
         </Box>
     );
 }
-
-const listItemStyle = {
-    justifyContent: "center",
-    width: "100%",
-    "&:hover":{ 
-        color:"black",
-        backgroundColor:"white",
-    }
-};
-
-const textStyle = {
-    color: "#b5b5b5",
-    textAlign: "center",
-    fontWeight: "bold",
-};
-
-const navButtonStyle = {
-    my: 2,
-    ml: 4,
-    color: "white",
-    display: "block",
-    textTransform: "none",
-    border: "2px solid black",
-    borderRadius: "30px",
-    "&:hover": {
-        border: "2px solid #b5b5b5",
-    },
-};
-
-const animatedButtonStyle = {
-    my: 2,
-    color: "white",
-    textTransform: "none",
-    border: "2px solid #49494C",
-    borderRadius: "30px",
-    ml: 4,
-    pr: 4,
-    pl: 4,
-    position: "relative",
-    overflow: "hidden",
-    backgroundColor: "#b5b5b5",
-    transition: "color 500ms ease-in-out",
-    zIndex: 1,
-
-    "&::before": {
-        content: '""',
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        width: "200%",
-        height: "200%",
-        backgroundColor: "black",
-        borderRadius: "50%",
-        transition: "transform 500ms ease-in-out",
-        transform: "translate(-50%, -50%) scale(1.5)",
-        zIndex: -1,
-    },
-
-    "&:hover::before, &:focus::before": {
-        transform: "translate(-50%, -50%) scale(0)",
-    },
-
-    "&:hover, &:focus": {
-        color: "black",
-    },
-};
 
 export default NavBar;

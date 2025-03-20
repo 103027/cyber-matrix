@@ -1,8 +1,8 @@
 import React from "react";
-import { Box, Typography } from '@mui/material';
+import { Box, Typography } from "@mui/material";
 import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
-function NetworkScanning() {
+function History() {
     const { theme } = useTheme();
 
     return (
@@ -12,15 +12,15 @@ function NetworkScanning() {
             }}>
                 <Box>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '2.5rem', fontFamily: 'Poppins, sans-serif' }}>
-                        Network Scanning
+                        History
                     </Typography>
                 </Box>
                 <Typography sx={{ fontSize: '1rem', fontFamily: 'Poppins, sans-serif' }}>
-                    The Network Scanning content will come here in the future.
+                    The History content will come here in the future.
                 </Typography>
             </Box>
         </Box>
-    )
+    );
 }
 
-export default NetworkScanning
+export default History;

@@ -3,11 +3,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TextField, Button, Typography, MenuItem, FormControl, Select, InputLabel } from '@mui/material';
 import Logo from "../Images/logo3.png";
+import Logo_light from "../Images/logo3_light.png";
+import Logo_hacker from "../Images/logo_hacker.png";
 import Loading from "../Components/Loading.jsx";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCVE } from "../features/cveSlice.js";
 import { useNotification } from "../contexts/NotificationContext.jsx";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function CVE() {
     const [rows, setRows] = useState([]);
@@ -20,6 +23,7 @@ function CVE() {
     const { showNotification } = useNotification();
     const { data, loading, error } = useSelector(state => state.cve)
     const dispatch = useDispatch();
+    const { theme } = useTheme();
 
     const isLoading = loading[domain]
     const isError = error[domain]
@@ -92,8 +96,8 @@ function CVE() {
     }, [isError, showNotification]);
 
     return (
-        <Box sx={{ color: "#fff" }}>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={{ color: theme.text }}>
+            <Box sx={{ display: "flex", flexDirection: "column", p:2, borderRadius:"20px", backgroundColor: theme.bg_behind_boxes }} >
                 <Box>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '2.5rem', fontFamily: 'Poppins, sans-serif' }}>
                         CVE Reporting
@@ -101,10 +105,10 @@ function CVE() {
                 </Box>
                 {
                     isLoading ? (
-                        <Loading logo={Logo} size={80} animation="zoom" />
+                        <Loading logo={theme.background === "#333333" ? Logo : theme.background === "#000000" ? Logo_hacker : Logo_light} size={80} animation="zoom" />
                     ) : (
-                        <Paper sx={{ backgroundColor: "#333333", border: "none", color: "#ffffff", mt: 2 }}>
-                            <Box sx={{ display: 'flex', flexDirection: "column", alignItems: 'center', padding: '16px', backgroundColor: "#49494C", border: "1px solid #49494C", borderRadius: "20px" }}>
+                        <Paper sx={{ backgroundColor: theme.bg_behind_boxes, border: "1px solid " + theme.bg_behind_boxes , color: theme.secondary_text, mt: 2 }}>
+                            <Box sx={{ display: 'flex', flexDirection: "column", alignItems: 'center', padding: '16px', backgroundColor: theme.box_bg, border: "1px solid " + theme.box_bg_border, borderRadius: "20px" }}>
                                 <Box sx={{ display: 'flex', flexDirection: { xs: "column", md: "row" }, justifyContent: "space-between", width: "100%" }}>
                                     <Typography variant="h6">
                                         Apply Filter:
@@ -121,19 +125,20 @@ function CVE() {
                                                 onChange={handlecveIDFilter}
                                                 InputProps={{
                                                     sx: {
-                                                        backgroundColor: "#26272B",
-                                                        color: "#fff",
+                                                        backgroundColor: theme.filter_input_bg,
+                                                        color: theme.text,
+                                                        border: "1px solid " + theme.filter_input_bg_border,
                                                         borderRadius: "10px",
-                                                        "&.Mui-focused": { backgroundColor: "black" },
+                                                        "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                                         ml: 2,
                                                         mr: 2
                                                     },
                                                 }}
                                                 sx={{
                                                     "& .MuiOutlinedInput-root": {
-                                                        "& fieldset": { borderColor: "#49494C" },
-                                                        "&:hover fieldset": { borderColor: "#49494C" },
-                                                        "&.Mui-focused fieldset": { borderColor: "#49494C" },
+                                                        "& fieldset": { borderColor: theme.box_bg },
+                                                        "&:hover fieldset": { borderColor: theme.box_bg },
+                                                        "&.Mui-focused fieldset": { borderColor: theme.box_bg },
                                                     },
                                                 }}
                                             />
@@ -149,18 +154,19 @@ function CVE() {
                                                 onChange={handleSeverityFilter}
                                                 InputProps={{
                                                     sx: {
-                                                        backgroundColor: "#26272B",
-                                                        color: "#fff",
+                                                        backgroundColor: theme.filter_input_bg,
+                                                        color: theme.text,
+                                                        border: "1px solid " + theme.filter_input_bg_border,
                                                         borderRadius: "10px",
-                                                        "&.Mui-focused": { backgroundColor: "black" },
+                                                        "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                                         ml: 2
                                                     },
                                                 }}
                                                 sx={{
                                                     "& .MuiOutlinedInput-root": {
-                                                        "& fieldset": { borderColor: "#49494C" },
-                                                        "&:hover fieldset": { borderColor: "#49494C" },
-                                                        "&.Mui-focused fieldset": { borderColor: "#49494C" },
+                                                        "& fieldset": { borderColor: theme.box_bg },
+                                                        "&:hover fieldset": { borderColor: theme.box_bg },
+                                                        "&.Mui-focused fieldset": { borderColor: theme.box_bg },
                                                     },
                                                 }}
                                             />
@@ -178,18 +184,19 @@ function CVE() {
                                             onChange={handleSearchChange}
                                             InputProps={{
                                                 sx: {
-                                                    backgroundColor: "#26272B",
-                                                    color: "#fff",
+                                                    backgroundColor: theme.filter_input_bg,
+                                                    color: theme.text,
+                                                    border: "1px solid " + theme.filter_input_bg_border,
                                                     borderRadius: "10px",
-                                                    "&.Mui-focused": { backgroundColor: "black" },
+                                                    "&.Mui-focused": { backgroundColor: theme.filter_input_bg_focused },
                                                 },
-                                                startAdornment: (<InputAdornment position="start"> <SearchIcon sx={{ color: "white" }} /> </InputAdornment>),
+                                                startAdornment: (<InputAdornment position="start"> <SearchIcon sx={{ color: theme.text }} /> </InputAdornment>),
                                             }}
                                             sx={{
                                                 "& .MuiOutlinedInput-root": {
-                                                    "& fieldset": { borderColor: "#49494C" },
-                                                    "&:hover fieldset": { borderColor: "#49494C" },
-                                                    "&.Mui-focused fieldset": { borderColor: "#49494C" },
+                                                    "& fieldset": { borderColor: theme.box_bg },
+                                                    "&:hover fieldset": { borderColor: theme.box_bg },
+                                                    "&.Mui-focused fieldset": { borderColor: theme.box_bg },
                                                 },
                                             }}
                                         />
@@ -197,22 +204,24 @@ function CVE() {
                                 </Box>
                             </Box>
 
-                            <TableContainer sx={{ mt: 5, border: "1px solid #ffffff", borderRadius: "10px" }}>
+                            <TableContainer sx={{ mt: 5, border: "1px solid " + theme.secondary_text, borderRadius: "10px" }}>
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead>
-                                        <TableRow sx={{ backgroundColor: "#444444", fontWeight: "bold" }}>
-                                            <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>CVE ID</TableCell>
-                                            <TableCell sx={{ color: "#ffffff", textAlign: "center" }}>Severity</TableCell>
+                                        <TableRow sx={{ backgroundColor: theme.table_head_bg, fontWeight: "bold" }}>
+                                            <TableCell sx={{ color: theme.text_3 , borderBottom: "1px solid " + theme.secondary_text, textAlign: "center" }}>CVE ID</TableCell>
+                                            <TableCell sx={{ color: theme.text_3 , borderBottom: "1px solid " + theme.secondary_text, textAlign: "center" }}>Severity</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {paginatedRows.map((row, index) => (
                                             <TableRow key={`${row.url}-${page}-${index}`}>
-                                                <TableCell sx={{ color: "#ffffff", textAlign: "center" }} component="th" scope="row">
+                                                <TableCell sx={{ color: theme.secondary_text, backgroundColor: theme.bg_table_cell, borderBottom: "1px solid " + theme.secondary_text, textAlign: "center" }} component="th" scope="row">
                                                     {row?.["CVE ID"]}
                                                 </TableCell>
                                                 <TableCell
                                                     sx={{
+                                                        backgroundColor: theme.bg_table_cell,
+                                                        borderBottom: "1px solid " + theme.secondary_text,
                                                         textAlign: "center",
                                                         color:
                                                             row.Severity === "HIGH"
@@ -233,7 +242,7 @@ function CVE() {
                             </TableContainer>
 
                             <TablePagination
-                                sx={{ color: "#ffffff" }}
+                                sx={{ color: theme.text }}
                                 rowsPerPageOptions={[10, 25, 50]}
                                 component="div"
                                 count={filteredRows.length}

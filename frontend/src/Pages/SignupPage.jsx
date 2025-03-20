@@ -5,6 +5,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import api from "../api/axois.jsx";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function Signup() {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ function Signup() {
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [openPasswordConditions, setOpenPasswordConditions] = useState(false);
   const [isSame, setIsSame] = useState(true);
+  const { theme } = useTheme();
+
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
@@ -128,7 +131,7 @@ function Signup() {
     <Grid
       container
       sx={{
-        backgroundColor: "#333",
+        backgroundColor: theme.background,
         height: "100vh",
       }}
     >
@@ -137,7 +140,7 @@ function Signup() {
         xs={12}
         md={6}
         sx={{
-          backgroundColor: "#333",
+          backgroundColor: theme.background,
           width: { xs: "100%", md: "auto" },
           animation: "fadeSlideIn 0.5s ease-in-out",
         }}
@@ -149,12 +152,12 @@ function Signup() {
             justifyContent: { sm: "none", md: "center" },
             height: "100%",
             px: { xs: 2, sm: 8, md: 10 },
-            color: "#fff",
+            color: theme.text,
           }}
         >
           <Box onClick={() => navigate("/")} sx={{ display: { xs: "flex", md: "none" }, flexDirection: "column", alignItems: "center", cursor: "pointer" }}>
             <img
-              src={require("../Images/logo3.png")}
+              src={require(theme.background === "#333333" ? "../Images/logo3.png" : theme.background === "#000000" ? "../Images/logo_hacker.png" : "../Images/logo_light_.png")}
               alt="Cyber-Matrix Logo"
               style={{ width: "120px", marginBottom: "50px" }}
             />
@@ -163,9 +166,9 @@ function Signup() {
             <Typography gutterBottom sx={{ fontSize: { xs: "1.5rem", md: "2.0rem" }, fontWeight: "bold" }}>
               Get started with Cyber-Matrix
             </Typography>
-            <Typography gutterBottom sx={{ color: "#D9D9D9", fontSize: "1rem" }}>
+            <Typography gutterBottom sx={{ color: theme.text_2, fontSize: "1rem" }}>
               Already Registered?{" "}
-              <Link onClick={handleClick} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer", }}>
+              <Link onClick={handleClick} underline="hover" style={{ color: theme.text_2, fontWeight: "bold", cursor: "pointer", }}>
                 Sign in
               </Link>{" "}
               to your account
@@ -173,7 +176,7 @@ function Signup() {
           </Box>
 
           <Box sx={{ marginBottom: 3 }}>
-            <Typography variant="body1" color="white" sx={{ marginBottom: 1 }}>
+            <Typography variant="body1" color={theme.text} sx={{ marginBottom: 1 }}>
               Name
             </Typography>
             <Tooltip
@@ -195,11 +198,11 @@ function Signup() {
                 onChange={handleInputChange}
                 InputProps={{
                   sx: {
-                    backgroundColor: "#333333",
-                    color: "#fff",
+                    backgroundColor: theme.background,
+                    color: theme.text,
                     borderRadius: "10px",
                     "&.Mui-focused": {
-                      backgroundColor: "black",
+                      backgroundColor: theme.input_bg,
                     },
 
                   },
@@ -207,13 +210,16 @@ function Signup() {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "white",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.text,
                     },
                     "&:hover fieldset": {
-                      borderColor: "white",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.text,
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#49494C",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.box_bg_border,
                     },
                   },
                 }}
@@ -222,7 +228,7 @@ function Signup() {
           </Box>
 
           <Box sx={{ marginBottom: 3 }}>
-            <Typography variant="body1" color="white" sx={{ marginBottom: 1 }}>
+            <Typography variant="body1" color={theme.text} sx={{ marginBottom: 1 }}>
               Email Address
             </Typography>
             <Tooltip
@@ -246,24 +252,27 @@ function Signup() {
                 onChange={handleInputChange}
                 InputProps={{
                   sx: {
-                    backgroundColor: "#333333",
-                    color: "#fff",
+                    backgroundColor: theme.background,
+                    color: theme.text,
                     borderRadius: "10px",
                     "&.Mui-focused": {
-                      backgroundColor: "black",
+                      backgroundColor: theme.input_bg,
                     },
                   },
                 }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "white",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.text,
                     },
                     "&:hover fieldset": {
-                      borderColor: "white",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.text,
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#49494C",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.box_bg_border,
                     },
                   },
                 }}
@@ -272,7 +281,7 @@ function Signup() {
           </Box>
 
           <Box sx={{ marginBottom: 3 }}>
-            <Typography variant="body1" color="white" sx={{ marginBottom: 1 }}>
+            <Typography variant="body1" color={theme.text} sx={{ marginBottom: 1 }}>
               Password
             </Typography>
             <Tooltip
@@ -310,28 +319,31 @@ function Signup() {
                 InputProps={{
                   endAdornment: (
                     <IconButton onClick={togglePasswordVisibility} edge="end">
-                      {showPassword ? <VisibilityOff sx={{ color: "white" }} /> : <Visibility sx={{ color: "white" }} />}
+                      {showPassword ? <VisibilityOff sx={{ color: theme.text }} /> : <Visibility sx={{ color: theme.text }} />}
                     </IconButton>
                   ),
                   sx: {
-                    backgroundColor: "#333333",
-                    color: "#fff",
+                    backgroundColor: theme.background,
+                    color: theme.text,
                     borderRadius: "10px",
                     "&.Mui-focused": {
-                      backgroundColor: "black",
+                      backgroundColor: theme.input_bg,
                     },
                   },
                 }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "white",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.text,
                     },
                     "&:hover fieldset": {
-                      borderColor: "white",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.text,
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#49494C",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.box_bg_border,
                     },
                   },
                 }}
@@ -340,7 +352,7 @@ function Signup() {
           </Box>
 
           <Box sx={{ marginBottom: 4 }}>
-            <Typography variant="body1" color="white" sx={{ marginBottom: 1 }}>
+            <Typography variant="body1" color={theme.text} sx={{ marginBottom: 1 }}>
               Confirm Password
             </Typography>
             <Tooltip
@@ -371,28 +383,31 @@ function Signup() {
                 InputProps={{
                   endAdornment: (
                     <IconButton onClick={toggleConfirmPasswordVisibility} edge="end">
-                      {showConfirmPassword ? <VisibilityOff sx={{ color: "white" }} /> : <Visibility sx={{ color: "white" }} />}
+                      {showConfirmPassword ? <VisibilityOff sx={{ color: theme.text }} /> : <Visibility sx={{ color: theme.text }} />}
                     </IconButton>
                   ),
                   sx: {
-                    backgroundColor: "#333333",
-                    color: "#fff",
+                    backgroundColor: theme.background,
+                    color: theme.text,
                     borderRadius: "10px",
                     "&.Mui-focused": {
-                      backgroundColor: "black",
+                      backgroundColor: theme.input_bg,
                     },
                   },
                 }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "white",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.text,
                     },
                     "&:hover fieldset": {
-                      borderColor: "white",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.text,
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#49494C",
+                      border: "1px solid " + theme.text,
+                      borderColor: theme.box_bg_border,
                     },
                   },
                 }}
@@ -407,27 +422,28 @@ function Signup() {
             sx={{
               mt: 2,
               mb: 2,
-              bgcolor: "#49494C",
+              bgcolor: theme.box_bg,
+              color: theme.secondary_text,
               py: 1,
               fontSize: "1rem",
               borderRadius: "30px",
-              border: "1px solid white",
+              border: "1px solid " + theme.login_button_bg_border,
               "&:hover": {
-                bgcolor: "#2E2E30",
-                border: "1px solid white",
+                bgcolor: theme.login_button_bg_hover,
+                border: "1px solid " + theme.text,
               },
             }}
           >
             Sign Up ➔
           </Button>
 
-          <Typography variant="body2" align="center" mt={2} style={{ color: "#D9D9D9" }}>
+          <Typography variant="body2" align="center" mt={2} style={{ color: theme.text_2 }}>
             By signing up, you agree to the{" "}
-            <Link onClick={() => navigate("/terms")} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer", }}>
+            <Link onClick={() => navigate("/terms")} underline="hover" style={{ color: theme.text_2, fontWeight: "bold", cursor: "pointer", }}>
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link onClick={() => navigate("/privacy_policy")} underline="hover" style={{ color: "#D9D9D9", fontWeight: "bold", cursor: "pointer", }}>
+            <Link onClick={() => navigate("/privacy_policy")} underline="hover" style={{ color: theme.text_2, fontWeight: "bold", cursor: "pointer", }}>
               Privacy Policy
             </Link>.
           </Typography>
@@ -454,7 +470,8 @@ function Signup() {
         xs={12}
         md={6}
         sx={{
-          backgroundColor: "#000",
+          backgroundColor: theme.right_grid_bg,
+          border: "1px solid" + theme.right_grid_bg_border,
           display: { xs: "none", md: "flex" },
           justifyContent: "center",
           alignItems: "center",
@@ -464,12 +481,12 @@ function Signup() {
       >
         <Box onClick={() => navigate("/")} sx={{ display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer" }}>
           <img
-            src={require("../Images/logo.png")}
+            src={require(theme.background === "#333333" ? "../Images/logo.png" : theme.background === "#000000" ? "../Images/logo_hacker.png" : "../Images/logo2_light.png")}
             alt="Cyber-Matrix Logo"
             style={{ width: "150px", marginBottom: "10px" }}
           />
           <img
-            src={require("../Images/name.png")}
+            src={require(theme.background === "#333333" ? "../Images/name.png" : theme.background === "#000000" ? "../Images/name_hacker.png" : "../Images/name_light.png")}
             alt="Cyber-Matrix name"
             style={{ width: "300px", marginBottom: "10px" }}
           />

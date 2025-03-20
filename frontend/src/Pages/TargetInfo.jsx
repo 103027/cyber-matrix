@@ -3,16 +3,20 @@ import { Box, Typography, Grid, } from "@mui/material";
 import { useParams } from "react-router-dom";
 import Loading from "../Components/Loading.jsx";
 import Logo from "../Images/logo3.png";
+import Logo_light from "../Images/logo3_light.png";
+import Logo_hacker from "../Images/logo_hacker.png";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTargetInfo } from "../features/targetInfoSlice";
+import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 
 function TargetInfo() {
     const { data, loading, error } = useSelector((state) => state.targetInfo);
     const { domain } = useParams();
     const { showNotification } = useNotification();
     const dispatch = useDispatch();
-    
+    const { theme } = useTheme();
+
     const targetInfos = data;
     const isLoading = loading[domain];
     const isError = error[domain];
@@ -34,9 +38,9 @@ function TargetInfo() {
 
 
     return (
-        <Box sx={{ color: "#fff" }}>
+        <Box sx={{ color: theme.text }}>
             <Box
-                sx={{ display: "flex", flexDirection: "column" }}
+                sx={{ display: "flex", flexDirection: "column", p:2, borderRadius:"20px", backgroundColor: theme.bg_behind_boxes }}
             >
                 <Box>
                     <Typography
@@ -52,7 +56,7 @@ function TargetInfo() {
                 <Box sx={{ mt: 4 }}>
                     {
                         isLoading ? (
-                            <Loading logo={Logo} size={80} animation="zoom" />
+                            <Loading logo={theme.background === "#333333" ? Logo : theme.background === "#000000" ? Logo_hacker : Logo_light} size={80} animation="zoom" />
                         ) : (
                             <Box sx={{ flexGrow: 1, mt: 2 }}>
                                 <Grid container spacing={3}>
@@ -60,8 +64,9 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -69,7 +74,7 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     SITE INFO
                                                 </Typography>
@@ -83,7 +88,7 @@ function TargetInfo() {
                                                         href={targetInfos[domain]?.["Url"]}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        sx={{ textDecoration: 'underline', color: '#fff' }}
+                                                        sx={{ textDecoration: 'underline', color: theme.secondary_text }}
                                                     >
                                                         {targetInfos[domain]?.["Url"] || "--"}
                                                     </Typography>
@@ -98,7 +103,7 @@ function TargetInfo() {
                                                         href={targetInfos[domain]?.["Location"]}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        sx={{ textDecoration: 'underline', color: '#fff' }}
+                                                        sx={{ textDecoration: 'underline', color: theme.secondary_text }}
                                                     >
                                                         {targetInfos[domain]?.["Location"] || "--"}
                                                     </Typography>
@@ -138,8 +143,9 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -147,11 +153,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     DNS Names
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -160,7 +166,7 @@ function TargetInfo() {
                                                 {
                                                     targetInfos[domain]?.["DNS"]?.map((dnsEntry, index) => {
                                                         return (
-                                                            <Box display="flex" justifyContent="space-between" mb={1}>
+                                                            <Box key={`dns-${index}`} display="flex" justifyContent="space-between" mb={1}>
                                                                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                                     {index + 1}
                                                                 </Typography>
@@ -175,8 +181,9 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -184,11 +191,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     Robots
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -203,7 +210,7 @@ function TargetInfo() {
                                                     {
                                                         targetInfos[domain]?.["Robot"]?.map((dnsEntry, index) => {
                                                             return (
-                                                                <Box display="flex" justifyContent="space-between" mb={1}>
+                                                                <Box key={`robot-${index}`} display="flex" justifyContent="space-between" mb={1}>
                                                                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                                         {index + 1}
                                                                     </Typography>
@@ -221,8 +228,9 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -230,11 +238,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     IPs
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -243,7 +251,7 @@ function TargetInfo() {
                                                 {
                                                     targetInfos[domain]?.["IP"]?.map((ipEntry, index) => {
                                                         return (
-                                                            <Box display="flex" justifyContent="space-between" mb={1}>
+                                                            <Box key={`ip-${index}`} display="flex" justifyContent="space-between" mb={1}>
                                                                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                                                     {index + 1}
                                                                 </Typography>
@@ -258,8 +266,9 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -267,7 +276,7 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     Common Names
                                                 </Typography>
@@ -288,8 +297,9 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -297,11 +307,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     Organisation
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
@@ -318,8 +328,9 @@ function TargetInfo() {
                                         <Grid item sx={{ mb: 2 }}>
                                             <Box
                                                 sx={{
-                                                    backgroundColor: "#49494C",
-                                                    color: "#FFF",
+                                                    backgroundColor: theme.box_bg,
+                                                    color: theme.secondary_text,
+                                                    border: "1px solid " + theme.box_bg_border,
                                                     borderRadius: "8px",
                                                     padding: "20px",
                                                     boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
@@ -327,11 +338,11 @@ function TargetInfo() {
                                             >
                                                 <Typography
                                                     variant="h6"
-                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: '#fff' }}
+                                                    sx={{ fontWeight: 'bold', marginBottom: '16px', color: theme.secondary_text }}
                                                 >
                                                     Issuer Organisation
                                                 </Typography>
-                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: "#6E6E6D", paddingX: "10px" }}>
+                                                <Box display="flex" justifyContent="space-between" mb={1} sx={{ backgroundColor: theme.box_head, color: theme.text_3, paddingX: "10px" }}>
                                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                                                         #
                                                     </Typography>
