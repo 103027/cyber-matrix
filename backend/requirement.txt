@@ -11,3 +11,4 @@ requests
 werkzeug
 flask-jwt-extended
 reportlab
+google-generativeai

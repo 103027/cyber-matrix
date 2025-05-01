@@ -12,6 +12,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+import google.generativeai as genai
 
 bp = Blueprint('subdomains', __name__)
 
@@ -21,7 +22,12 @@ KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
 # KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 NVD_API_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch={}"
+GEMINI_API_KEY = "AIzaSyAX9bRZaWmywRuUKSiFVSDKEYwj6sZ3Ajo"
+genai.configure(api_key=GEMINI_API_KEY)
 LOGO_PATH = os.path.join(os.path.dirname(__file__), "logo.png")
+PROJECT_DOCUMENT_PATH = os.path.join(os.path.dirname(__file__), "Learn.txt")  
+with open(PROJECT_DOCUMENT_PATH, "r", encoding="utf-8") as file:
+    project_context = file.read()
 def ssh_execute_command(ip, username, key_path, command):
     """
     Executes a command on a remote SSH server and returns the output or error.
@@ -692,4 +698,29 @@ def extract_technologies():
     cve_results = extract_cve(technologies)
 
     return jsonify({"technologies": technologies, "cve_results": cve_results})
+
+@bp.route('/chat',methods=['POST'])
+def chat():
+    """Handles user queries, restricting responses to the project's document."""
+    data = request.json
+    user_message = data.get("message", "").strip()
+
+    if not user_message:
+        return jsonify({"error": "No message provided"}), 400
+
+    try:
+        model = genai.GenerativeModel("gemini-2.0-flash")
+
+        # Send the project document as context
+        prompt = f"""You are a chatbot that only answers based on the following project details:
+        ---
+        {project_context}
+        ---
+        If the user asks anything outside this document, reply with: "I don't have information about it."
+        User Query: {user_message}"""
+
+        response = model.generate_content(prompt)
+        return jsonify({"response": response.text})
     
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
