@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { removeSipCalc, clearAllSipCalc } from '../../features/sipcalcSlice.js';
 import { removeCVE, clearAllCVE } from '../../features/cveSlice.js';
 import { useTheme } from "../../contexts/theme/ThemeContext.jsx";
-
+import ChatBot from "../ChatBot.jsx";
 function AppLayout() {
     const [username, setUsername] = useState("");
     const location = useLocation();
@@ -187,6 +187,7 @@ function AppLayout() {
                     </Box>
                 )}
             </Box>
+            <ChatBot />
         </Box>
     );
 }
