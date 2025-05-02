@@ -76,7 +76,7 @@ export default function ChatBot() {
                     bottom: 20,
                     right: 35,
                     zIndex: 1000,
-                    backgroundColor: '#2e2e2e',
+                    backgroundColor: theme.ChatBot_IconButton,
                     width: 70,
                     height: 70,
                     borderRadius: '50%',
@@ -88,18 +88,18 @@ export default function ChatBot() {
             >
                 <IconButton
                     sx={{
-                        color: 'white',
-                        bgcolor: '#aaa',
+                        color: theme.ChatBot_text,
+                        bgcolor: theme.ChatBot_IconButton_bg,
                         width: 60,
                         height: 60,
                         borderRadius: '50%',
                         '&:hover': {
-                            bgcolor: '#888',
+                            bgcolor: theme.ChatBot_IconButton_bg_Hover,
                         },
                     }}
                     onClick={() => setOpen(!open)}
                 >
-                    <ChatBubbleIcon sx={{ fontSize: 40, color: '#333' }} />
+                    <ChatBubbleIcon sx={{ fontSize: 40, color: theme.ChatBot_IconButton_msgIcon }} />
                 </IconButton>
             </Box>
 
@@ -113,12 +113,13 @@ export default function ChatBot() {
                         right: 15,
                         width: 370,
                         height: 450,
-                        bgcolor: '#1e1e1e',
-                        color: '#fff',
+                        bgcolor: theme.ChatBot_bg,
+                        color: theme.ChatBot_text,
                         borderRadius: 3,
                         display: 'flex',
                         flexDirection: 'column',
                         zIndex: 1300,
+                        border: '1px solid ' + theme.ChatBot_border,
                     }}
                 >
                     {/* Header */}
@@ -132,12 +133,12 @@ export default function ChatBot() {
                         }}
                     >
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <ChatBubbleIcon sx={{ fontSize: 40, color: '#888' }} />
+                            <ChatBubbleIcon sx={{ fontSize: 40, color: theme.ChatBot_Ask_Anything }} />
                             <Typography variant="subtitle1" fontWeight="bold">
                                 Ask Anything
                             </Typography>
                         </Box>
-                        <IconButton onClick={() => setOpen(false)} size="small" sx={{ color: '#fff' }}>
+                        <IconButton onClick={() => setOpen(false)} size="small" sx={{ color: theme.ChatBot_text }}>
                             <CloseIcon fontSize="small" onClick={() => {setOpen(false); setMessages([]);}}/>
                         </IconButton>
                     </Box>
@@ -154,26 +155,32 @@ export default function ChatBot() {
                                                     <Typography
                                                         variant="body2"
                                                         sx={{
-                                                            bgcolor: '#333',
+                                                            fontFamily: 'Poppins, sans-serif',
+                                                            fontWeight: 600,
+                                                            bgcolor: theme.ChatBot_message_bg,
+                                                            color: theme.ChatBot_message_text,
                                                             px: 2,
                                                             py: 1,
-                                                            borderRadius: 2,
+                                                            borderRadius: "15px 0px 15px 15px",
                                                             maxWidth: '65%',
                                                         }}
                                                     >
                                                         {message.message}
                                                     </Typography>
-                                                    <PermIdentityIcon fontSize="large" />
+                                                    <PermIdentityIcon fontSize="large" sx={{ color: theme.ChatBot_Ask_Anything }} />
                                                 </Box>
                                                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
-                                                    <ChatBubbleIcon sx={{ color: '#888' }} fontSize="large" />
+                                                    <ChatBubbleIcon sx={{ color: theme.ChatBot_Ask_Anything }} fontSize="large" />
                                                     <Typography
                                                         variant="body2"
                                                         sx={{
-                                                            bgcolor: '#333',
+                                                            fontFamily: 'Poppins, sans-serif',
+                                                            fontWeight: 600,
+                                                            bgcolor: theme.ChatBot_response_bg,
+                                                            color: theme.ChatBot_response_text,
                                                             px: 2,
                                                             py: 1,
-                                                            borderRadius: 2,
+                                                            borderRadius: "0px 15px 15px 15px",
                                                             maxWidth: '65%',
                                                         }}
                                                     >
@@ -188,7 +195,7 @@ export default function ChatBot() {
                             </Box>
                         ) : (
                             <Box sx={{ flexGrow: 1, p: 2, overflowY: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <ChatBubbleIcon sx={{ fontSize: 80, color: '#888' }} />
+                                <ChatBubbleIcon sx={{ fontSize: 80, color: theme.ChatBot_Ask_Anything }} />
                             </Box>
                         )}
 
@@ -197,8 +204,12 @@ export default function ChatBot() {
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
-                            px: 1.5,
-                            py: 1,
+                            px: 1,
+                            py: 0.5,
+                            m: 1,
+                            bgcolor: theme.ChatBot_bg,
+                            border: '1px solid ' + theme.ChatBot_Ask_Anything,
+                            borderRadius: 5,
                         }}
                     >
                         <TextField
@@ -207,12 +218,10 @@ export default function ChatBot() {
                             placeholder="Enter Question"
                             InputProps={{
                                 disableUnderline: true,
-                                style: { color: '#fff' },
+                                style: { color: theme.ChatBot_text, fontFamily: 'Poppins, sans-serif', fontWeight: 600 },
                             }}
                             sx={{
                                 input: { px: 1.5, py: 1 },
-                                bgcolor: '#2a2a2a',
-                                borderRadius: 2,
                             }}
                             onChange={(e) => setMessage(e.target.value)}
                             value={message}
@@ -222,8 +231,8 @@ export default function ChatBot() {
                                 }
                             }}
                         />
-                        <IconButton sx={{ color: '#aaa' }} onClick={handleSendMessage}>
-                            <SendIcon />
+                        <IconButton sx={{ color: theme.ChatBot_Ask_Anything }} onClick={handleSendMessage}>
+                            <SendIcon sx={{ color: theme.ChatBot_Ask_Anything }}/>
                         </IconButton>
                     </Box>
                 </Paper>
