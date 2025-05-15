@@ -15,6 +15,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 import google.generativeai as genai
 import tempfile
 from app.models.scans import add_scan, add_subdomain_count, add_exposed_port_count, add_asset_count, add_passwordhash_count, get_scans_by_email
+from app.services.chat_handler import query_text_document
 bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
@@ -790,31 +791,52 @@ def extract_technologies():
     return jsonify({"technologies": technologies, "cve_results": cve_results})
     
 
-@bp.route('/chat',methods=['POST'])
+# @bp.route('/chat',methods=['POST'])
+# def chat():
+#     """Handles user queries, restricting responses to the project's document."""
+#     data = request.json
+#     user_message = data.get("message", "").strip()
+
+#     if not user_message:
+#         return jsonify({"error": "No message provided"}), 400
+
+#     try:
+#         model = genai.GenerativeModel("gemini-2.0-flash")
+
+#         # Send the project document as context
+#         prompt = f"""You are a chatbot that only answers based on the following project details:
+#         ---
+#         {project_context}
+#         ---
+#         If the user asks anything outside this document, reply with: "I don't have information about it."
+#         User Query: {user_message}"""
+
+#         response = model.generate_content(prompt)
+#         return jsonify({"response": response.text})
+    
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+
+@bp.route('/chat', methods=['GET', 'POST'])
+@jwt_required()
 def chat():
-    """Handles user queries, restricting responses to the project's document."""
-    data = request.json
-    user_message = data.get("message", "").strip()
+    if request.method == 'POST':
+        data = request.json
+        user_message = data.get("message", "").strip()
+        num_chunks = data.get("num_chunks", 10)
+    else:  # GET method
+        user_message = request.args.get("msg", "").strip()
+        num_chunks = int(request.args.get("chunks", 5))
 
     if not user_message:
         return jsonify({"error": "No message provided"}), 400
 
-    try:
-        model = genai.GenerativeModel("gemini-2.0-flash")
+    result = query_text_document(user_message, num_chunks)
+    if result:
+        return jsonify(result)
+    else:
+        return jsonify({"error": "No result found"}), 404
 
-        # Send the project document as context
-        prompt = f"""You are a chatbot that only answers based on the following project details:
-        ---
-        {project_context}
-        ---
-        If the user asks anything outside this document, reply with: "I don't have information about it."
-        User Query: {user_message}"""
-
-        response = model.generate_content(prompt)
-        return jsonify({"response": response.text})
-    
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 @bp.route('/crack_hash', methods=['POST'])
 @jwt_required()
