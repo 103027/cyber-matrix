@@ -13,13 +13,13 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 import google.generativeai as genai
-
+import tempfile
 bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
 KALI_USERNAME = "kali"
-# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 NVD_API_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch={}"
 LOGO_PATH = os.path.join(os.path.dirname(__file__), "logo.png")
@@ -39,10 +39,12 @@ def ssh_execute_command(ip, username, key_path, command):
         ssh.connect(hostname=ip, username=username, key_filename=key_path)
 
         stdin, stdout, stderr = ssh.exec_command(command)
-
+        print("stdout",stdout)
+        print("stderr",stderr)
         output = stdout.read().decode().strip()
         error = stderr.read().decode().strip()
-        
+        print("output",output)
+        print("error",error)
         ssh.close()
 
         return output if not error else None, error if error else None
@@ -726,3 +728,51 @@ def chat():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@bp.route('/crack_hash', methods=['POST'])
+@jwt_required()
+def crack_hash():
+    data = request.get_json()
+    hash_value = data.get("hash_value")
+    hash_type = data.get("hash_type")
+
+    if not hash_value or not hash_type:
+        return jsonify({"error": "Hash and hash_type are required"}), 400
+
+    # 1. Save hash to a remote temp file on Kali
+    remote_temp_hash = "/tmp/temp_hash.txt"
+    echo_command = f"echo '{hash_value}' > {remote_temp_hash}"
+    _, echo_error = ssh_execute_command(KALI_IP, KALI_USERNAME, KALI_KEY_PATH, echo_command)
+    if not _ and echo_error:
+        return jsonify({"error": f"Failed to write hash on Kali: {echo_error}"}), 500
+
+    # 2. Run john on the remote file
+    command = f"john --format={hash_type} --wordlist=/usr/share/wordlists/rockyou.txt {remote_temp_hash}"
+    output, error = ssh_execute_command(KALI_IP, KALI_USERNAME, KALI_KEY_PATH, command)
+    print(output)
+    
+
+    # Check if john actually cracked the password
+    command_show = f"john --show --format={hash_type} {remote_temp_hash}"
+    cracked_output, cracked_error = ssh_execute_command(KALI_IP, KALI_USERNAME, KALI_KEY_PATH, command_show)
+
+    if cracked_error:
+        return jsonify({"error": f"Error showing cracked passwords: {cracked_error}"}), 500
+
+    if not cracked_output:
+        return jsonify({"error": "No cracked passwords found"}), 500
+    
+    cracked_passwords = []
+    lines = cracked_output.split("\n")
+    for line in lines:
+        if ":" in line:  # We expect a line in the format: 'hash:password'
+            parts = line.split(":")
+            if len(parts) > 1:
+                cracked_passwords.append(parts[1].strip())
+    if not cracked_passwords:
+        return jsonify({"error": "No valid cracked passwords found"}), 500
+    # Return only the cracked passwords
+    return jsonify({"result": cracked_passwords})
+
+
+
