@@ -194,7 +194,7 @@ function IPandPorts() {
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", width: "100%", mt: 2 }}>
                                     <Typography variant="h6">
-                                        Exposed Ports Count - {filteredRows.length}
+                                        Ports Count - {filteredRows.length}
                                     </Typography>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: "center", alignItems: "center" }}>
                                         <TextField

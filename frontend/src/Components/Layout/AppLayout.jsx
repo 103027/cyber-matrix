@@ -83,6 +83,7 @@ function AppLayout() {
         localStorage.removeItem("username");
         localStorage.removeItem("tabs");
         localStorage.removeItem("activetabs");
+        localStorage.removeItem('crackedPasswords');
         handleClear()
         navigate("/login");
         showNotification("Logged out successfully!");

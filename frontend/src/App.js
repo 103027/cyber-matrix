@@ -6,7 +6,7 @@ import Signup from "./Pages/SignupPage.jsx";
 import Login from "./Pages/LoginPage.jsx";
 import ForgotPasword from "./Pages/ForgotPassword.jsx";
 import AppLayout from "./Components/Layout/AppLayout.jsx";
-import NoPage from "./Pages/404Page";
+import NoPage from "./Pages/404Page.jsx";
 import Dashboard from "./Pages/Dashboard.jsx";
 import History from "./Components/History.jsx";
 import Settings from "./Components/Settings";
@@ -21,7 +21,6 @@ import PentestingTools from "./Pages/PentestingTools.jsx";
 import SipCalc from "./Pages/SipCalc.jsx";
 import CVE from "./Pages/CVE.jsx";
 import PasswordCracking from "./Pages/PasswordCrack.jsx";
-import NetworkScanning from "./Pages/NetworkScanning.jsx";
 import { ThemeProvider } from "./contexts/theme/ThemeContext.jsx";
 
 function App() {
@@ -52,7 +51,6 @@ function App() {
                   <Route path="/:domain/pentestingtools" element={<PentestingTools />} />
                   <Route path="/:domain/pentestingtools/sipcalc" element={<SipCalc />} />
                   <Route path="/:domain/cvereporting" element={<CVE />} />
-                  <Route path="/:domain/networkscanning" element={<NetworkScanning />} />
                   <Route path="/:domain/passwordcracking" element={<PasswordCracking />} />
                 </Route>
               </Route>

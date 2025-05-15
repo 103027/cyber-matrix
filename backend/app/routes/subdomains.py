@@ -19,8 +19,8 @@ bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
 KALI_USERNAME = "kali"
-KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
-# KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
+# KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
+KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
 WORDLIST_PATH = "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 NVD_API_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch={}"
 LOGO_PATH = os.path.join(os.path.dirname(__file__), "logo.png")
