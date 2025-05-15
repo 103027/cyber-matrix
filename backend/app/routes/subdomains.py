@@ -14,6 +14,7 @@ from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 import google.generativeai as genai
 import tempfile
+from app.models.scans import add_scan, add_subdomain_count, add_exposed_port_count, add_asset_count, add_passwordhash_count, get_scans_by_email
 bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
@@ -39,12 +40,9 @@ def ssh_execute_command(ip, username, key_path, command):
         ssh.connect(hostname=ip, username=username, key_filename=key_path)
 
         stdin, stdout, stderr = ssh.exec_command(command)
-        print("stdout",stdout)
-        print("stderr",stderr)
         output = stdout.read().decode().strip()
         error = stderr.read().decode().strip()
-        print("output",output)
-        print("error",error)
+        
         ssh.close()
 
         return output if not error else None, error if error else None
@@ -403,8 +401,9 @@ def get_target_info():
     domain = request.args.get('domain')
     if not domain:
         return jsonify({"error": "Domain parameter is required"}), 400
-
-    
+    identity = get_jwt_identity()
+    email = identity.get("email")
+    print("email",email)
 
     commands = {
         "dns": f"nmap --script dns-brute -sn {domain} | head -n 20",
@@ -485,7 +484,18 @@ def get_target_info():
 
     except Exception as e:
         return jsonify({'error': 'Failed to fetch URL via SSH', 'message': str(e)}), 500
-
+    try:
+        add_scan(
+            email=email,
+            new_total=1,
+            new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+            subdomain_count=0,  # Replace with real count if needed
+            asset_count=0,
+            exposed_port=0,
+            passwordhash_count=0
+        )
+    except Exception as e:
+        return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
     results["domain"] = domain
 
     return jsonify(results)
@@ -496,7 +506,8 @@ def get_ip_ports():
     domain = request.args.get('domain')
     if not domain:
         return jsonify({"error": "Domain parameter is required"}), 400
-    
+    identity = get_jwt_identity()
+    email = identity.get("email")
     try:
 
         # Set up SSH client
@@ -522,6 +533,24 @@ def get_ip_ports():
         # Handle output and errors
         if not output and error:
             return jsonify({"error": "Command failed", "details": error}), 500
+        print("results",len(results))
+        try:
+            add_scan(
+                email=email,
+                new_total=1,
+                new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+                subdomain_count=0,  # Replace with real count if needed
+                asset_count=0,
+                exposed_port=0,
+                passwordhash_count=0
+            )
+            open_count = sum(1 for entry in results if entry.get("State") == "open")
+            add_exposed_port_count(email, open_count)
+            asset_count = len(results)
+            add_asset_count(email, asset_count)
+        except Exception as e:
+            return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
+        
 
         return jsonify({'data': results}), 200
     except Exception as e:
@@ -534,6 +563,8 @@ def new_subdomain():
     domain = request.args.get('domain')
     if not domain:
         return jsonify({"error": "Domain parameter is required"}), 400
+    identity = get_jwt_identity()
+    email = identity.get("email")
     try:
         # Set up SSH client
         ssh_client = paramiko.SSHClient()
@@ -564,6 +595,20 @@ def new_subdomain():
 
         # Return the subdomains
         subdomains = output.splitlines()
+        print("subdomains",len(subdomains))
+        try:
+            add_scan(
+                email=email,
+                new_total=1,
+                new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+                subdomain_count=0,  # Replace with real count if needed
+                asset_count=0,
+                exposed_port=0,
+                passwordhash_count=0
+            )
+            add_subdomain_count(email, len(subdomains))
+        except Exception as e:
+            return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
         return jsonify({'subdomains': subdomains})
 
     except Exception as e:
@@ -589,6 +634,8 @@ def get_sipcalc():
     domain = request.args.get('domain')
     if not domain:
         return jsonify({"error": "Domain parameter is required"}), 400
+    identity = get_jwt_identity()
+    email = identity.get("email")
     command = f"nslookup {domain}"
     output, error = ssh_execute_command(KALI_IP, KALI_USERNAME, KALI_KEY_PATH, command)
     if error:
@@ -601,6 +648,18 @@ def get_sipcalc():
         total = int(total)
         total+=2
         network_mask_hex=host_to_hex(network_mask)
+        try:
+            add_scan(
+                email=email,
+                new_total=1,
+                new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+                subdomain_count=0,  # Replace with real count if needed
+                asset_count=0,
+                exposed_port=0,
+                passwordhash_count=0
+            )
+        except Exception as e:
+            return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
         return jsonify({'Host Address':host[0],
                         'Host Address(decimal)':host_decimal,
                         'Host Address(Hex)':host_hexa,
@@ -621,7 +680,7 @@ def run_nikto(domain):
     
 
     nikto_command = f"nikto -h {domain} -o output.json -Format json -nointeractive -maxtime 70s"
-
+    
     try:
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -663,11 +722,26 @@ def download_report():
     domain = request.args.get('domain')
     if not domain:
         return jsonify({"error": "Domain parameter is required"}), 400
+    identity = get_jwt_identity()
+    email = identity.get("email")
     nikto_data, error = run_nikto(domain)
     if error:
         return jsonify({"error": error}), 500
 
     pdf_buffer = generate_pdf_report(nikto_data)
+    try:
+        add_scan(
+            email=email,
+            new_total=1,
+            new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+            subdomain_count=0,  # Replace with real count if needed
+            asset_count=0,
+            exposed_port=0,
+            passwordhash_count=0
+        )
+    except Exception as e:
+        return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
+
 
     return send_file(pdf_buffer, mimetype='application/pdf',
                      as_attachment=True, download_name=f"Nikto_Report_{domain}.pdf")
@@ -678,6 +752,8 @@ def extract_technologies():
     domain = request.args.get('domain')
     if not domain:
         return jsonify({"error": "Domain parameter is required"}), 400
+    identity = get_jwt_identity()
+    email = identity.get("email")
     command = f"timeout 10 whatweb -v {domain}"
     output, error = ssh_execute_command2(command)
 
@@ -699,7 +775,18 @@ def extract_technologies():
     
     # return jsonify({"technologies": technologies})
     cve_results = extract_cve(technologies)
-
+    try:
+        add_scan(
+            email=email,
+            new_total=1,
+            new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+            subdomain_count=0,  # Replace with real count if needed
+            asset_count=0,
+            exposed_port=0,
+            passwordhash_count=0
+        )
+    except Exception as e:
+        return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
     return jsonify({"technologies": technologies, "cve_results": cve_results})
     
 
@@ -735,7 +822,8 @@ def crack_hash():
     data = request.get_json()
     hash_value = data.get("hash_value")
     hash_type = data.get("hash_type")
-
+    identity = get_jwt_identity()
+    email = identity.get("email")
     if not hash_value or not hash_type:
         return jsonify({"error": "Hash and hash_type are required"}), 400
 
@@ -772,7 +860,19 @@ def crack_hash():
     if not cracked_passwords:
         return jsonify({"error": "No valid cracked passwords found"}), 500
     # Return only the cracked passwords
+    try:
+        add_passwordhash_count(email, len(cracked_passwords))   
+    except Exception as e:
+        return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
     return jsonify({"result": cracked_passwords})
 
-
+@bp.route('/get_dashboard_data', methods=['GET'])
+@jwt_required()
+def get_dashboard_data():
+    identity = get_jwt_identity()
+    email = identity.get("email")
+    scan_info = get_scans_by_email(email)
+    if not scan_info:
+        return jsonify({"error": "No scan info found"}), 404
+    return jsonify({"scan_info": scan_info})
 
