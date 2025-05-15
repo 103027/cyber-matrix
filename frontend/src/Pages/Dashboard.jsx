@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, useMediaQuery } from "@mui/material";
 import LayersIcon from "@mui/icons-material/Layers";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -9,15 +9,58 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 import Footer from "../Components/footer";
 import { useTheme } from "../contexts/theme/ThemeContext.jsx";
+import api from "../api/axios_token.jsx";
 
 function Dashboard() {
     const isSmallScreen = useMediaQuery("(max-width:600px)");
     const { theme } = useTheme();
+    const [totalScan, setTotalScan] = useState(0);
+    const [vulnerabilitiesCount, setVulnerabilitiesCount] = useState(0);
+    const [assetCount, setAssetCount] = useState(0);
+    const [exposePortsCount, setExposePortsCount] = useState(0);
+    const [passwordHashCount, setPasswordHashCount] = useState(0);
+    const [subdomainCount, setSubdomainCount] = useState(0);
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const xAxisData = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const [weeklyCounts, setWeeklyCounts] = useState({
+        Sunday: 0, Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0, Saturday: 0
+    });
+
+    useEffect(() => {
+        const getDashboardData = async () => {
+            try {
+                const response = await api.get("/get_dashboard_data")
+                console.log("Response:", response.data.scan_info[0]);
+                setTotalScan(response.data.scan_info[0].total_count)
+                setVulnerabilitiesCount(response.data.scan_info[0].Vulnerabilities_count)
+                setAssetCount(response.data.scan_info[0].asset_count)
+                setExposePortsCount(response.data.scan_info[0].expose_port)
+                setPasswordHashCount(response.data.scan_info[0].passwordhash_count)
+                setSubdomainCount(response.data.scan_info[0].subdomain_count)
+                const counts = {
+                    Sunday: 0, Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0, Saturday: 0
+                };
+
+                response.data.scan_info[0].date.forEach(dateStr => {
+                    const dateObj = new Date(dateStr);
+                    const dayName = daysOfWeek[dateObj.getDay()];
+                    counts[dayName] += 1;
+                });
+
+                setWeeklyCounts(counts);
+            } catch (error) {
+                console.error("Error cracking hash:", error);
+            }
+        }
+        getDashboardData()
+    }, [])
+
+    const seriesData = xAxisData.map(day => weeklyCounts[day] || 0);
 
     return (
         <Box sx={{ color: theme.text }}>
             <Box
-                sx={{ display: "flex", flexDirection: "column", p:2, borderRadius:"20px", backgroundColor: theme.bg_behind_boxes }}
+                sx={{ display: "flex", flexDirection: "column", p: 2, borderRadius: "20px", backgroundColor: theme.bg_behind_boxes }}
             >
                 <Box>
                     <Typography
@@ -73,7 +116,7 @@ function Dashboard() {
                                         <LayersIcon sx={{ fontSize: 100, color: "#C49150" }} />
                                     </Box>
                                     <Typography variant="h1" sx={{ fontWeight: "bold" }}>
-                                        0
+                                        {totalScan}
                                     </Typography>
                                 </Box>
                             </Grid>
@@ -106,7 +149,7 @@ function Dashboard() {
                                         </Typography>
                                     </Box>
                                     <Typography variant="h2" sx={{ fontWeight: "bold", mt: 3.5 }}>
-                                        0
+                                        {assetCount}
                                     </Typography>
                                 </Box>
                             </Grid>
@@ -206,7 +249,7 @@ function Dashboard() {
                                         </Typography>
                                     </Box>
                                     <Typography variant="h3" sx={{ fontWeight: "bold", mt: 3.5 }}>
-                                        0
+                                        {vulnerabilitiesCount}
                                     </Typography>
                                 </Box>
                             </Grid>
@@ -246,12 +289,12 @@ function Dashboard() {
                                         xAxis={[
                                             {
                                                 scaleType: 'point',
-                                                data: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                                                data: xAxisData,
                                             },
                                         ]}
                                         series={[
                                             {
-                                                data: [2, 5.5, 2, 8.5, 1.5, 5, 6],
+                                                data: seriesData,
                                                 color: "#C49150",
                                                 label: "Weekly Data",
                                             },
@@ -308,16 +351,16 @@ function Dashboard() {
                                         series={[
                                             {
                                                 data: [
-                                                    { id: 0, value: 10, label: 'Subdomain', },
-                                                    { id: 1, value: 15, label: 'Assets' },
-                                                    { id: 2, value: 20, label: 'Password/Hash', color: "#C49150" },
-                                                    { id: 3, value: 30, label: 'Exposed Ports', color: "#0D2535" },
+                                                    { id: 0, value: subdomainCount, label: 'Subdomain', },
+                                                    { id: 1, value: assetCount, label: 'Assets' },
+                                                    { id: 2, value: passwordHashCount, label: 'Password/Hash', color: "#C49150" },
+                                                    { id: 3, value: exposePortsCount, label: 'Exposed Ports', color: "#0D2535" },
                                                 ],
                                                 innerRadius: 80,
                                             },
                                         ]}
                                         sx={{
-                                            ml:{xs:10,sm:0},
+                                            ml: { xs: 10, sm: 0 },
                                             "& .MuiChartsLegend-root": {
                                                 display: { xs: "none", sm: "flex" },
                                                 color: theme.secondary_text + "!important",

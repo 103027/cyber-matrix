@@ -14,7 +14,7 @@ from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 import google.generativeai as genai
 import tempfile
-from app.models.scans import add_scan, add_subdomain_count, add_exposed_port_count, add_asset_count, add_passwordhash_count, get_scans_by_email
+from app.models.scans import add_scan, add_subdomain_count, add_exposed_port_count, add_asset_count, add_passwordhash_count, get_scans_by_email, add_Vulnerability_count
 bp = Blueprint('subdomains', __name__)
 
 KALI_IP = "18.212.167.132"
@@ -492,7 +492,8 @@ def get_target_info():
             subdomain_count=0,  # Replace with real count if needed
             asset_count=0,
             exposed_port=0,
-            passwordhash_count=0
+            passwordhash_count=0,
+            Vulnerabilities_count=0
         )
     except Exception as e:
         return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
@@ -536,14 +537,15 @@ def get_ip_ports():
         print("results",len(results))
         try:
             add_scan(
-                email=email,
-                new_total=1,
-                new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
-                subdomain_count=0,  # Replace with real count if needed
-                asset_count=0,
-                exposed_port=0,
-                passwordhash_count=0
-            )
+            email=email,
+            new_total=1,
+            new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+            subdomain_count=0,  # Replace with real count if needed
+            asset_count=0,
+            exposed_port=0,
+            passwordhash_count=0,
+            Vulnerabilities_count=0
+        )
             open_count = sum(1 for entry in results if entry.get("State") == "open")
             add_exposed_port_count(email, open_count)
             asset_count = len(results)
@@ -598,14 +600,15 @@ def new_subdomain():
         print("subdomains",len(subdomains))
         try:
             add_scan(
-                email=email,
-                new_total=1,
-                new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
-                subdomain_count=0,  # Replace with real count if needed
-                asset_count=0,
-                exposed_port=0,
-                passwordhash_count=0
-            )
+            email=email,
+            new_total=1,
+            new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+            subdomain_count=0,  # Replace with real count if needed
+            asset_count=0,
+            exposed_port=0,
+            passwordhash_count=0,
+            Vulnerabilities_count=0
+        )
             add_subdomain_count(email, len(subdomains))
         except Exception as e:
             return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
@@ -650,14 +653,15 @@ def get_sipcalc():
         network_mask_hex=host_to_hex(network_mask)
         try:
             add_scan(
-                email=email,
-                new_total=1,
-                new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
-                subdomain_count=0,  # Replace with real count if needed
-                asset_count=0,
-                exposed_port=0,
-                passwordhash_count=0
-            )
+            email=email,
+            new_total=1,
+            new_date=[datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")],
+            subdomain_count=0,  # Replace with real count if needed
+            asset_count=0,
+            exposed_port=0,
+            passwordhash_count=0,
+            Vulnerabilities_count=0
+        )
         except Exception as e:
             return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
         return jsonify({'Host Address':host[0],
@@ -737,7 +741,8 @@ def download_report():
             subdomain_count=0,  # Replace with real count if needed
             asset_count=0,
             exposed_port=0,
-            passwordhash_count=0
+            passwordhash_count=0,
+            Vulnerabilities_count=0
         )
     except Exception as e:
         return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
@@ -775,6 +780,8 @@ def extract_technologies():
     
     # return jsonify({"technologies": technologies})
     cve_results = extract_cve(technologies)
+    total_count = sum(len(cves) for cves in cve_results.values()) 
+
     try:
         add_scan(
             email=email,
@@ -783,8 +790,10 @@ def extract_technologies():
             subdomain_count=0,  # Replace with real count if needed
             asset_count=0,
             exposed_port=0,
-            passwordhash_count=0
+            passwordhash_count=0,
+            Vulnerabilities_count=0
         )
+        add_Vulnerability_count(email,total_count)
     except Exception as e:
         return jsonify({"error": "Failed to update scan info", "message": str(e)}), 500
     return jsonify({"technologies": technologies, "cve_results": cve_results})

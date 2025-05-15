@@ -2,7 +2,7 @@ from flask import current_app
 from datetime import datetime
 
 # Add a scan record for a user
-def add_scan(email, new_total, new_date, subdomain_count, asset_count, exposed_port, passwordhash_count):
+def add_scan(email, new_total, new_date, subdomain_count, asset_count, exposed_port, passwordhash_count,Vulnerabilities_count):
     db = current_app.db
 
     update_result = db.scans.update_one(
@@ -14,7 +14,8 @@ def add_scan(email, new_total, new_date, subdomain_count, asset_count, exposed_p
                 'subdomain_count': subdomain_count,
                 'asset_count': asset_count,
                 'expose_port': exposed_port,
-                'passwordhash_count': passwordhash_count
+                'passwordhash_count': passwordhash_count,
+                'Vulnerabilities_count': Vulnerabilities_count
             }
         },
         upsert=True
@@ -51,6 +52,15 @@ def add_passwordhash_count(email, new_passwordhash_count):
         {'$inc': {'passwordhash_count': new_passwordhash_count}}
     )
     return update_result.modified_count > 0
+
+def add_Vulnerability_count(email, vc):
+    db = current_app.db
+    update_result = db.scans.update_one(
+        {'email': email},
+        {'$inc': {'Vulnerabilities_count': vc}}
+    )
+    return update_result.modified_count > 0
+
 def get_scans_by_email(email):
     db = current_app.db
     scans = list(db.scans.find({'email': email}))
