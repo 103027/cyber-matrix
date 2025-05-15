@@ -1,100 +1,133 @@
-Chapter 2 Project Vision
- The vision of this project ”Cyber-Matrix”, is to integrate several critical security functions into one
- integrated platform, which is designed to revolutionize cyber security management. It brings complex
- security processes such as network scanning and vulnerability assessments into one place and automat
-ically achieves organization-oriented simplicity for any company, regardless of size. It is intended to
- empower companies to strengthen their digital defenses easily and thereby improve their ability to better
- protect themselves against the newest cyber threats.
- ”Cyber-Matrix” evolves with an ever-changing nature of digital threats, and the goal is to offer the flex
-ible yet dependable security solution- which, in itself, is a real-time analysis of data through an easily
- accessible interface that includes a very supportive chatbot. It’s a method to minimize the risks and
- effects that cyber attacks pose, thus helping to keep safety and trust above everything in today’s business
- world.
- 2.1 Problem Domain Overview
- The problem with which our project would be dealing with is the increasing cyber attacks. That is why
- our project, ”Cyber-Matrix” is designed to fully satisfy the needs of cyber security. The system stands
- as a platform that brings together many security functions into one easy-to-use web application. It per
-forms several cyber security tasks, such as network scanning, subdomain enumeration, asset discovery,
- and vulnerability assessments. The project aims to automate these processes so that it would ease and
- lighten the management of security in organizations.
- 1. Network Scanning: ”Cyber-Matrix” has the feature of advance network scanning and it checks
- open ports and services on those ports. The feature creates a network map and finds possible weak
- points.
- 2. Subdomain Enumeration: The system has tools to find subdomains linked to the main domain.
- This is important for spotting parts that may be missed in the security setup but could be used as
- entry points for cyber-attacks.
- 3. Asset Enumeration: Asset Enumeration: ”Cyber-Matrix” produces a list of digital assets of the
- organization, providing a clear view of the resources that need protection. Showing organizations
- their complete digital presence.
- 4. Vulnerability Assessment: This site scans for security issues in the system at regular intervals.
- It uses current databases of common vulnerabilities and exposures (CVE) to discover risks and
- recommend remedial measures.
-Thus, ”Cyber-Matrix” automatically ensures that security operations are accomplished with lesser
- complexity and effectively. The platform is easy to use and simple and requires absolutely no technical
- skills, thanks to the real-time chatbot guiding its users. This design concept ensures that ”Cyber-Matrix”
- is a good fit both for the tiny firm and the giant corporation who wish to secure their online security
- against the increasing risks brought by cybercrime.
- 2.2 Problem Statement
- The increasing frequency and complexity of cyber attacks lend an important hand in the need for cy
-bersecurity solutions to improve the fight against evolving cyber threats. ”Cyber-Matrix” answers this
- requirement by integrating key security tasks into one easy-to-use, automated platform. Proposed by
- Catalytic Security, the project underlines the urgent need in the industry for strong digital protections
- that can fight modern cyber threats and improve security for organizations.
- 2.3 Problem Elaboration
- The cyber security environment is full of complicated and ever-changing issues that organizations have
- to meet in order to defend their digital resources. Some of the most elementary functions include net
-work scanning, subdomain enumeration, asset discovery, and vulnerability assessments. Each of these
- activities carries its unique difficulties:
- 1. Network Scanning: The process of discovering all live devices and services on a network is very
- time consuming and constantly requires updates to be informed about new vulnerabilities.
- 2. Subdomain Enumeration: Identifying all associated subdomains of an organization’s domain is
- crucial to securing its online presence but often overlooked due to the complexity of the task.
- 3. Assets Discovery: Maintaining an up-to-date inventory of digital assets is difficult, especially
- with the rapid growth of IoT devices and remote work settings.
- 4. Vulnerability Assessments: It must be continually monitored how secure the assets of an orga
-nization are to know the vulnerabilities before the attackers do. This is very skill and resource
-intensive.
- ”Cyber-Matrix” thus addresses the mentioned cyber-specific problems by automating these processes
- and assembling them into one user-friendly platform. This will make it easy to perform the tasks, and
- it will advance the security measures. Thus, it helps organizations be prepared for any possible threats
- quickly and effectively. The system is designed with a clear understanding of the details of cyber security
- management offering a complete solution meeting the requirements of digital protection today.
- 2.4 Goals and Objectives
- The goals and objectives of this project are as following:
- • Performing Sub Domain Enumeration using multiple open-source tools.
- • Performing Network Scanning to collect IPs related to the target and display the open ports along
- with their name.
- • Performing Asset Enumeration.
- • Performing Password and Hash cracking using open-source tools.
- • Generating a comprehensive CVE report.
- • Generating a Network Map to visualize connected devices.
- • Integrating Penetration Testing tools.
- • Integrating a Chatbot for user assistance.
- • Developing an easy-to-use interface, so that the user experience can be enhanced.
- 2.5 Project Scope
- Open source tools like gobuster is used in the Cyber-Matrix Project for finding active subdomains and
- removing duplicates. It would find network vulnerabilities based on Nmap scans, with noted significant
- open ports and their IP addresses.
- John the Ripper and Hydra have become quite popular with password cracking for security improve
-ment. A weaknesses management automated system will be set up with a special internal tool reporting
- CVEs, featuring AI generated report in order to make security effective.
- This web application would include a lot of features, as mentioned to enhance digital security and iden
-tify the vulnerabilities before they are exploited. However, as we will only have a year to complete this
- project, it would not include all the possible checks that should be made to make the digital space safer
- for everyone. Moreover, in the future, we can extend the feature set to include more features related to
- security, as this web app will benefit each and every individual using the internet.
- The project will be developed using a combination of HTML, CSS, JavaScript, and a web-development
- framework such as React.js. The application will also use Material UI which is an open-source react
- component library. The project will be developed using Agile development principles, and project man
-agement will be done using SCRUM methodology. as for the backend, Flask will be used.
- The project deliverables will include:
- • Afunctional web-based application for cyber security firms to manage their digital security.
- • Auser manual for the application
- • Adocumentation of the design, implementation, and testing process
- The project scope does not include the following:
- • Physical security measures
- • Developing mobile applications (iOS or Android)
- • Hardware security
- • Real-time incident response
- • Forensic analysis
- This project scope will be used as a guide throughout the development
+
+Cyber-Matrix AI Model Knowledge Base
+
+Overview
+Cyber-Matrix is a comprehensive cybersecurity platform integrating multiple critical security functions into a single, user-friendly web application. It automates key cybersecurity tasks like network scanning, subdomain enumeration, asset discovery, vulnerability assessment, and penetration testing, simplifying digital security management for users of any skill level.
+
+Project Vision & Problem Domain
+
+Vision
+The vision of Cyber-Matrix is to integrate several critical security functions into one platform designed to revolutionize cybersecurity management. It brings complex security processes such as network scanning and vulnerability assessments into a single, easy-to-use interface, empowering companies of any size to strengthen their digital defenses against evolving cyber threats. The system offers real-time data analysis and includes a supportive chatbot, minimizing risks and enhancing trust in the business world.
+
+Problem Domain Overview
+The project addresses the rising challenge of increasing cyber attacks by consolidating essential cybersecurity functions into a single web application that automates network scanning, subdomain enumeration, asset discovery, and vulnerability assessments. This simplification reduces the complexity and resources needed to maintain effective security operations.
+
+Key functions:
+1. Network Scanning: Identifies open ports and services, maps networks, and detects vulnerabilities.
+2. Subdomain Enumeration: Finds all subdomains to prevent overlooked attack entry points.
+3. Asset Enumeration: Produces a complete inventory of digital assets for protection.
+4. Vulnerability Assessment: Scans for security issues using current vulnerability databases and recommends remedial measures.
+
+The platform is designed for ease of use, requiring no technical skills, with a real-time chatbot guiding users, making it suitable for both small and large organizations.
+
+Problem Statement
+Cyber-Matrix responds to the increasing frequency and complexity of cyber attacks by offering an automated, integrated platform that enhances digital protection for organizations, addressing the urgent industry need for strong, adaptive security measures.
+
+Problem Elaboration
+The cybersecurity landscape is complicated and rapidly changing. Organizations face unique challenges including:
+- Time-consuming network scanning and keeping updated on new vulnerabilities.
+- Difficulty in identifying all subdomains.
+- Maintaining accurate digital asset inventories, especially with IoT and remote work.
+- The need for constant monitoring and skilled resources for vulnerability assessments.
+
+Cyber-Matrix automates these complex processes, enabling organizations to prepare and respond to cyber threats efficiently.
+
+Goals and Objectives
+- Perform Subdomain Enumeration using multiple open-source tools.
+- Conduct Network Scanning to collect IPs and display open ports with service names.
+- Perform Asset Enumeration.
+- Integrate password and hash cracking tools.
+- Generate comprehensive CVE reports.
+- Create Network Maps visualizing connected devices.
+- Integrate Penetration Testing tools.
+- Include a user assistance chatbot.
+- Develop an easy-to-use interface enhancing user experience.
+
+Project Scope
+- Use of open-source tools like Gobuster for subdomain discovery and duplicate removal.
+- Network vulnerability identification through Nmap scans highlighting significant open ports and IPs.
+- Incorporation of password cracking tools such as John the Ripper and Hydra for security improvement.
+- Implementation of an automated weakness management system that reports CVEs with AI-generated reports.
+- Web application development using React.js, Material UI, and Flask backend.
+- Agile development with SCRUM methodology.
+- Deliverables include a fully functional web-based security application, user manual, and documentation of design, implementation, and testing.
+
+Exclusions:
+- Physical security measures.
+- Mobile app development (iOS/Android).
+- Hardware security.
+- Real-time incident response.
+- Forensic analysis.
+
+Feature Descriptions and Workflows
+
+1. IP & Ports Lookup
+- Purpose: Translate URLs to IP addresses and provide detailed network-related information.
+- Process: User inputs URL/IP → Backend runs nslookup → Gathers site info, IPs, DNS names, organization, issuer, common names, robots.txt → Live data fetched on each request → Displayed on frontend.
+
+2. Sub-Domain Enumeration
+- Purpose: Identify all subdomains of a domain to discover potential attack points.
+- Process: User input parsed → Gobuster tool on Kali Linux runs subdomain scan → Results parsed and shown on frontend.
+
+3. Network Scanning
+- Purpose: Detect open, filtered, and closed ports and services.
+- Process: User input → Backend runs Nmap → Parses results → Displays port status and services.
+
+4. Asset Enumeration
+- Purpose: List digital assets and open ports/services for vulnerability analysis.
+- Process: Selective scanning of target URL → Backend enumerates open ports and services → Displays assets and vulnerabilities.
+
+5. Penetration Testing Tools
+- SipCalc: Calculates network info (network address, mask, broadcast, host range, etc.) after resolving host with nslookup.
+- Nikto: Web vulnerability scanning; runs ~70 seconds → Outputs scanned vulnerabilities → Generates downloadable PDF report.
+
+6. CVE Reporting
+- Purpose: Find known vulnerabilities in technologies used by a domain.
+- Process: Backend runs whatweb → Identifies tech stack → Queries NVD API for CVEs → Displays CVE IDs, severity → Helps monitor risks.
+
+User Manual Summary
+
+General User Instructions
+- Sign Up: Navigate to sign-up page → Enter email, username, password → Click Sign Up.
+- Login: Navigate to login page → Enter email and password → Click Login.
+
+Feature Usage Steps
+
+Feature                 Steps
+Sub-domain Enumeration  1. Login and click '+' button.
+                        2. Enter URL.
+                        3. Click on Sub-domain feature.
+                        4. View displayed info.
+IP & Ports              1. Login and click '+' button.
+                        2. Enter URL.
+                        3. Click on IP & Ports feature.
+                        4. View displayed info.
+Asset Enumeration       1. Login and click '+' button.
+                        2. Enter URL.
+                        3. Click on Asset Enumeration.
+                        4. View displayed info.
+CVE Reporting           1. Login and click '+' button.
+                        2. Enter URL.
+                        3. Click on CVE Reporting.
+                        4. View displayed info.
+Penetration Testing     1. Login and click '+' button.
+                        2. Enter URL.
+                        3. Click on PenTesting feature.
+                        4. Select Nikto or SipCalc.
+                        5. View or download results accordingly.
+
+Additional Notes
+- Nikto scans generate downloadable PDF reports.
+- SipCalc results are shown immediately on the frontend.
+- No admin user; only general users exist.
+- All scans are live and do not rely on stored data, ensuring up-to-date information.
+
+Summary for AI Model Guidance
+- Verify user login before allowing feature access.
+- Explain features in simple terms.
+- Provide step-by-step usage instructions.
+- Inform about output formats (e.g., PDF for Nikto).
+- Notify users about scan durations or delays.
+- Highlight importance of vulnerability reports.
+- Encourage regular scanning for security.
+- Provide troubleshooting tips or contact info for errors.
