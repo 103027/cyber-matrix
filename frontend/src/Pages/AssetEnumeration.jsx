@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchIPandPorts } from "../features/ipandportsSlice.js";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import { useTheme } from "../contexts/theme/ThemeContext.jsx";
+import { useScan } from "../contexts/ScanContext.jsx";
 
 function createData(port, server) {
     return { port, server };
@@ -29,7 +30,7 @@ function AssetEnumeration() {
     const { data } = useSelector(state => state.targetInfo)
     const dispatch = useDispatch();
     const { theme } = useTheme();
-
+    const { incrementRunningScans, incrementCompletedScans } = useScan()
     const isLoading = loading[domain]
     const isError = error[domain]
 
@@ -84,7 +85,12 @@ function AssetEnumeration() {
     useEffect(() => {
         if (!ipandports_[domain] && !isLoading) {
             console.log("Hello from Ip&Ports");
-            dispatch(fetchIPandPorts(domain));
+            const fetchData = async () => {
+                incrementRunningScans()
+                await dispatch(fetchIPandPorts(domain));
+                incrementCompletedScans()
+            }
+            fetchData()
         }
     }, [domain, isLoading]);
 

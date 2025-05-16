@@ -12,6 +12,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useTheme } from "../contexts/theme/ThemeContext.jsx";
+import { useScan } from "../contexts/ScanContext.jsx";
 
 const adjustIP = (ip, offset) => {
     if (!ip) return "";
@@ -37,7 +38,7 @@ function SipCalc() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = React.useState("");
     const { theme } = useTheme();
-
+    const { incrementRunningScans, incrementCompletedScans } = useScan()
     const sipCalc_Data = [
         { "Host Address": data[domain]?.["Host Address"] },
         { "Host Address(Hex)": data[domain]?.["Host Address(Hex)"] },
@@ -74,7 +75,12 @@ function SipCalc() {
     useEffect(() => {
         if (!data[domain] && !isLoading) {
             console.log("Hello from SipCalc");
-            dispatch(fetchSipCalc(domain));
+            const fetchData = async () => {
+                incrementRunningScans()
+                await dispatch(fetchSipCalc(domain));
+                incrementCompletedScans()
+            }
+            fetchData()
         }
     }, [domain, isLoading]);
 

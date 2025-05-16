@@ -60,7 +60,7 @@ function LeftSidebar(props) {
                     <List sx={{ width: "100%" }}>
                         {[
                             { text: "Dashboard", icon: <DashboardIcon sx={{color: props.theme.text_3}}/> },
-                            { text: "History", icon: <HistoryIcon sx={{color: props.theme.text_3}}/> },
+                            // { text: "History", icon: <HistoryIcon sx={{color: props.theme.text_3}}/> },
                             { text: "Settings", icon: <SettingsIcon sx={{color: props.theme.text_3}}/> },
                         ].map((item, index) => (
                             <ListItem disablePadding sx={{ display: 'block', mb: 3 }} key={index}>

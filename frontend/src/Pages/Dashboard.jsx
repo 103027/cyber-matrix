@@ -10,6 +10,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import Footer from "../Components/footer";
 import { useTheme } from "../contexts/theme/ThemeContext.jsx";
 import api from "../api/axios_token.jsx";
+import { useScan } from "../contexts/ScanContext.jsx";
 
 function Dashboard() {
     const isSmallScreen = useMediaQuery("(max-width:600px)");
@@ -25,6 +26,10 @@ function Dashboard() {
     const [weeklyCounts, setWeeklyCounts] = useState({
         Sunday: 0, Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0, Saturday: 0
     });
+    const {
+        runningScans,
+        completedScans
+    } = useScan();
 
     useEffect(() => {
         const getDashboardData = async () => {
@@ -182,7 +187,7 @@ function Dashboard() {
                                         </Typography>
                                     </Box>
                                     <Typography variant="h3" sx={{ fontWeight: "bold", mt: 3.5 }}>
-                                        0
+                                        {runningScans}
                                     </Typography>
                                 </Box>
                             </Grid>
@@ -215,7 +220,7 @@ function Dashboard() {
                                         </Typography>
                                     </Box>
                                     <Typography variant="h3" sx={{ fontWeight: "bold", mt: 3.5 }}>
-                                        0
+                                        {completedScans}
                                     </Typography>
                                 </Box>
                             </Grid>

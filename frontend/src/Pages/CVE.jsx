@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCVE } from "../features/cveSlice.js";
 import { useNotification } from "../contexts/NotificationContext.jsx";
 import { useTheme } from "../contexts/theme/ThemeContext.jsx";
+import { useScan } from "../contexts/ScanContext.jsx";
 
 function CVE() {
     const [rows, setRows] = useState([]);
@@ -24,7 +25,7 @@ function CVE() {
     const { data, loading, error } = useSelector(state => state.cve)
     const dispatch = useDispatch();
     const { theme } = useTheme();
-
+    const { incrementRunningScans, incrementCompletedScans } = useScan()
     const isLoading = loading[domain]
     const isError = error[domain]
 
@@ -79,7 +80,12 @@ function CVE() {
     useEffect(() => {
         if (!data[domain] && !isLoading) {
             console.log("Hello from CVE");
-            dispatch(fetchCVE(domain));
+            const fetchData = async () => {
+                incrementRunningScans()
+                await dispatch(fetchCVE(domain));
+                incrementCompletedScans()
+            }
+            fetchData()
         }
     }, [domain, isLoading]);
 

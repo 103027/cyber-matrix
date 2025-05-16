@@ -9,6 +9,7 @@ import { useNotification } from "../contexts/NotificationContext.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTargetInfo } from "../features/targetInfoSlice";
 import { useTheme } from "../contexts/theme/ThemeContext.jsx";
+import { useScan } from "../contexts/ScanContext.jsx";
 
 function TargetInfo() {
     const { data, loading, error } = useSelector((state) => state.targetInfo);
@@ -16,16 +17,20 @@ function TargetInfo() {
     const { showNotification } = useNotification();
     const dispatch = useDispatch();
     const { theme } = useTheme();
-
+    const { incrementRunningScans, incrementCompletedScans } = useScan()
     const targetInfos = data;
     const isLoading = loading[domain];
     const isError = error[domain];
 
     useEffect(() => {
-
         if (!data[domain] && !isLoading) {
             console.log("Hello from target Info")
-            dispatch(fetchTargetInfo(domain))
+            const fetchData = async () => {
+                incrementRunningScans()
+                await dispatch(fetchTargetInfo(domain))
+                incrementCompletedScans()
+            }
+            fetchData()
         }
 
     }, [domain]);
@@ -40,7 +45,7 @@ function TargetInfo() {
     return (
         <Box sx={{ color: theme.text }}>
             <Box
-                sx={{ display: "flex", flexDirection: "column", p:2, borderRadius:"20px", backgroundColor: theme.bg_behind_boxes }}
+                sx={{ display: "flex", flexDirection: "column", p: 2, borderRadius: "20px", backgroundColor: theme.bg_behind_boxes }}
             >
                 <Box>
                     <Typography

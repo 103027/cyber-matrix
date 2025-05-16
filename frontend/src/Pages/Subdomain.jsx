@@ -13,6 +13,7 @@ import { CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSubdomains, fetchSubdomainStatus } from "../features/subdomainSlice";
 import { useTheme } from "../contexts/theme/ThemeContext.jsx";
+import { useScan } from "../contexts/ScanContext.jsx";
 
 function Subdomain() {
     const [page, setPage] = useState(0);
@@ -23,7 +24,7 @@ function Subdomain() {
     const { data,loading,error,loadingRow} = useSelector(state => state.subdomains)
     const dispatch = useDispatch();
     const { theme } = useTheme();
-
+    const { incrementRunningScans, incrementCompletedScans } = useScan()
     const subdomains = data[domain]?.data || [];
     const isLoading = loading[domain]
     const isError = error[domain]
@@ -68,7 +69,12 @@ function Subdomain() {
 
         if (!data[domain] && !isLoading) {
             console.log("Hello from subdomians")
-            dispatch(fetchSubdomains(domain));
+            const fetchData = async () => {
+                incrementRunningScans()
+                await dispatch(fetchSubdomains(domain));
+                incrementCompletedScans()
+            }
+            fetchData()
         }
 
     }, [ domain ]);

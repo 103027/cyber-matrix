@@ -22,9 +22,22 @@ export default function ChatBot() {
     const chatRef = useRef(null);
     const messagesEndRef = useRef(null);
 
+    useEffect(() => {
+        const savedMessages = JSON.parse(localStorage.getItem("chatMessages"));
+        if (savedMessages) {
+            setMessages(savedMessages);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            localStorage.setItem("chatMessages", JSON.stringify(messages));
+        }
+    }, [messages]);
+
     const handleSendMessage = async () => {
         if (message.trim() === '') return;
-        const userMessage = message; // store message first
+        const userMessage = message;
         setMessages([...messages, { message: userMessage, response: '...' }]);
         setMessage('');
         try {
@@ -48,14 +61,14 @@ export default function ChatBot() {
         function handleClickOutside(event) {
             if (chatRef.current && !chatRef.current.contains(event.target)) {
                 setOpen(false);
-                setMessages([]);
+                // setMessages([]);
             }
         }
-    
+
         if (open) {
             document.addEventListener('mousedown', handleClickOutside);
         }
-    
+
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
@@ -66,7 +79,7 @@ export default function ChatBot() {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [messages]);
-    
+
 
     return (
         <>
@@ -111,8 +124,8 @@ export default function ChatBot() {
                         position: 'fixed',
                         bottom: 20,
                         right: 15,
-                        width: 370,
-                        height: 450,
+                        width: 400,
+                        height: 470,
                         bgcolor: theme.ChatBot_bg,
                         color: theme.ChatBot_text,
                         borderRadius: 3,
@@ -139,7 +152,7 @@ export default function ChatBot() {
                             </Typography>
                         </Box>
                         <IconButton onClick={() => setOpen(false)} size="small" sx={{ color: theme.ChatBot_text }}>
-                            <CloseIcon fontSize="small" onClick={() => {setOpen(false); setMessages([]);}}/>
+                            <CloseIcon fontSize="small" onClick={() => { setOpen(false) }} />
                         </IconButton>
                     </Box>
 
@@ -232,7 +245,7 @@ export default function ChatBot() {
                             }}
                         />
                         <IconButton sx={{ color: theme.ChatBot_Ask_Anything }} onClick={handleSendMessage}>
-                            <SendIcon sx={{ color: theme.ChatBot_Ask_Anything }}/>
+                            <SendIcon sx={{ color: theme.ChatBot_Ask_Anything }} />
                         </IconButton>
                     </Box>
                 </Paper>

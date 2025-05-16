@@ -15,6 +15,8 @@ import { removeSipCalc, clearAllSipCalc } from '../../features/sipcalcSlice.js';
 import { removeCVE, clearAllCVE } from '../../features/cveSlice.js';
 import { useTheme } from "../../contexts/theme/ThemeContext.jsx";
 import ChatBot from "../ChatBot.jsx";
+import { useScan } from "../../contexts/ScanContext.jsx";
+
 function AppLayout() {
     const [username, setUsername] = useState("");
     const location = useLocation();
@@ -40,6 +42,7 @@ function AppLayout() {
     const isMobile = useMediaQuery("(max-width: 700px)");
     const dispatch = useDispatch()
     const { theme } = useTheme();
+    const { resetScans } = useScan()
 
     const getName = (tabName) => {
         if (tabName) {
@@ -84,6 +87,8 @@ function AppLayout() {
         localStorage.removeItem("tabs");
         localStorage.removeItem("activetabs");
         localStorage.removeItem('crackedPasswords');
+        localStorage.removeItem('chatMessages');
+        resetScans()
         handleClear()
         navigate("/login");
         showNotification("Logged out successfully!");
