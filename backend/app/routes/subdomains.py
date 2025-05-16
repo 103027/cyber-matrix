@@ -18,7 +18,7 @@ from app.models.scans import add_scan, add_subdomain_count, add_exposed_port_cou
 from app.services.chat_handler import query_text_document
 bp = Blueprint('subdomains', __name__)
 
-KALI_IP = "18.212.167.132"
+KALI_IP = "44.207.6.16"
 KALI_USERNAME = "kali"
 # KALI_KEY_PATH = "D:/Sem 7/FYP-1/kali.pem"
 KALI_KEY_PATH = "/Users/hassanmuzaffar/Downloads/kali.pem"
@@ -324,6 +324,7 @@ def ssh_execute_command2(command):
     :return: The command output
     """
     try:
+        
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname=KALI_IP, username=KALI_USERNAME, key_filename=KALI_KEY_PATH)
@@ -331,7 +332,7 @@ def ssh_execute_command2(command):
         stdin, stdout, stderr = ssh.exec_command(command)
         output = remove_ansi(stdout.read().decode().strip())
         error = remove_ansi(stderr.read().decode().strip())
-
+        
         ssh.close()
 
         return output if output else None, error if error else None
@@ -764,7 +765,7 @@ def extract_technologies():
     print(domain)
     command = f"timeout 10 whatweb -v {domain}"
     output, error = ssh_execute_command2(command)
-    print(output)
+    print(output,error)
     if error:
         return {"error": error}
 
